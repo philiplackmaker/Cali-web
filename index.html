@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Calico Melton</title>
+<meta name="description" content="Calico Melton is a Bristol-based artist. Sign up for new paintings, studio notes, and first access to prints.">
+<meta property="og:title" content="Calico Melton">
+<meta property="og:description" content="Calico Melton is a Bristol-based artist. Sign up for new paintings, studio notes, and first access to prints.">
+<meta property="og:image" content="calico-painting.jpg">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" href="favicon-32.png">
+<link rel="apple-touch-icon" href="favicon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,700;0,800;1,500&family=Figtree:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ground: #E3B5AB;
+    --ground-deep: #C68E80;
+    --ink: #4C2508;
+    --ink-soft: rgba(42, 30, 26, 0.68);
+    --cream: #F8EFE5;
+    --maroon: #6E2A2E;
+    --blue: #7C93A8;
+    --btn-bg: #2A1E1A;
+    --btn-text: #F8EFE5;
+    --input-bg: #FBF5EE;
+    --input-text: #2A1E1A;
+    --line: rgba(42, 30, 26, 0.22);
+    --focus: #2A1E1A;
+    --photo-ground: #1A1411;
+    --error: #9A2B1E;
+  }
+
+  /* This page keeps one fixed palette regardless of the viewer's system
+     theme — a deliberate single look, not a light/dark pair. */
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground-deep);
+    color: var(--ink);
+    font-family: "Figtree", ui-sans-serif, system-ui, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+  }
+
+  .page {
+    width: min(1020px, 100%);
+    height: 600px;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.45);
+  }
+
+  .shell {
+    height: 100%;
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  }
+
+  @media (max-width: 860px) {
+    .page { height: auto; }
+    .shell { grid-template-columns: 1fr; }
+  }
+
+  /* ---------- Hero: the actual painting ---------- */
+
+  .hero {
+    position: relative;
+    min-height: 320px;
+    background: var(--photo-ground);
+    overflow: hidden;
+  }
+
+  @media (max-width: 860px) {
+    .hero { aspect-ratio: 4 / 3; min-height: 0; }
+  }
+
+  .hero img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 30%;
+    display: block;
+  }
+
+  .hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(10, 7, 6, 0.6) 0%, rgba(10, 7, 6, 0.1) 32%, rgba(10, 7, 6, 0.42) 100%);
+    pointer-events: none;
+  }
+
+  .wordmark {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    text-align: center;
+    padding: clamp(1.5rem, 4vw, 2.5rem) 1.5rem 0;
+    font-family: "Lora", Georgia, serif;
+    font-weight: 800;
+    font-size: clamp(2.8rem, 7vw, 5.2rem);
+    line-height: 1;
+    letter-spacing: -0.01em;
+    color: #FFFFFF;
+    opacity: 0.85;
+    margin: 0;
+    z-index: 1;
+    text-wrap: balance;
+    pointer-events: none;
+  }
+
+  /* ---------- Form side ---------- */
+
+  .form-side {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(2.2rem, 6vw, 4rem);
+    background: var(--ground);
+  }
+
+  .panel {
+    width: 100%;
+    max-width: 440px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.1rem;
+  }
+
+  .mark-icon { width: 30px; height: auto; display: block; }
+
+  .eyebrow {
+    font-size: 0.76rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink);
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .panel h1 {
+    font-family: "Lora", Georgia, serif;
+    font-weight: 700;
+    font-size: clamp(1.7rem, 3vw, 2.1rem);
+    line-height: 1.15;
+    color: var(--ink);
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .sub {
+    font-size: 1rem;
+    color: var(--ink);
+    opacity: 0.85;
+    max-width: 32ch;
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 0.5rem;
+    margin-top: 0.3rem;
+  }
+
+  .field-row {
+    display: flex;
+    width: 100%;
+    gap: 0.6rem;
+  }
+
+  @media (max-width: 420px) {
+    .field-row { flex-direction: column; gap: 0.6rem; }
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  input[type="email"] {
+    flex: 1;
+    min-width: 0;
+    font: inherit;
+    font-size: 1.15rem;
+    color: var(--input-text);
+    background: var(--input-bg);
+    border: none;
+    border-radius: 8px;
+    padding: 1.2rem 1.4rem;
+    outline: none;
+  }
+
+  input[type="email"]::placeholder { color: var(--input-text); opacity: 0.45; }
+
+  .subscribe {
+    flex: none;
+    font: inherit;
+    font-weight: 600;
+    font-size: 1.15rem;
+    color: var(--btn-text);
+    background: var(--btn-bg);
+    border: none;
+    border-radius: 8px;
+    padding: 1.2rem 1.6rem;
+    cursor: pointer;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .subscribe { transition: opacity 0.15s ease, transform 0.15s ease; }
+    .subscribe:active { transform: translateY(1px); }
+  }
+
+  .subscribe:hover { opacity: 0.88; }
+
+  input[type="email"]:focus-visible,
+  .subscribe:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 3px;
+  }
+
+  input[type="email"][aria-invalid="true"] {
+    box-shadow: inset 0 0 0 2px var(--error);
+  }
+
+  .error {
+    display: none;
+    text-align: center;
+    font-size: 0.82rem;
+    color: var(--error);
+    margin: 0;
+  }
+
+  .error.show { display: block; }
+
+  .fine {
+    font-size: 0.8rem;
+    color: var(--ink);
+    opacity: 0.65;
+    margin: 0;
+  }
+
+  .socials {
+    display: flex;
+    gap: 0.9rem;
+    margin-top: 0.2rem;
+  }
+
+  .socials a {
+    color: var(--ink);
+    opacity: 0.6;
+    display: flex;
+  }
+
+  .socials a:hover { opacity: 1; }
+
+  .socials svg { width: 19px; height: 19px; }
+
+  .confirm { display: none; }
+  .confirm.show { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+  .confirm.show ~ form,
+  .confirm.show ~ .fine { display: none; }
+
+  .confirm .tick { width: 34px; height: 34px; color: var(--maroon); margin-bottom: 0.2rem; }
+
+  .confirm h2 {
+    font-family: "Lora", Georgia, serif;
+    font-weight: 700;
+    font-size: 1.4rem;
+    color: var(--ink);
+    margin: 0;
+  }
+
+  .confirm p { color: var(--ink); opacity: 0.75; font-size: 0.95rem; margin: 0; }
+
+  .confirm .again {
+    margin-top: 0.4rem;
+    font: inherit;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--maroon);
+    background: none;
+    border: none;
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .confirm .again:hover { opacity: 0.8; }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="shell">
+    <div class="hero">
+      <img src="calico-painting.jpg" alt="A painting by Calico Melton: a figure in a blue sun hat and checkered pink and maroon top, holding a single tulip, against a brushy brown background.">
+      <p class="wordmark">Calico Melton</p>
+    </div>
+
+    <main class="form-side">
+      <div class="panel">
+        <img src="flower-mark.png" alt="" class="mark-icon">
+
+        <p class="eyebrow">The Studio Letter</p>
+        <h1>Sign up for new work</h1>
+        <p class="sub">New paintings, studio notes, and first access to prints.</p>
+
+        <div class="confirm" id="confirm">
+          <svg class="tick" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <circle cx="12" cy="12" r="9.5" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M7.5 12.5l2.8 2.8 6.2-6.6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <h2>You're on the list.</h2>
+          <p>I'll send the next one straight to your inbox.</p>
+          <button type="button" class="again" id="signup-again">Sign up again</button>
+        </div>
+
+        <form id="signup-form" novalidate>
+          <div class="field-row">
+            <label class="sr-only" for="email">Email address</label>
+            <input id="email" name="email" type="email" placeholder="you@example.com" autocomplete="email" aria-describedby="email-error" required>
+            <button type="submit" class="subscribe">Subscribe</button>
+          </div>
+          <p class="error" id="email-error" role="alert"></p>
+        </form>
+
+        <p class="fine">Unsubscribe any time.</p>
+
+        <div class="socials">
+          <a href="https://www.instagram.com/calicomelton/" target="_blank" rel="noopener" aria-label="Calico Melton on Instagram">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.5"/>
+              <circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.5"/>
+              <circle cx="17.3" cy="6.7" r="1" fill="currentColor"/>
+            </svg>
+          </a>
+          <a href="mailto:calicomelton@gmail.com" aria-label="Email Calico Melton">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="3" y="5" width="18" height="14" rx="2.5" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M4 7l8 6 8-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script>
+  // The Apps Script Web app URL from calico-signups-apps-script.gs.
+  // Each signup is posted straight into the Google Sheet it's bound to.
+  var SHEETS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzecacCCbgrTxLsmqDjbgia04JewZiH7p8Nk7pEmNXi0Eg53NMqSWHsUfw0BneSdhKnZA/exec';
+
+  var form = document.getElementById('signup-form');
+  var email = document.getElementById('email');
+  var error = document.getElementById('email-error');
+  var submitBtn = form.querySelector('.subscribe');
+  var confirmEl = document.getElementById('confirm');
+  var signupAgain = document.getElementById('signup-again');
+
+  function clearError() {
+    error.classList.remove('show');
+    email.removeAttribute('aria-invalid');
+  }
+
+  function showError(message) {
+    error.textContent = message;
+    error.classList.add('show');
+    email.setAttribute('aria-invalid', 'true');
+  }
+
+  email.addEventListener('input', clearError);
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    var value = email.value.trim();
+
+    if (!value) {
+      showError('Enter your email address to sign up.');
+      email.focus();
+      return;
+    }
+
+    if (!email.checkValidity()) {
+      showError('That doesn’t look like a valid email address.');
+      email.focus();
+      return;
+    }
+
+    submitBtn.disabled = true;
+
+    try {
+      // Apps Script web apps don't send CORS headers, so the response is
+      // opaque under no-cors — a resolved fetch here just means the
+      // request reached Google, not that the script definitely ran, but
+      // on a normal website (unlike inside a Claude artifact) this request
+      // isn't blocked, and Apps Script reliably processes it.
+      await fetch(SHEETS_ENDPOINT, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: 'email=' + encodeURIComponent(value)
+      });
+      clearError();
+      confirmEl.classList.add('show');
+    } catch (err) {
+      submitBtn.disabled = false;
+      showError('Something went wrong — please try again.');
+    }
+  });
+
+  signupAgain.addEventListener('click', function () {
+    confirmEl.classList.remove('show');
+    email.value = '';
+    clearError();
+    submitBtn.disabled = false;
+    email.focus();
+  });
+</script>
+
+</body>
+</html>
