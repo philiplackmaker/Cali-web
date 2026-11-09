@@ -4,14 +4,19 @@ on:
     branches: [main]
   pull_request:
 
+# A newer push to the same branch or PR cancels the older run.
+concurrency:
+  group: ci-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
 # The brief's quality bar: everything here must pass before launch.
 jobs:
   check:
     name: Lint, unit tests, build, site checks
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version-file: .nvmrc
           cache: npm
@@ -27,8 +32,8 @@ jobs:
     name: End-to-end and accessibility (Playwright)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version-file: .nvmrc
           cache: npm
@@ -36,7 +41,7 @@ jobs:
       - run: npx playwright install --with-deps chromium firefox webkit
       - name: Shop flows, edge cases, forms, axe on every page, keyboard only
         run: npm run test:e2e
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         if: failure()
         with:
           name: playwright-report
@@ -47,8 +52,8 @@ jobs:
     name: Lighthouse (mobile, 95+)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version-file: .nvmrc
           cache: npm
@@ -56,7 +61,10 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - run: npm run build
       - run: npm run lighthouse
-      - uses: actions/upload-artifact@v4
+      - name: Lighthouse scores per page (job summary and annotations)
+        if: always()
+        run: node scripts/lighthouse-summary.js
+      - uses: actions/upload-artifact@v5
         if: always()
         with:
           name: lighthouse-reports
