@@ -2,7 +2,8 @@
 
 Work through this in order. The order matters for the DNS step: today
 **www.calicomelton.com is served by GitHub Pages** from this repo's `main` branch (GoDaddy DNS,
-`www` CNAME → `philiplackmaker.github.io`, with the bare domain forwarded by GoDaddy). Merging
+`www` CNAME → `philiplackmaker.github.io`). The bare domain should point at GitHub Pages too (four
+`A` records, `185.199.108–111.153`). Until 9 November it pointed at GoDaddy's parking page. Merging
 `shop-foundations` into `main` early would take the current Studio Letter page down, because
 `index.html` has moved to `legacy/`.
 
@@ -58,8 +59,9 @@ metafield definitions, the Site photo metaobject, and the webhooks. Also:
 Do this when steps 1–3 are done, ideally on a quiet morning. Lower the TTLs a day before if you can.
 
 - [ ] In Netlify → Domain management, add `calicomelton.com` and `www.calicomelton.com`.
-- [ ] At GoDaddy: **remove the domain forwarding** on the bare domain, and delete its current A records
-      (`15.197.148.33`, `3.33.130.190`, GoDaddy's forwarding servers).
+- [ ] At GoDaddy: make sure parking and forwarding are off for the domain, and delete the bare domain's
+      current `A` records: GitHub Pages' `185.199.108.153` to `185.199.111.153` (or, if the interim fix
+      was never made, GoDaddy's parking servers `15.197.148.33` and `3.33.130.190`).
 - [ ] Add an `A` record for `@` → `75.2.60.5` (Netlify's load balancer).
 - [ ] Change the `www` CNAME from `philiplackmaker.github.io` → `<your-site>.netlify.app`.
 - [ ] Wait for Netlify to issue the HTTPS certificate (usually minutes). Then choose which is primary
