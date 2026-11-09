@@ -1,0 +1,80 @@
+/* Element defaults. Layer: base. Tokens only. */
+html {
+  color-scheme: light;
+  background: var(--ds-color-surface-page);
+}
+
+body {
+  background: var(--ds-color-surface-page);
+  color: var(--ds-color-text-default);
+  font-family: var(--ds-type-body-family);
+  font-size: var(--ds-type-body-size);
+  font-weight: var(--ds-type-body-weight);
+  line-height: var(--ds-type-body-line-height);
+}
+
+h1,
+h2,
+h3 {
+  color: var(--ds-color-text-default);
+  font-family: var(--ds-type-heading-lg-family);
+  font-weight: var(--ds-type-heading-lg-weight);
+  line-height: var(--ds-type-heading-lg-line-height);
+}
+
+h1 {
+  font-size: var(--ds-type-heading-xl-size);
+}
+
+h2 {
+  font-size: var(--ds-type-heading-lg-size);
+}
+
+h3 {
+  font-size: var(--ds-type-heading-md-size);
+}
+
+h4 {
+  font-family: var(--ds-type-heading-sm-family);
+  font-size: var(--ds-type-heading-sm-size);
+  font-weight: var(--ds-type-heading-sm-weight);
+  line-height: var(--ds-type-heading-sm-line-height);
+}
+
+small {
+  font-size: var(--ds-type-small-size);
+}
+
+strong,
+b {
+  font-weight: var(--ds-type-body-weight-strong);
+}
+
+a {
+  color: var(--ds-color-text-link);
+  text-decoration-thickness: var(--ds-line-hairline);
+  text-underline-offset: var(--ds-line-underline-offset);
+}
+
+a:hover {
+  color: var(--ds-color-text-link-hover);
+}
+
+code {
+  font-size: var(--ds-type-small-size);
+}
+
+:focus-visible {
+  outline: var(--ds-line-focus) solid var(--ds-color-focus-ring);
+  outline-offset: var(--ds-line-focus-offset);
+}
+
+hr {
+  border: 0;
+  border-block-start: var(--ds-line-hairline) solid var(--ds-color-border-subtle);
+}
+
+::selection {
+  background: var(--ds-color-accent-pink);
+  color: var(--ds-color-text-strong);
+}

@@ -1,0 +1,28 @@
+---
+title: Instagram
+order: 7
+description: "Studio photos that link out to @calicomelton."
+---
+{% from "docs.njk" import example, usage %}
+{% from "patterns/section/section.njk" import section %}
+{% from "patterns/instagram-band/instagram-band.njk" import instagramBand %}
+<header class="docs-header">
+  <p class="docs-eyebrow">Pattern</p>
+  <h1>Instagram</h1>
+  <p class="docs-lede">Studio photos that link out to @calicomelton.</p>
+</header>
+
+<section class="docs-section" aria-labelledby="use">
+  <h2 id="use">Use it</h2>
+  {% set code %}{% raw %}{% from "patterns/instagram-band/instagram-band.njk" import instagramBand %}
+{{ instagramBand({ id: "instagram", photos: shop.photos.studio }) }}{% endraw %}{% endset %}
+  {{ usage(code) }}
+  <p><strong>Used on:</strong> Home, About (without photos)</p>
+  <p>It links out instead of embedding a feed: no third-party script, tracking or slowdown. The photos are one big decorative link, hidden from screen readers. The text link “Follow @calicomelton” is the real one.</p>
+</section>
+
+<section class="docs-section" aria-labelledby="example">
+  <h2 id="example">Example</h2>
+  {% set ex %}{{ instagramBand({ id: "ex-instagram", photos: shop.photos.studio }) }}{% endset %}
+  {{ example("Instagram", ex, { wide: true, noCode: true }) }}
+</section>

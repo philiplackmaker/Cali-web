@@ -1,0 +1,28 @@
+---
+title: Artist intro
+order: 5
+description: "A photo of Cali and a few lines in her voice."
+---
+{% from "docs.njk" import example, usage %}
+{% from "patterns/section/section.njk" import section %}
+{% from "patterns/artist-intro/artist-intro.njk" import artistIntro %}
+<header class="docs-header">
+  <p class="docs-eyebrow">Pattern</p>
+  <h1>Artist intro</h1>
+  <p class="docs-lede">A photo of Cali and a few lines in her voice.</p>
+</header>
+
+<section class="docs-section" aria-labelledby="use">
+  <h2 id="use">Use it</h2>
+  {% set code %}{% raw %}{% from "patterns/artist-intro/artist-intro.njk" import artistIntro %}
+{{ artistIntro({ id: "about-cali", image, heading: "Hello, I’m Cali", text: ["…", "…"], link: { href: "/about/", label: "More about me" } }) }}{% endraw %}{% endset %}
+  {{ usage(code) }}
+  <p><strong>Used on:</strong> Home, About</p>
+  <p>The photo is the <code>about-portrait</code> site photo in Shopify.</p>
+</section>
+
+<section class="docs-section" aria-labelledby="example">
+  <h2 id="example">Example</h2>
+  {% set ex %}{{ artistIntro({ id: "ex-artist", image: shop.photos.aboutPortrait.image, heading: "Hello, I’m Cali", text: ["I paint in a small studio in Bristol."], link: { href: "/about/", label: "More about me and the studio" } }) }}{% endset %}
+  {{ example("Artist intro", ex, { wide: true, noCode: true }) }}
+</section>

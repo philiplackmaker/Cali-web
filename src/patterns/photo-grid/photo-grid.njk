@@ -1,0 +1,21 @@
+{#-
+  Photo grid: studio photos with captions, from the site_photo metaobjects.
+  {% from "patterns/photo-grid/photo-grid.njk" import photoGrid %}
+  {{ photoGrid({ id: "studio", heading: "The studio", photos: shop.photos.studio }) }}
+-#}
+{%- from "components/artwork-image/artwork-image.njk" import artworkImage -%}
+{%- macro photoGrid(opts) -%}
+<div class="ds-photo-grid">
+  {%- if opts.heading %}<h2 class="ds-photo-grid__heading" id="{{ opts.id }}">{{ opts.heading }}</h2>{% endif %}
+  <ul class="ds-photo-grid__list" role="list">
+    {%- for photo in opts.photos %}
+    <li>
+      <figure class="ds-photo-grid__item">
+        {{ artworkImage(photo.image, { sizes: "(width >= 53.75rem) 33vw, 100vw" }) }}
+        {%- if photo.caption %}<figcaption>{{ photo.caption }}</figcaption>{% endif %}
+      </figure>
+    </li>
+    {%- endfor %}
+  </ul>
+</div>
+{%- endmacro -%}

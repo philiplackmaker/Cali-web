@@ -1,0 +1,43 @@
+---
+title: Variant picker
+order: 10
+description: Size and paper as radio groups that update price, image and availability.
+---
+{% from "docs.njk" import example, usage %}
+{% from "components/variant-picker/variant-picker.njk" import variantPicker %}
+{% from "components/price/price.njk" import price %}
+{% set p = mock.byHandle["sun-hat-with-tulip-print"] %}
+<header class="docs-header">
+  <p class="docs-eyebrow">Component · &lt;variant-picker&gt;</p>
+  <h1>Variant picker</h1>
+  <p class="docs-lede">One radio group for each print option. Choosing one updates the price, the gallery image, the form's variant id and <code>?variant=</code> in the URL. Combinations that have sold out are struck through but can still be picked, so the button can say “Sold out”.</p>
+</header>
+
+<section class="docs-section" aria-labelledby="use">
+  <h2 id="use">Use it</h2>
+  <p>Put it inside <a href="../add-to-cart/">Add to cart</a>, inside an element with <code>data-product</code> that also holds the price.</p>
+  {% set code %}{% raw %}<div data-product>
+  {{ price(product, { size: "lg" }) }}
+  {% call addToCart(product) %}{{ variantPicker(product) }}{% endcall %}
+</div>{% endraw %}{% endset %}
+  {{ usage(code) }}
+</section>
+
+<section class="docs-section" aria-labelledby="live">
+  <h2 id="live">Live</h2>
+  <p>A2 on cotton rag is sold out in the mock data. Pick A2, then switch paper.</p>
+  {% set ex %}<div class="docs-stack" data-product>
+  {{ price(p.variants.nodes[0], { size: "lg" }) }}
+  <form><input type="hidden" name="id" value="{{ p.variants.nodes[0].id }}">{{ variantPicker(p) }}</form>
+</div>{% endset %}
+  {{ example("Sun Hat with Tulip, print", ex) }}
+</section>
+
+<section class="docs-section" aria-labelledby="a11y">
+  <h2 id="a11y">Accessibility</h2>
+  <ul class="docs-list">
+    <li>Real radio buttons in a fieldset with a legend: arrow keys move between values and screen readers announce “Size, A4, 1 of 3”.</li>
+    <li>Sold-out values carry hidden “(sold out)” text, not just a strike-through.</li>
+    <li>Each option is at least 44 × 44px.</li>
+  </ul>
+</section>

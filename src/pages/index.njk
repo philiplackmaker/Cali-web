@@ -1,0 +1,47 @@
+---
+permalink: /
+description: Original paintings and signed prints by Calico Melton, a painter in Bristol. Buy online, or arrange a viewing at the studio.
+footerSignup: false
+preloadSizes: "(width >= 53.75rem) 55vw, 100vw"
+---
+{%- from "patterns/hero/hero.njk" import hero -%}
+{%- from "patterns/section/section.njk" import section -%}
+{%- from "patterns/featured-strip/featured-strip.njk" import featuredStrip -%}
+{%- from "patterns/artist-intro/artist-intro.njk" import artistIntro -%}
+{%- from "patterns/instagram-band/instagram-band.njk" import instagramBand -%}
+{%- from "patterns/signup-band/signup-band.njk" import signupBand -%}
+{{ hero({
+  image: shop.photos.homeHero.image,
+  eyebrow: "Paintings from Bristol",
+  title: "Calico Melton",
+  line: "I paint people, flowers and quiet rooms, in oil and gouache. Original paintings and signed prints, straight from my studio.",
+  primary: { href: "/shop/originals/", label: "See the originals" },
+  secondary: { href: "/shop/prints/", label: "Prints" }
+}) }}
+{#- TODO copy: hero line -#}
+
+{% call section({ labelledby: "new-work" }) %}
+  {{ featuredStrip({ id: "new-work", title: "New work", products: shop.latest, link: { href: "/shop/", label: "See all work" } }) }}
+{% endcall %}
+
+{% call section({ labelledby: "about-cali" }) %}
+  {{ artistIntro({
+    id: "about-cali",
+    image: shop.photos.aboutPortrait.image,
+    heading: "Hello, I'm Cali",
+    text: [
+      "I paint in a small studio in Bristol, mostly people and the things they hold on to: a hat, a tulip, a favourite jug.",
+      "Every original is one of one. Prints come in small, signed editions, so they stay special too."
+    ],
+    link: { href: "/about/", label: "More about me and the studio" }
+  }) }}
+  {#- TODO copy: intro paragraphs -#}
+{% endcall %}
+
+{% call section({ labelledby: "instagram" }) %}
+  {{ instagramBand({ id: "instagram", photos: shop.photos.studio }) }}
+{% endcall %}
+
+{% call section({ variant: "band" }) %}
+  {{ signupBand({ id: "home-signup" }) }}
+{% endcall %}

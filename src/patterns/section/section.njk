@@ -1,0 +1,10 @@
+{#-
+  Section: the page rhythm. Every pattern on a page sits in one of these.
+  {% from "patterns/section/section.njk" import section %}
+  {% call section({ variant: "band" | "narrow" | "flush", labelledby: "id" }) %}…{% endcall %}
+-#}
+{%- macro section(opts = {}) -%}
+<section class="ds-section{% for v in (opts.variant or '').split(' ') %}{% if v %} ds-section--{{ v }}{% endif %}{% endfor %}"{% if opts.labelledby %} aria-labelledby="{{ opts.labelledby }}"{% endif %}>
+  <div class="ds-section__inner">{{ caller() }}</div>
+</section>
+{%- endmacro -%}

@@ -1,0 +1,54 @@
+---
+title: Icon and logo
+navTitle: Icon and logo
+order: 3
+description: The SVG icon sprite and the flower mark.
+---
+{% from "docs.njk" import example, usage %}
+{% from "components/icon/icon.njk" import icon %}
+{% from "components/logo/logo.njk" import logo, flowerMark %}
+<header class="docs-header">
+  <p class="docs-eyebrow">Component · Partial</p>
+  <h1>Icon and logo</h1>
+  <p class="docs-lede">Line icons drawn on a 24px grid with a 1.5 stroke, all in one inline SVG sprite that the base layout includes once. They take on the colour of the text around them.</p>
+</header>
+
+<section class="docs-section" aria-labelledby="use">
+  <h2 id="use">Use it</h2>
+  {% set code %}{% raw %}{% from "components/icon/icon.njk" import icon %}
+{{ icon("bag") }}                          {# decorative: hidden from screen readers #}
+{{ icon("bag", { label: "Basket" }) }}     {# meaningful on its own #}
+{{ icon("close", { size: "md" }) }}
+
+{% from "components/logo/logo.njk" import logo %}
+{{ logo({ href: "/" }) }}{% endraw %}{% endset %}
+  {{ usage(code) }}
+</section>
+
+<section class="docs-section" aria-labelledby="icons">
+  <h2 id="icons">Icons</h2>
+  {% set names = ["bag", "close", "plus", "minus", "menu", "check", "alert", "arrow-right", "arrow-left", "zoom", "chevron-down", "instagram", "mail"] %}
+  {% set ex %}{% for n in names %}<span class="docs-swatch">{{ icon(n, { size: "md" }) }}<code>{{ n }}</code></span>{% endfor %}{% endset %}
+  {{ example("All icons, md size", ex, { noCode: true }) }}
+  {% set ex %}{{ icon("bag") }} {{ icon("bag", { size: "md" }) }}{% endset %}
+  {{ example("Sizes: sm (default) and md", ex) }}
+</section>
+
+<section class="docs-section" aria-labelledby="logo">
+  <h2 id="logo">Logo</h2>
+  <p>The flower mark, redrawn as SVG from <code>flower-mark.png</code> so it stays sharp at every size. The stem uses <code>--ds-color-brand-mark</code> and the centre uses <code>--ds-color-brand-mark-centre</code>. <strong>To check:</strong> PIP, please compare it with the original artwork. If there's a source vector, it should replace this trace.</p>
+  {% set ex %}{{ logo({ href: "/" }) }}{% endset %}
+  {{ example("Logo", ex) }}
+  {% set ex %}<span style="display:flex;gap:var(--ds-space-inline-md);align-items:end"><img src="/assets/images/flower-mark.png" alt="Original PNG" width="44" height="80"> {{ flowerMark() | replace('class="ds-logo__mark"', 'class="ds-logo__mark" style="block-size: 80px"') | safe }}</span>{% endset %}
+  {{ example("Original PNG next to the SVG trace", ex, { noCode: true }) }}
+  {% set ex %}{{ logo({ href: "/" }) }}{% endset %}
+  {{ example("On the pink band", ex, { band: true }) }}
+</section>
+
+<section class="docs-section" aria-labelledby="a11y">
+  <h2 id="a11y">Accessibility</h2>
+  <ul class="docs-list">
+    <li>Icons are <code>aria-hidden</code> by default. If an icon is the only content of a button or link, give that button or link an <code>aria-label</code>, or pass <code>label</code> to the icon.</li>
+    <li>The logo's accessible name is “Calico Melton”, from its visible text.</li>
+  </ul>
+</section>

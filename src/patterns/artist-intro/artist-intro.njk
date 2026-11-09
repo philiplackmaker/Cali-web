@@ -1,0 +1,17 @@
+{#-
+  Artist intro: a photo of Cali and a few lines in her voice.
+  {% from "patterns/artist-intro/artist-intro.njk" import artistIntro %}
+  {{ artistIntro({ id: "about-cali", image: shop.photos.aboutPortrait.image, heading: "…", text: "…", link: { href: "/about/", label: "More about me" } }) }}
+-#}
+{%- from "components/artwork-image/artwork-image.njk" import artworkImage -%}
+{%- from "components/link/link.njk" import link -%}
+{%- macro artistIntro(opts) -%}
+<div class="ds-artist-intro">
+  <div class="ds-artist-intro__photo">{{ artworkImage(opts.image, { sizes: "(width >= 53.75rem) 30vw, 100vw" }) }}</div>
+  <div class="ds-artist-intro__text">
+    <h2 class="ds-artist-intro__heading" id="{{ opts.id }}">{{ opts.heading }}</h2>
+    {%- for para in opts.text %}<p>{{ para }}</p>{% endfor %}
+    {%- if opts.link %}{{ link({ href: opts.link.href, label: opts.link.label, variant: "arrow" }) }}{% endif %}
+  </div>
+</div>
+{%- endmacro -%}

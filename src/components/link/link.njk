@@ -1,0 +1,14 @@
+{#-
+  Link. {% from "components/link/link.njk" import link %}
+  {{ link({ href, label, variant: "default" | "quiet" | "arrow" | "back", external: true, current: true }) }}
+-#}
+{%- from "components/icon/icon.njk" import icon -%}
+{%- macro link(opts) -%}
+{%- set variant = opts.variant or "default" -%}
+<a class="ds-link ds-link--{{ variant }}" href="{{ opts.href }}"{% if opts.external %} target="_blank" rel="noopener"{% endif %}{% if opts.current %} aria-current="page"{% endif %}>
+  {%- if variant == "back" %}{{ icon("arrow-left") }}{% endif -%}
+  <span>{{ opts.label }}</span>
+  {%- if opts.external %}<span class="ds-visually-hidden"> (opens in a new tab)</span>{% endif -%}
+  {%- if variant == "arrow" %}{{ icon("arrow-right") }}{% endif -%}
+</a>
+{%- endmacro -%}

@@ -1,0 +1,8 @@
+{#-
+  Prose: long-form copy (About, Shipping and FAQ) with comfortable line length and rhythm.
+  {% from "patterns/prose/prose.njk" import prose %}
+  {% call prose() %}<h2>…</h2><p>…</p>{% endcall %}
+-#}
+{%- macro prose(opts = {}) -%}
+<div class="ds-prose">{{ caller() }}</div>
+{%- endmacro -%}

@@ -1,0 +1,64 @@
+{#-
+  Cart drawer: a modal <dialog> sliding in from the side. Include once per page, in the base layout.
+  Opens from any [data-cart-open] link or button, and after adding to the basket.
+  {% from "components/cart-drawer/cart-drawer.njk" import cartDrawer %} {{ cartDrawer() }}
+  Options:
+    inline: true   renders the same cart in the page, without the dialog (the /cart/ page)
+    empty: html    what to show when the basket is empty (the base layout passes the
+                   empty-cart pattern; there's a plain default)
+-#}
+{%- from "components/icon/icon.njk" import icon -%}
+{%- from "components/button/button.njk" import button -%}
+{%- from "components/quantity-input/quantity-input.njk" import quantityInput -%}
+{%- macro cartDrawer(opts = {}) -%}
+{%- set titleId = "cart-page-title" if opts.inline else "cart-drawer-title" -%}
+<cart-drawer class="ds-cart-drawer{% if opts.inline %} ds-cart-drawer--inline{% endif %}"{% if opts.inline %} data-inline{% endif %}>
+  {%- if opts.inline %}<div class="ds-cart-drawer__dialog">{% else %}<dialog class="ds-cart-drawer__dialog" aria-labelledby="{{ titleId }}">{% endif %}
+    <div class="ds-cart-drawer__panel">
+      <header class="ds-cart-drawer__header">
+        {%- if opts.inline %}
+        <h1 class="ds-cart-drawer__title" id="{{ titleId }}">Your basket</h1>
+        {%- else %}
+        <h2 class="ds-cart-drawer__title" id="{{ titleId }}">Your basket</h2>
+        <button class="ds-cart-drawer__close" type="button" data-cart-close aria-label="Close basket">{{ icon("close", { size: "md" }) }}</button>
+        {%- endif %}
+      </header>
+      <p class="ds-cart-drawer__notice" data-cart-notice hidden></p>
+      <div class="ds-cart-drawer__body" data-cart-body>
+        <ul class="ds-cart-drawer__lines" role="list" data-cart-lines></ul>
+        <div class="ds-cart-drawer__empty" data-cart-empty>
+          {%- if opts.empty %}{{ opts.empty | safe }}{% else %}
+          <p>Your basket is empty.</p>
+          {{ button({ label: "Browse the shop", href: "/shop/", variant: "secondary" }) }}
+          {%- endif %}
+        </div>
+      </div>
+      <footer class="ds-cart-drawer__footer" data-cart-footer hidden>
+        <dl class="ds-cart-drawer__subtotal">
+          <dt>Subtotal</dt>
+          <dd data-cart-subtotal></dd>
+        </dl>
+        <p class="ds-cart-drawer__note">Shipping and tax are worked out at checkout.</p>
+        {{ button({ label: "Checkout", href: "/cart/", full: true, iconEnd: "arrow-right", attrs: { "data-cart-checkout": "" } }) }}
+      </footer>
+    </div>
+  {% if opts.inline %}</div>{% else %}</dialog>{% endif %}
+  <div class="ds-visually-hidden" aria-live="polite" data-cart-announcer></div>
+  <template data-cart-line-template>
+    <li class="ds-cart-line">
+      <img class="ds-cart-line__image" alt="" width="80" height="100" loading="lazy" data-line-image>
+      <div class="ds-cart-line__info">
+        <a class="ds-cart-line__title" data-line-title></a>
+        <p class="ds-cart-line__variant" data-line-variant></p>
+        <p class="ds-cart-line__unit" data-line-unit></p>
+      </div>
+      <p class="ds-cart-line__total" data-line-total></p>
+      <div class="ds-cart-line__actions">
+        <div data-line-quantity>{{ quantityInput({ id: "line-qty", name: "line-quantity", label: "Quantity", hideLabel: true, min: 0, max: 20 }) }}</div>
+        <p class="ds-cart-line__one-off" data-line-one-off>One of a kind</p>
+        {{ button({ label: "Remove", variant: "quiet", attrs: { "data-line-remove": "" } }) }}
+      </div>
+    </li>
+  </template>
+</cart-drawer>
+{%- endmacro -%}

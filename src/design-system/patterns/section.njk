@@ -1,0 +1,27 @@
+---
+title: Section
+order: 1
+description: "The page rhythm: every pattern on a page sits in a section."
+---
+{% from "docs.njk" import example, usage %}
+{% from "patterns/section/section.njk" import section %}
+<header class="docs-header">
+  <p class="docs-eyebrow">Pattern</p>
+  <h1>Section</h1>
+  <p class="docs-lede">The page rhythm: every pattern on a page sits in a section.</p>
+</header>
+
+<section class="docs-section" aria-labelledby="use">
+  <h2 id="use">Use it</h2>
+  {% set code %}{% raw %}{% from "patterns/section/section.njk" import section %}
+{% call section({ variant: "band", labelledby: "new-work" }) %}…{% endcall %}{% endraw %}{% endset %}
+  {{ usage(code) }}
+  <p><strong>Used on:</strong> Every page</p>
+  <p>Sections give consistent space above and below, and keep content to the page width with side gutters. Two plain sections in a row share their gap.</p>
+</section>
+
+<section class="docs-section" aria-labelledby="example">
+  <h2 id="example">Example</h2>
+  {% set ex %}{% call section({ variant: "band" }) %}<p>A section on the pink band. Variants: <code>band</code>, <code>narrow</code>, <code>tight</code>, <code>flush</code>. Combine them with a space.</p>{% endcall %}{% endset %}
+  {{ example("Section", ex, { wide: true, noCode: true }) }}
+</section>

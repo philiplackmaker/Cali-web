@@ -1,0 +1,32 @@
+{#-
+  Form field: label, optional hint, error message, all wired with aria-describedby.
+  {% from "components/form-field/form-field.njk" import formField %}
+  {{ formField({ id: "email", name: "email", label: "Email address", type: "email",
+                 hint: "…", error: "…", required: true, autocomplete: "email",
+                 placeholder, value, multiline: true, rows: 5, hideLabel: true, disabled: true,
+                 options: [{ value, label }] }) }}   ← options makes it a <select>
+-#}
+{%- macro formField(opts) -%}
+{%- set describedBy = [] -%}
+{%- if opts.hint %}{% set describedBy = (describedBy.push(opts.id ~ "-hint"), describedBy) %}{% endif -%}
+{%- set describedBy = (describedBy.push(opts.id ~ "-error"), describedBy) -%}
+<div class="ds-field{% if opts.error %} ds-field--error{% endif %}">
+  <label class="ds-field__label{% if opts.hideLabel %} ds-visually-hidden{% endif %}" for="{{ opts.id }}">{{ opts.label }}{% if opts.optional %} <span class="ds-field__optional">(optional)</span>{% endif %}</label>
+  {%- if opts.hint %}
+  <p class="ds-field__hint" id="{{ opts.id }}-hint">{{ opts.hint }}</p>
+  {%- endif %}
+  {%- set common %} class="ds-field__control" id="{{ opts.id }}" name="{{ opts.name or opts.id }}" aria-describedby="{{ describedBy | join(' ') }}"{% if opts.error %} aria-invalid="true"{% endif %}{% if opts.required %} required{% endif %}{% if opts.disabled %} disabled{% endif %}{% if opts.autocomplete %} autocomplete="{{ opts.autocomplete }}"{% endif %}{% if opts.placeholder %} placeholder="{{ opts.placeholder }}"{% endif %}{% endset %}
+  {%- if opts.options %}
+  <select{{ common | safe }}>
+    {%- for o in opts.options %}
+    <option value="{{ o.value }}"{% if o.value == opts.value %} selected{% endif %}>{{ o.label }}</option>
+    {%- endfor %}
+  </select>
+  {%- elif opts.multiline %}
+  <textarea{{ common | safe }} rows="{{ opts.rows or 5 }}">{{ opts.value }}</textarea>
+  {%- else %}
+  <input{{ common | safe }} type="{{ opts.type or 'text' }}"{% if opts.value %} value="{{ opts.value }}"{% endif %}>
+  {%- endif %}
+  <p class="ds-field__error" id="{{ opts.id }}-error" data-field-error>{% if opts.error %}{{ opts.error }}{% endif %}</p>
+</div>
+{%- endmacro -%}

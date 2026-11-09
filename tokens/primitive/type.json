@@ -1,0 +1,95 @@
+{
+  "font": {
+    "family": {
+      "$type": "fontFamily",
+      "serif": {
+        "$value": "\"Lora\", Georgia, serif",
+        "$description": "Headings and wordmark"
+      },
+      "sans": {
+        "$value": "\"Figtree\", ui-sans-serif, system-ui, sans-serif",
+        "$description": "Body and UI"
+      }
+    },
+    "weight": {
+      "$type": "fontWeight",
+      "regular": {
+        "$value": 400
+      },
+      "medium": {
+        "$value": 500
+      },
+      "semibold": {
+        "$value": 600
+      },
+      "bold": {
+        "$value": 700
+      }
+    },
+    "size": {
+      "$type": "dimension",
+      "$description": "Fluid scale. rem + vw inside clamp() so text still scales with browser zoom.",
+      "075": {
+        "$value": "0.76rem"
+      },
+      "100": {
+        "$value": "0.82rem"
+      },
+      "200": {
+        "$value": "0.9rem"
+      },
+      "300": {
+        "$value": "clamp(1rem, 0.97rem + 0.15vw, 1.0625rem)"
+      },
+      "400": {
+        "$value": "clamp(1.0625rem, 1rem + 0.3vw, 1.15rem)"
+      },
+      "500": {
+        "$value": "clamp(1.25rem, 1.15rem + 0.5vw, 1.4rem)"
+      },
+      "600": {
+        "$value": "clamp(1.7rem, 1.45rem + 1.1vw, 2.1rem)"
+      },
+      "700": {
+        "$value": "clamp(2.1rem, 1.6rem + 2.4vw, 3.2rem)"
+      },
+      "800": {
+        "$value": "clamp(2.8rem, 1.8rem + 4.6vw, 5.2rem)"
+      },
+      "050": {
+        "$value": "0.7rem",
+        "$description": "Smallest caps labels"
+      }
+    },
+    "line-height": {
+      "$type": "number",
+      "tight": {
+        "$value": 1
+      },
+      "snug": {
+        "$value": 1.15
+      },
+      "normal": {
+        "$value": 1.4
+      },
+      "relaxed": {
+        "$value": 1.55
+      }
+    },
+    "tracking": {
+      "$type": "dimension",
+      "tight": {
+        "$value": "-0.01em"
+      },
+      "normal": {
+        "$value": "0"
+      },
+      "wide": {
+        "$value": "0.14em"
+      },
+      "wider": {
+        "$value": "0.18em"
+      }
+    }
+  }
+}

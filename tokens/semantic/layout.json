@@ -1,0 +1,230 @@
+{
+  "space": {
+    "$type": "dimension",
+    "stack": {
+      "2xs": {
+        "$value": "{space.1}"
+      },
+      "xs": {
+        "$value": "{space.2}"
+      },
+      "sm": {
+        "$value": "{space.3}"
+      },
+      "md": {
+        "$value": "{space.4}"
+      },
+      "lg": {
+        "$value": "{space.6}"
+      },
+      "xl": {
+        "$value": "{space.8}"
+      },
+      "2xl": {
+        "$value": "{space.9}"
+      }
+    },
+    "inset": {
+      "sm": {
+        "$value": "{space.3}"
+      },
+      "md": {
+        "$value": "{space.4}"
+      },
+      "lg": {
+        "$value": "{space.7}"
+      }
+    },
+    "inline": {
+      "xs": {
+        "$value": "{space.2}"
+      },
+      "sm": {
+        "$value": "{space.3}"
+      },
+      "md": {
+        "$value": "{space.4}"
+      }
+    },
+    "gutter": {
+      "$value": "{space.fluid-gutter}"
+    },
+    "section": {
+      "$value": "{space.10}"
+    }
+  },
+  "layout": {
+    "$type": "dimension",
+    "measure": {
+      "$value": "{size.measure}"
+    },
+    "prose": {
+      "$value": "{size.prose}"
+    },
+    "content": {
+      "$value": "{size.content}"
+    },
+    "page": {
+      "$value": "{size.page}"
+    },
+    "full-height": {
+      "$value": "{size.full-height}"
+    },
+    "column-sm": {
+      "$value": "{size.column-sm}",
+      "$description": "Min column width in auto-fill grids"
+    },
+    "column-md": {
+      "$value": "{size.column-md}"
+    },
+    "thumb": {
+      "$value": "{size.thumb}"
+    },
+    "card-min": {
+      "$value": "{size.card-min}"
+    },
+    "hero-max": {
+      "$value": "{size.hero-max}"
+    }
+  },
+  "icon": {
+    "$type": "dimension",
+    "sm": {
+      "$value": "{size.icon-sm}"
+    },
+    "md": {
+      "$value": "{size.icon-md}"
+    },
+    "mark": {
+      "$value": "{size.mark}"
+    },
+    "logo": {
+      "$value": "{size.logo}"
+    },
+    "spinner": {
+      "$value": "{size.spinner}"
+    }
+  },
+  "target": {
+    "min": {
+      "$type": "dimension",
+      "$value": "{size.tap-min}"
+    }
+  },
+  "shape": {
+    "$type": "dimension",
+    "control": {
+      "$value": "{radius.md}",
+      "$description": "Buttons, inputs"
+    },
+    "card": {
+      "$value": "{radius.lg}"
+    },
+    "badge": {
+      "$value": "{radius.pill}"
+    },
+    "image": {
+      "$value": "{radius.none}",
+      "$description": "Paintings keep square corners"
+    }
+  },
+  "line": {
+    "$type": "dimension",
+    "hairline": {
+      "$value": "{border.width.thin}"
+    },
+    "control": {
+      "$value": "{border.width.thin}"
+    },
+    "focus": {
+      "$value": "{border.width.thick}"
+    },
+    "focus-offset": {
+      "$value": "{border.offset}"
+    },
+    "underline-offset": {
+      "$value": "{border.underline-offset}"
+    }
+  },
+  "elevation": {
+    "$type": "shadow",
+    "card": {
+      "$value": "{shadow.soft}"
+    },
+    "overlay": {
+      "$value": "{shadow.raised}"
+    }
+  },
+  "transition": {
+    "ui-duration": {
+      "$type": "duration",
+      "$value": "{motion.duration.fast}"
+    },
+    "ui-easing": {
+      "$type": "cubicBezier",
+      "$value": "{motion.easing.standard}"
+    },
+    "panel-duration": {
+      "$type": "duration",
+      "$value": "{motion.duration.base}"
+    },
+    "panel-easing": {
+      "$type": "cubicBezier",
+      "$value": "{motion.easing.out}"
+    },
+    "spin-duration": {
+      "$type": "duration",
+      "$value": "{motion.duration.spin}"
+    }
+  },
+  "layer": {
+    "$type": "number",
+    "raised": {
+      "$value": "{z.raised}"
+    },
+    "header": {
+      "$value": "{z.header}"
+    },
+    "overlay": {
+      "$value": "{z.overlay}"
+    },
+    "drawer": {
+      "$value": "{z.drawer}"
+    },
+    "toast": {
+      "$value": "{z.toast}"
+    }
+  },
+  "aspect": {
+    "$type": "number",
+    "artwork": {
+      "$value": "{ratio.portrait}",
+      "$description": "Default frame for a painting in a grid"
+    },
+    "hero": {
+      "$value": "{ratio.landscape}"
+    },
+    "thumb": {
+      "$value": "{ratio.square}"
+    }
+  },
+  "state": {
+    "$type": "number",
+    "disabled-opacity": {
+      "$value": "{opacity.disabled}"
+    },
+    "hover-mix": {
+      "$type": "dimension",
+      "$value": "88%",
+      "$description": "How much of a fill stays on hover (color-mix with the page)"
+    },
+    "sold-opacity": {
+      "$value": 0.75,
+      "$description": "Sold paintings fade back a little in grids"
+    },
+    "busy-opacity": {
+      "$value": 0.6,
+      "$description": "Content that's being updated"
+    }
+  }
+}

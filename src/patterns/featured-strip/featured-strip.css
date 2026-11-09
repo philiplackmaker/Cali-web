@@ -1,0 +1,28 @@
+.ds-featured {
+  display: grid;
+  gap: var(--ds-space-stack-lg);
+}
+
+.ds-featured__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--ds-space-stack-xs) var(--ds-space-inline-md);
+  padding-block-end: var(--ds-space-stack-sm);
+  border-block-end: var(--ds-line-hairline) solid var(--ds-color-border-subtle);
+}
+
+.ds-featured__title {
+  font-size: var(--ds-type-heading-lg-size);
+}
+
+/* Shared by every grid of product cards: two or three paintings across, never crowded. */
+.ds-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--ds-layout-card-min)), 1fr));
+  gap: var(--ds-space-stack-xl) var(--ds-space-inline-md);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}

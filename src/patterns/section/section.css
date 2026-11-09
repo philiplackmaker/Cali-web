@@ -1,0 +1,33 @@
+.ds-main {
+  display: block;
+}
+
+.ds-section {
+  padding-block: var(--ds-space-section);
+}
+
+.ds-section + .ds-section:not(.ds-section--band) {
+  padding-block-start: 0;
+}
+
+.ds-section__inner {
+  max-inline-size: var(--ds-layout-page);
+  margin-inline: auto;
+  padding-inline: var(--ds-space-gutter);
+}
+
+.ds-section--narrow .ds-section__inner {
+  max-inline-size: calc(var(--ds-layout-prose) + 2 * var(--ds-space-gutter));
+}
+
+.ds-section--band {
+  background: var(--ds-color-surface-band);
+}
+
+.ds-section--flush {
+  padding-block: 0;
+}
+
+.ds-section--tight {
+  padding-block: var(--ds-space-stack-xl);
+}

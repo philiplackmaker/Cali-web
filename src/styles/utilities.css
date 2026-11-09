@@ -1,0 +1,24 @@
+/* Single-purpose helpers. Layer: utilities (wins over everything else). */
+.ds-visually-hidden:not(:focus, :active) {
+  position: absolute;
+  inline-size: 1px; /* stylelint-disable-line unit-disallowed-list -- standard visually-hidden pattern */
+  block-size: 1px; /* stylelint-disable-line unit-disallowed-list -- standard visually-hidden pattern */
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.ds-skip-link {
+  position: absolute;
+  inset-block-start: var(--ds-space-stack-xs);
+  inset-inline-start: var(--ds-space-gutter);
+  z-index: var(--ds-layer-toast);
+  padding: var(--ds-space-inset-sm) var(--ds-space-inset-md);
+  background: var(--ds-color-action-primary);
+  color: var(--ds-color-action-primary-text);
+  border-radius: var(--ds-shape-control);
+}
+
+.ds-skip-link:focus-visible {
+  outline-color: var(--ds-color-focus-ring);
+}

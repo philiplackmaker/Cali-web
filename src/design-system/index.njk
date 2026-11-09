@@ -1,0 +1,49 @@
+---
+title: Design system
+navTitle: Overview
+order: 0
+---
+<header class="docs-header">
+  <p class="docs-eyebrow">Calico Melton</p>
+  <h1>Design system</h1>
+  <p class="docs-lede">The parts this shop is built from. Every page uses these and nothing else, so new pages need no new CSS.</p>
+</header>
+
+<section class="docs-section" aria-labelledby="layers">
+  <h2 id="layers">How it fits together</h2>
+  <ol class="docs-steps">
+    <li><strong>Tokens</strong>: named values for colour, type, space and motion, written as DTCG JSON in <code>/tokens</code> and compiled to <code>--ds-*</code> custom properties. <a href="/design-system/tokens/">See the tokens</a>.</li>
+    <li><strong>Components</strong>: buttons, prices, the cart drawer and so on, each in <code>src/components/&lt;name&gt;/</code>.</li>
+    <li><strong>Patterns</strong>: components arranged into sections, like the collection grid or the Studio Letter band, each in <code>src/patterns/&lt;name&gt;/</code>.</li>
+    <li><strong>Pages</strong>: assembled from patterns.</li>
+  </ol>
+</section>
+
+<section class="docs-section" aria-labelledby="cascade">
+  <h2 id="cascade">Cascade layers</h2>
+  <p>All CSS ships in one file, in this order. A later layer always wins over an earlier one, whatever the selector.</p>
+  <pre class="docs-code" tabindex="0"><code>@layer reset, tokens, base, components, patterns, utilities;</code></pre>
+</section>
+
+<section class="docs-section" aria-labelledby="components">
+  <h2 id="components">Components</h2>
+  <ul class="docs-cards" role="list">
+    {%- for item in collections.designSystem | selectattr("data.section", "equalto", "Components") | sort(attribute="data.order") %}
+    <li><a href="{{ item.url }}"><strong>{{ item.data.title }}</strong><span>{{ item.data.description }}</span></a></li>
+    {%- endfor %}
+  </ul>
+</section>
+
+<section class="docs-section" aria-labelledby="patterns">
+  <h2 id="patterns">Patterns</h2>
+  <ul class="docs-cards" role="list">
+    {%- for item in collections.designSystem | selectattr("data.section", "equalto", "Patterns") | sort(attribute="data.order") %}
+    <li><a href="{{ item.url }}"><strong>{{ item.data.title }}</strong><span>{{ item.data.description }}</span></a></li>
+    {%- endfor %}
+  </ul>
+</section>
+
+<section class="docs-section" aria-labelledby="mock">
+  <h2 id="mock">Mock shop</h2>
+  <p>Until step 4 connects Shopify, components run on mock products shaped exactly like Storefront API responses (<code>src/_data/mock.js</code>), and the cart talks to a pretend Storefront client that keeps the basket in your browser.</p>
+</section>

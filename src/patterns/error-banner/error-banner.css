@@ -1,0 +1,12 @@
+.ds-error-banner {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-inline-sm);
+  max-inline-size: var(--ds-layout-page);
+  margin: var(--ds-space-stack-md) auto 0;
+  padding: var(--ds-space-inset-sm) var(--ds-space-gutter);
+  border-inline-start: var(--ds-line-focus) solid var(--ds-color-status-error);
+  background: var(--ds-color-surface-raised);
+  color: var(--ds-color-text-error);
+  font-weight: var(--ds-type-label-weight);
+}

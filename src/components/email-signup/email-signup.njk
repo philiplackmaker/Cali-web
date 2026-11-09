@@ -1,0 +1,38 @@
+{#-
+  The Studio Letter signup. Posts to the Google Apps Script that writes into the Signups sheet.
+  Without JS the form posts straight there; with JS, <email-signup> validates, posts in the
+  background and shows the success message in place.
+  {% from "components/email-signup/email-signup.njk" import emailSignup %}
+  {{ emailSignup({ id: "footer-signup", heading: "Sign up for new work", headingLevel: 2,
+                   compact: true, state: "error" | "success", error: "…", onBand: true }) }}
+-#}
+{%- from "components/icon/icon.njk" import icon -%}
+{%- from "components/button/button.njk" import button -%}
+{%- set SIGNUP_ENDPOINT = "https://script.google.com/macros/s/AKfycbzecacCCbgrTxLsmqDjbgia04JewZiH7p8Nk7pEmNXi0Eg53NMqSWHsUfw0BneSdhKnZA/exec" -%}
+{%- macro emailSignup(opts = {}) -%}
+{%- set id = opts.id or "signup" -%}
+{%- set h = "h" ~ (opts.headingLevel or 2) -%}
+<email-signup class="ds-email-signup{% if opts.compact %} ds-email-signup--compact{% endif %}{% if opts.onBand %} ds-email-signup--on-band{% endif %}"{% if opts.state == "success" %} data-state="success"{% endif %}>
+  <div class="ds-email-signup__intro">
+    <p class="ds-email-signup__eyebrow">The Studio Letter</p>
+    <{{ h }} class="ds-email-signup__heading" id="{{ id }}-heading">{{ opts.heading or "Sign up for new work" }}</{{ h }}>
+    <p class="ds-email-signup__sub">New paintings, studio notes, and first access to prints.</p>
+  </div>
+  <div class="ds-email-signup__success" role="status" data-signup-success>
+    {%- if opts.state == "success" %}
+    {{ icon("check", { size: "md" }) }}
+    <p class="ds-email-signup__success-title">You're on the list.</p>
+    <p>I'll send the next one straight to your inbox.</p>
+    {%- endif %}
+  </div>
+  <form class="ds-email-signup__form" action="{{ SIGNUP_ENDPOINT }}" method="post" novalidate>
+    <div class="ds-email-signup__row">
+      <label class="ds-visually-hidden" for="{{ id }}-email">Email address</label>
+      <input class="ds-field__control" id="{{ id }}-email" name="email" type="email" placeholder="you@example.com" autocomplete="email" required aria-describedby="{{ id }}-error"{% if opts.state == "error" %} aria-invalid="true"{% endif %}>
+      {{ button({ label: "Subscribe", type: "submit", loading: opts.state == "loading", loadingLabel: "Subscribing…" }) }}
+    </div>
+    <p class="ds-field__error" id="{{ id }}-error" data-field-error>{% if opts.state == "error" %}{{ opts.error or "Enter your email address to sign up." }}{% endif %}</p>
+    <p class="ds-email-signup__fine">Unsubscribe any time.</p>
+  </form>
+</email-signup>
+{%- endmacro -%}

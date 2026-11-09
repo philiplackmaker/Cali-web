@@ -1,0 +1,30 @@
+---
+layout: base.njk
+noindex: true
+# The docs always run on the mock shop: their example products aren't in Shopify.
+commerceMode: mock
+stylesheets: ['/assets/css/docs.css']
+scripts: ['/assets/js/scripts/docs-demo.js']
+---
+<div class="docs-shell">
+  <nav class="docs-nav" aria-label="Design system">
+    <a class="docs-nav__home" href="/design-system/">
+      <img src="/assets/images/flower-mark.png" alt="" width="30" height="30">
+      <span>Design system</span>
+    </a>
+    {%- for section in ["Foundations", "Components", "Patterns"] %}
+    {%- set items = collections.designSystem | selectattr("data.section", "equalto", section) | sort(attribute="data.order") %}
+    {%- if items.length %}
+    <p class="docs-nav__section">{{ section }}</p>
+    <ul class="docs-nav__list">
+      {%- for item in items %}
+      <li><a href="{{ item.url }}"{% if item.url == page.url %} aria-current="page"{% endif %}>{{ item.data.navTitle or item.data.title }}</a></li>
+      {%- endfor %}
+    </ul>
+    {%- endif %}
+    {%- endfor %}
+  </nav>
+  <main id="main" class="docs-main">
+    {{ content | safe }}
+  </main>
+</div>

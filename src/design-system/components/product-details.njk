@@ -1,0 +1,30 @@
+---
+title: Product details
+order: 12.5
+description: Medium, size, year, framing and edition, set out like a gallery wall label.
+---
+{% from "docs.njk" import example, usage %}
+{% from "components/product-details/product-details.njk" import productDetails %}
+<header class="docs-header">
+  <p class="docs-eyebrow">Component · Partial</p>
+  <h1>Product details</h1>
+  <p class="docs-lede">The facts a collector looks for before buying, laid out like the label beside a painting in a gallery. Originals also list what comes with them.</p>
+</header>
+
+<section class="docs-section" aria-labelledby="use">
+  <h2 id="use">Use it</h2>
+  {% set code %}{% raw %}{% from "components/product-details/product-details.njk" import productDetails %}
+{{ productDetails(product) }}{% endraw %}{% endset %}
+  {{ usage(code) }}
+  <p>Rows come from Shopify metafields (medium, dimensions, year, framing, edition size) and only show when filled in. The promises under originals are set in <code>src/_data/site.js</code> as <code>originalPromises</code>. <strong>Cali needs to confirm each one before launch.</strong></p>
+</section>
+
+<section class="docs-section" aria-labelledby="variants">
+  <h2 id="variants">Variants</h2>
+  <div class="docs-examples">
+    {% set ex %}<div class="docs-stack">{{ productDetails(mock.byHandle["sun-hat-with-tulip"]) }}</div>{% endset %}
+    {{ example("An original", ex) }}
+    {% set ex %}<div class="docs-stack">{{ productDetails(mock.byHandle["sun-hat-with-tulip-print"]) }}</div>{% endset %}
+    {{ example("A print", ex) }}
+  </div>
+</section>

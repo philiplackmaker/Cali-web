@@ -1,0 +1,34 @@
+{#-
+  Collection grid: filter links (All, Originals, Prints), then the paintings. The filter is
+  plain links to /shop/, /shop/originals/ and /shop/prints/, so it works without JS.
+  {% from "patterns/collection-grid/collection-grid.njk" import collectionGrid %}
+  {{ collectionGrid({ collections: shop.collections, current: collection }) }}
+-#}
+{%- from "components/product-card/product-card.njk" import productCard -%}
+{%- from "components/link/link.njk" import link -%}
+{%- macro collectionGrid(opts) -%}
+{%- set current = opts.current -%}
+<div class="ds-collection">
+  <nav class="ds-collection__filter" aria-label="Filter the shop">
+    <ul role="list">
+      {%- for c in opts.collections %}
+      <li><a class="ds-collection__filter-link" href="{{ c.url }}"{% if c.handle == current.handle %} aria-current="page"{% endif %}>{{ c.title }} <span class="ds-collection__count">{{ c.products.length }}</span></a></li>
+      {%- endfor %}
+    </ul>
+  </nav>
+  {%- if current.products.length %}
+  <h2 class="ds-visually-hidden">{{ current.title }}, {{ current.products.length }} {{ "piece" if current.products.length == 1 else "pieces" }}</h2>
+  <ul class="ds-card-grid" role="list">
+    {%- for product in current.products %}
+    <li>{{ productCard(product, { headingLevel: 3, priority: loop.index <= 2 }) }}</li>
+    {%- endfor %}
+  </ul>
+  {%- else %}
+  <div class="ds-collection__empty">
+    <p class="ds-collection__empty-title">Nothing here just now.</p>
+    <p>New work goes to the Studio Letter first. Sign up below and you'll hear before anyone else.</p>
+    {{ link({ href: "/shop/", label: "See all work", variant: "arrow" }) }}
+  </div>
+  {%- endif %}
+</div>
+{%- endmacro -%}

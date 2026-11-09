@@ -1,0 +1,93 @@
+.ds-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ds-space-inline-xs);
+  min-block-size: var(--ds-target-min);
+  padding: var(--ds-button-padding-block) var(--ds-button-padding-inline);
+  border: var(--ds-line-control) solid transparent;
+  border-radius: var(--ds-button-radius);
+  font-family: var(--ds-type-body-family);
+  font-size: var(--ds-type-body-size-lg);
+  font-weight: var(--ds-type-label-weight);
+  line-height: var(--ds-type-label-line-height);
+  text-align: center;
+  text-decoration: none;
+  transition:
+    background-color var(--ds-transition-ui-duration) var(--ds-transition-ui-easing),
+    color var(--ds-transition-ui-duration) var(--ds-transition-ui-easing),
+    translate var(--ds-transition-ui-duration) var(--ds-transition-ui-easing);
+}
+
+.ds-button:active:not(:disabled, [aria-disabled='true']) {
+  translate: 0 var(--ds-line-hairline);
+}
+
+.ds-button--primary {
+  background: var(--ds-color-action-primary);
+  color: var(--ds-color-action-primary-text);
+}
+
+.ds-button--primary:hover {
+  background: color-mix(
+    in srgb,
+    var(--ds-color-action-primary) var(--ds-state-hover-mix),
+    var(--ds-color-surface-page)
+  );
+  color: var(--ds-color-action-primary-text);
+}
+
+.ds-button--secondary {
+  background: transparent;
+  border-color: var(--ds-color-action-secondary);
+  color: var(--ds-color-action-secondary);
+}
+
+.ds-button--secondary:hover {
+  background: var(--ds-color-surface-raised);
+  color: var(--ds-color-action-secondary);
+}
+
+.ds-button--quiet {
+  padding-inline: var(--ds-space-inline-xs);
+  background: transparent;
+  color: var(--ds-color-action-quiet);
+  font-size: var(--ds-type-label-size);
+  text-decoration: underline;
+  text-decoration-thickness: var(--ds-line-hairline);
+  text-underline-offset: var(--ds-line-underline-offset);
+}
+
+.ds-button--quiet:hover {
+  color: var(--ds-color-text-strong);
+}
+
+.ds-button--full {
+  inline-size: 100%;
+}
+
+.ds-button:disabled,
+.ds-button[aria-disabled='true'] {
+  cursor: not-allowed;
+  opacity: var(--ds-state-disabled-opacity);
+}
+
+.ds-button[aria-busy='true'] {
+  cursor: progress;
+  opacity: 1;
+}
+
+.ds-button__spinner {
+  inline-size: var(--ds-icon-spinner);
+  block-size: var(--ds-icon-spinner);
+  border: var(--ds-line-focus) solid currentcolor;
+  border-inline-end-color: transparent;
+  border-radius: var(--ds-shape-badge);
+  animation: ds-spin var(--ds-transition-spin-duration) linear infinite;
+}
+
+@keyframes ds-spin {
+  to {
+    rotate: 1turn;
+  }
+}

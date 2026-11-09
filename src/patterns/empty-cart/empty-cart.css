@@ -1,0 +1,22 @@
+.ds-empty-cart {
+  display: grid;
+  justify-items: start;
+  gap: var(--ds-space-stack-sm);
+}
+
+.ds-empty-cart__title {
+  font-family: var(--ds-type-heading-md-family);
+  font-size: var(--ds-type-heading-md-size);
+  font-weight: var(--ds-type-heading-md-weight);
+}
+
+.ds-empty-cart__actions {
+  display: grid;
+  gap: var(--ds-space-stack-2xs);
+  margin-block-start: var(--ds-space-stack-xs);
+}
+
+.ds-cart-drawer--inline .ds-empty-cart {
+  justify-items: center;
+  text-align: center;
+}

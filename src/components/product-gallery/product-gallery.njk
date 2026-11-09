@@ -1,0 +1,44 @@
+{#-
+  Product gallery: main image, thumbnails, and a full-screen viewer.
+  Without JS, thumbnails link to the full-size image. With JS they switch the main image,
+  and "View larger" opens the viewer (arrow keys to move, Esc to close).
+  Follows "variant:change" to show the chosen print's image.
+  {% from "components/product-gallery/product-gallery.njk" import productGallery %}
+  {{ productGallery(product) }}
+-#}
+{%- from "components/artwork-image/artwork-image.njk" import artworkImage -%}
+{%- from "components/icon/icon.njk" import icon -%}
+{%- macro productGallery(product, opts = {}) -%}
+{%- set images = product.images.nodes -%}
+<product-gallery class="ds-gallery">
+  <div class="ds-gallery__stage">
+    {%- for image in images %}
+    <figure class="ds-gallery__slide" data-gallery-slide data-image-id="{{ image.id }}"{% if not loop.first %} hidden{% endif %}>
+      {{ artworkImage(image, { framed: false, priority: loop.first, sizes: "(width >= 53.75rem) 55vw, 100vw" }) }}
+    </figure>
+    {%- endfor %}
+    <button class="ds-gallery__zoom" type="button" data-gallery-zoom hidden>{{ icon("zoom") }}<span>View larger</span></button>
+  </div>
+  {%- if images.length > 1 %}
+  <ul class="ds-gallery__thumbs" role="list">
+    {%- for image in images %}
+    <li>
+      <a class="ds-gallery__thumb" href="{{ image.url | imageUrl(image | largestWidth) }}" data-gallery-thumb="{{ loop.index0 }}"{% if loop.first %} aria-current="true"{% endif %}>
+        <img src="{{ image.url | imageUrl(320) }}" srcset="{{ image | srcset }}" sizes="4.5rem" alt="" width="{{ image.width }}" height="{{ image.height }}" loading="lazy">
+        <span class="ds-visually-hidden">Image {{ loop.index }} of {{ images.length }}: {{ image.altText }}</span>
+      </a>
+    </li>
+    {%- endfor %}
+  </ul>
+  {%- endif %}
+  <dialog class="ds-gallery__viewer" aria-label="{{ product.title }}, larger view" data-gallery-viewer>
+    <img class="ds-gallery__viewer-img" alt="" width="{{ images[0].width }}" height="{{ images[0].height }}" data-gallery-viewer-img>
+    <p class="ds-gallery__viewer-count" data-gallery-viewer-count aria-live="polite"></p>
+    <button class="ds-gallery__viewer-btn ds-gallery__viewer-btn--close" type="button" data-gallery-close aria-label="Close larger view">{{ icon("close", { size: "md" }) }}</button>
+    {%- if images.length > 1 %}
+    <button class="ds-gallery__viewer-btn ds-gallery__viewer-btn--prev" type="button" data-gallery-prev aria-label="Previous image">{{ icon("arrow-left", { size: "md" }) }}</button>
+    <button class="ds-gallery__viewer-btn ds-gallery__viewer-btn--next" type="button" data-gallery-next aria-label="Next image">{{ icon("arrow-right", { size: "md" }) }}</button>
+    {%- endif %}
+  </dialog>
+</product-gallery>
+{%- endmacro -%}

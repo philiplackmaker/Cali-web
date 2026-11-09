@@ -1,0 +1,24 @@
+{#-
+  Instagram: a row of studio photos that link out to @calicomelton. A plain link, not an
+  embedded feed, so there's no third-party script, tracking or slowdown.
+  {% from "patterns/instagram-band/instagram-band.njk" import instagramBand %}
+  {{ instagramBand({ id: "instagram", photos: shop.photos.studio }) }}
+-#}
+{%- from "components/icon/icon.njk" import icon -%}
+{%- from "components/artwork-image/artwork-image.njk" import artworkImage -%}
+{%- macro instagramBand(opts = {}) -%}
+<div class="ds-instagram">
+  <div class="ds-instagram__head">
+    <h2 class="ds-instagram__title" id="{{ opts.id or 'instagram' }}">{{ opts.heading or "From the studio" }}</h2>
+    <p>Paintings in progress, the odd brush clean, and new work before it's in the shop.</p>
+    <a class="ds-instagram__handle" href="{{ site.instagram }}" target="_blank" rel="noopener">{{ icon("instagram", { size: "md" }) }}<span>Follow {{ site.instagramHandle }}<span class="ds-visually-hidden"> on Instagram (opens in a new tab)</span></span></a>
+  </div>
+  {%- if opts.photos and opts.photos.length %}
+  <ul class="ds-instagram__photos" role="list">
+    {%- for photo in opts.photos | batch(3) | first %}
+    <li><a class="ds-instagram__photo" href="{{ site.instagram }}" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">{{ artworkImage(photo.image, { alt: "", sizes: "(width >= 53.75rem) 25vw, 33vw" }) }}</a></li>
+    {%- endfor %}
+  </ul>
+  {%- endif %}
+</div>
+{%- endmacro -%}

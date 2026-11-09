@@ -1,0 +1,18 @@
+---
+permalink: /404.html
+title: Page not found
+noindex: true
+eleventyExcludeFromSitemap: true
+---
+{%- from "patterns/section/section.njk" import section -%}
+{%- from "patterns/page-intro/page-intro.njk" import pageIntro -%}
+{%- from "patterns/featured-strip/featured-strip.njk" import featuredStrip -%}
+{%- from "components/button/button.njk" import button -%}
+{% call section({ variant: "tight" }) %}
+  {% call pageIntro({ eyebrow: "404", title: "This page has wandered off", lede: "It may have moved, or the painting may have found a home. The shop is the best place to look." }) %}
+    {{ button({ label: "Go to the shop", href: "/shop/" }) }}
+  {% endcall %}
+{% endcall %}
+{% call section({ labelledby: "lost-new-work" }) %}
+  {{ featuredStrip({ id: "lost-new-work", title: "New work", products: shop.latest | take(3) }) }}
+{% endcall %}

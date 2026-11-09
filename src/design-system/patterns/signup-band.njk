@@ -1,0 +1,29 @@
+---
+title: Studio Letter band
+order: 6
+description: "The signup on the pink band, with an optional painting beside it."
+---
+{% from "docs.njk" import example, usage %}
+{% from "patterns/section/section.njk" import section %}
+{% from "patterns/signup-band/signup-band.njk" import signupBand %}
+<header class="docs-header">
+  <p class="docs-eyebrow">Pattern</p>
+  <h1>Studio Letter band</h1>
+  <p class="docs-lede">The signup on the pink band, with an optional painting beside it.</p>
+</header>
+
+<section class="docs-section" aria-labelledby="use">
+  <h2 id="use">Use it</h2>
+  {% set code %}{% raw %}{% from "patterns/signup-band/signup-band.njk" import signupBand %}
+{{ signupBand({ id: "home-signup" }) }}
+{{ signupBand({ id: "letter", feature: image, headingLevel: 1, priority: true }) }}{% endraw %}{% endset %}
+  {{ usage(code) }}
+  <p><strong>Used on:</strong> Home, /studio-letter/ (feature variant, rebuilt from the old one-page site)</p>
+  <p>Pages with this band set <code>footerSignup: false</code>, so the footer doesn’t ask a second time.</p>
+</section>
+
+<section class="docs-section" aria-labelledby="example">
+  <h2 id="example">Example</h2>
+  {% set ex %}{% call section({ variant: "band" }) %}{{ signupBand({ id: "ex-band" }) }}{% endcall %}{% endset %}
+  {{ example("Studio Letter band", ex, { wide: true, noCode: true }) }}
+</section>

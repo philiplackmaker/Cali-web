@@ -1,0 +1,22 @@
+{#- Flower mark + name. Usage: {% from "components/logo/logo.njk" import logo, flowerMark %} {{ logo({ href: "/" }) }} -#}
+{%- macro flowerMark(opts = {}) -%}
+<svg class="ds-logo__mark{% if opts.class %} {{ opts.class }}{% endif %}" viewBox="0 0 131 240" aria-hidden="true" focusable="false">
+  <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="10">
+    <path d="M57 62c2 18 6 36 9 54s2 38 3 58 1 42 1 60"/>
+    <path d="M60 134c-6-14-12-28-19-40"/><path d="M66 184c-9-12-18-22-28-30"/>
+    <path d="M64 112c7-11 15-22 24-31"/><path d="M68 146c8-14 18-28 29-40"/><path d="M72 182c9-14 19-28 30-40"/>
+  </g>
+  <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="9">
+    <path d="M56 54C50 38 42 22 33 9"/><path d="M50 55C38 44 24 32 10 22"/><path d="M50 60C36 54 22 49 8 46"/>
+    <path d="M52 64C42 67 31 70 20 72"/><path d="M62 52c6-9 13-19 22-29"/><path d="M66 56c14-7 28-14 43-20"/><path d="M66 62c20-1 40-1 59 0"/>
+  </g>
+  <circle class="ds-logo__centre" cx="58" cy="58" r="6"/>
+</svg>
+{%- endmacro -%}
+
+{%- macro logo(opts = {}) -%}
+<a class="ds-logo" href="{{ opts.href or '/' }}"{% if opts.current %} aria-current="page"{% endif %}>
+  {{ flowerMark() }}
+  <span class="ds-logo__name">Calico Melton</span>
+</a>
+{%- endmacro -%}

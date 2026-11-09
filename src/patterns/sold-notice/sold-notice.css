@@ -1,0 +1,14 @@
+.ds-sold-notice {
+  display: grid;
+  justify-items: start;
+  gap: var(--ds-space-stack-sm);
+  padding: var(--ds-space-inset-md);
+  border-radius: var(--ds-shape-control);
+  background: var(--ds-color-surface-raised);
+}
+
+.ds-sold-notice__title {
+  font-family: var(--ds-type-heading-md-family);
+  font-size: var(--ds-type-heading-md-size);
+  font-style: italic;
+}

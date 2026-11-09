@@ -1,0 +1,87 @@
+{
+  "color": {
+    "$type": "color",
+    "$description": "Raw colours, taken from calicomelton.com (legacy/studio-letter.html), which takes them from the paintings.",
+    "cream": {
+      "50": {
+        "$value": "#FBF5EE",
+        "$description": "Input ground (--input-bg)"
+      },
+      "100": {
+        "$value": "#F8EFE5",
+        "$description": "Cream (--cream)"
+      }
+    },
+    "pink": {
+      "300": {
+        "$value": "#E3B5AB",
+        "$description": "Pink ground (--ground)"
+      },
+      "500": {
+        "$value": "#C68E80",
+        "$description": "Deep pink ground (--ground-deep)"
+      }
+    },
+    "blue": {
+      "500": {
+        "$value": "#7C93A8",
+        "$description": "Sun-hat blue (--blue). Decorative only: fails text contrast on light grounds."
+      }
+    },
+    "maroon": {
+      "600": {
+        "$value": "#6E2A2E",
+        "$description": "Maroon (--maroon)"
+      }
+    },
+    "red": {
+      "700": {
+        "$value": "#9A2B1E",
+        "$description": "Error red (--error)"
+      }
+    },
+    "brown": {
+      "700": {
+        "$value": "#66370F",
+        "$description": "Flower mark brown"
+      },
+      "800": {
+        "$value": "#4C2508",
+        "$description": "Warm brown ink (--ink)"
+      },
+      "900": {
+        "$value": "#2A1E1A",
+        "$description": "Near-black umber (--btn-bg, --focus)"
+      },
+      "950": {
+        "$value": "#1A1411",
+        "$description": "Photo ground behind paintings (--photo-ground)"
+      }
+    },
+    "white": {
+      "$value": "#FFFFFF"
+    },
+    "alpha": {
+      "umber-22": {
+        "$value": "rgba(42, 30, 26, 0.22)",
+        "$description": "Hairline (--line)"
+      },
+      "umber-68": {
+        "$value": "rgba(42, 30, 26, 0.68)",
+        "$description": "Soft ink (--ink-soft)"
+      },
+      "black-45": {
+        "$value": "rgba(0, 0, 0, 0.45)",
+        "$description": "Shadow colour"
+      },
+      "night-60": {
+        "$value": "rgba(10, 7, 6, 0.6)",
+        "$description": "Image scrim, dark end"
+      },
+      "night-10": {
+        "$value": "rgba(10, 7, 6, 0.1)",
+        "$description": "Image scrim, light end"
+      }
+    }
+  }
+}

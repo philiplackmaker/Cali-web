@@ -1,0 +1,34 @@
+---
+title: Collector note
+order: 12.7
+description: Ways to spread the cost of an original, shown only when they're real.
+---
+{% from "docs.njk" import example, usage %}
+{% from "components/collector-note/collector-note.njk" import collectorNote %}
+{% set p = mock.byHandle["sun-hat-with-tulip"] %}
+<header class="docs-header">
+  <p class="docs-eyebrow">Component · Partial</p>
+  <h1>Collector note</h1>
+  <p class="docs-lede">For bigger purchases: a quiet note about ways to spread the cost. It only shows what's switched on in <code>site.payments</code>, and both options start <strong>off</strong>.</p>
+</header>
+
+<section class="docs-section" aria-labelledby="use">
+  <h2 id="use">Use it</h2>
+  {% set code %}{% raw %}{% from "components/collector-note/collector-note.njk" import collectorNote %}
+{{ collectorNote(product) }}{% endraw %}{% endset %}
+  {{ usage(code) }}
+  <ul class="docs-list">
+    <li><strong>instalments:</strong> switch on once a payment provider offers them at Shopify checkout in the UK, for example Klarna or PayPal Pay in 3.</li>
+    <li><strong>ownArt:</strong> switch on only if Cali joins <a href="https://www.ownart.org.uk/" rel="noopener">Own Art</a>, the Arts Council's interest-free scheme for buying art. It's run through approved galleries and artists, and its terms need confirming before the copy goes live.</li>
+  </ul>
+</section>
+
+<section class="docs-section" aria-labelledby="variants">
+  <h2 id="variants">Variants (forced on for the docs)</h2>
+  <div class="docs-examples">
+    {% set ex %}<div class="docs-stack">{{ collectorNote(p, { payments: { instalments: true, ownArt: true } }) }}</div>{% endset %}
+    {{ example("Both on", ex) }}
+    {% set ex %}<div class="docs-stack">{{ collectorNote(p, { payments: { instalments: true } }) }}</div>{% endset %}
+    {{ example("Instalments only", ex) }}
+  </div>
+</section>

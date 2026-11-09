@@ -1,0 +1,31 @@
+{#-
+  Enquiry form: commissions, viewings and questions about a painting. Submitted with
+  Netlify Forms (form name "enquiry"), with a honeypot field against spam.
+  ?about=<handle> or ?viewing=<handle> in the URL fills in the topic and painting.
+  {% from "patterns/enquiry-form/enquiry-form.njk" import enquiryForm %}
+  {{ enquiryForm({ products: shop.products }) }}
+-#}
+{%- from "components/form-field/form-field.njk" import formField -%}
+{%- from "components/button/button.njk" import button -%}
+{%- macro enquiryForm(opts = {}) -%}
+<enquiry-form class="ds-enquiry">
+  <form class="ds-enquiry__form" name="enquiry" method="post" action="/contact/thanks/" data-netlify="true" netlify-honeypot="company">
+    <input type="hidden" name="form-name" value="enquiry">
+    <p class="ds-visually-hidden" aria-hidden="true"><label>Leave this empty <input name="company" tabindex="-1" autocomplete="off"></label></p>
+    {{ formField({ id: "enquiry-name", name: "name", label: "Your name", autocomplete: "name", required: true }) }}
+    {{ formField({ id: "enquiry-email", name: "email", label: "Email address", type: "email", autocomplete: "email", required: true }) }}
+    {{ formField({ id: "enquiry-topic", name: "topic", label: "What's it about?", options: [
+      { value: "painting", label: "A painting in the shop" },
+      { value: "viewing", label: "Arranging a viewing in Bristol" },
+      { value: "commission", label: "A commission" },
+      { value: "other", label: "Something else" }
+    ] }) }}
+    {%- set paintingOptions = [{ value: "", label: "Not about a particular painting" }] -%}
+    {%- for p in opts.products or [] %}{% set paintingOptions = (paintingOptions.push({ value: p.handle, label: p.title }), paintingOptions) %}{% endfor %}
+    {{ formField({ id: "enquiry-painting", name: "painting", label: "Which painting?", optional: true, options: paintingOptions }) }}
+    {{ formField({ id: "enquiry-message", name: "message", label: "Your message", multiline: true, rows: 6, required: true, hint: "For commissions: roughly what size, where it'll hang, and any colours or subjects you have in mind." }) }}
+    {{ button({ label: "Send", type: "submit", iconEnd: "arrow-right" }) }}
+    <p class="ds-enquiry__note">I read every message myself and usually reply within a few days.</p>
+  </form>
+</enquiry-form>
+{%- endmacro -%}

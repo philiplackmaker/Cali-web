@@ -1,0 +1,245 @@
+{
+  "space": {
+    "$type": "dimension",
+    "$description": "Spacing scale. Steps 7 to 9 are fluid.",
+    "0": {
+      "$value": "0"
+    },
+    "1": {
+      "$value": "0.25rem"
+    },
+    "2": {
+      "$value": "0.5rem"
+    },
+    "3": {
+      "$value": "0.75rem"
+    },
+    "4": {
+      "$value": "1rem"
+    },
+    "5": {
+      "$value": "1.5rem"
+    },
+    "6": {
+      "$value": "2rem"
+    },
+    "7": {
+      "$value": "clamp(2rem, 1.6rem + 1.8vw, 3rem)"
+    },
+    "8": {
+      "$value": "clamp(2.5rem, 1.7rem + 3.6vw, 4.5rem)"
+    },
+    "9": {
+      "$value": "clamp(3.5rem, 2.2rem + 6vw, 7rem)"
+    },
+    "fluid-gutter": {
+      "$value": "clamp(1rem, 0.6rem + 2vw, 2rem)",
+      "$description": "Page side gutter: 16px on phones"
+    },
+    "10": {
+      "$value": "clamp(4.5rem, 2.6rem + 8vw, 10rem)",
+      "$description": "Gallery-scale breathing room between page sections"
+    }
+  },
+  "size": {
+    "$type": "dimension",
+    "icon-sm": {
+      "$value": "1.2rem"
+    },
+    "icon-md": {
+      "$value": "1.5rem"
+    },
+    "mark": {
+      "$value": "1.875rem"
+    },
+    "tap-min": {
+      "$value": "2.75rem",
+      "$description": "44px minimum touch target"
+    },
+    "measure": {
+      "$value": "32ch",
+      "$description": "Short line length for intro copy"
+    },
+    "prose": {
+      "$value": "62ch"
+    },
+    "content": {
+      "$value": "40rem"
+    },
+    "page": {
+      "$value": "75rem"
+    },
+    "full-height": {
+      "$value": "100dvh"
+    },
+    "drawer": {
+      "$value": "28rem"
+    },
+    "column-sm": {
+      "$value": "10rem",
+      "$description": "Narrowest grid column"
+    },
+    "column-md": {
+      "$value": "13rem"
+    },
+    "thumb": {
+      "$value": "4.5rem",
+      "$description": "Gallery thumbnail"
+    },
+    "spinner": {
+      "$value": "1em",
+      "$description": "Loading spinner, matches the text it sits in"
+    },
+    "logo": {
+      "$value": "2.25rem",
+      "$description": "Flower mark in the header"
+    },
+    "card-min": {
+      "$value": "20rem",
+      "$description": "Narrowest product card: at most three paintings across a 75rem page, so each stays large"
+    },
+    "hero-max": {
+      "$value": "min(85dvh, 56rem)",
+      "$description": "Tallest the hero painting gets, so the name and line still show on a laptop"
+    }
+  },
+  "radius": {
+    "$type": "dimension",
+    "none": {
+      "$value": "0"
+    },
+    "sm": {
+      "$value": "0.25rem"
+    },
+    "md": {
+      "$value": "0.5rem",
+      "$description": "8px, inputs and buttons on the current site"
+    },
+    "lg": {
+      "$value": "0.875rem",
+      "$description": "14px, the current page card"
+    },
+    "pill": {
+      "$value": "999px"
+    }
+  },
+  "border": {
+    "width": {
+      "$type": "dimension",
+      "thin": {
+        "$value": "1px"
+      },
+      "thick": {
+        "$value": "2px"
+      }
+    },
+    "offset": {
+      "$type": "dimension",
+      "$value": "3px",
+      "$description": "Focus outline offset"
+    },
+    "underline-offset": {
+      "$type": "dimension",
+      "$value": "0.2em",
+      "$description": "Link underline gap, relative to the text"
+    }
+  },
+  "shadow": {
+    "$type": "shadow",
+    "raised": {
+      "$value": "0 30px 60px -20px rgba(0, 0, 0, 0.45)",
+      "$description": "The current site's page card"
+    },
+    "soft": {
+      "$value": "0 8px 24px -12px rgba(42, 30, 26, 0.35)"
+    }
+  },
+  "motion": {
+    "duration": {
+      "$type": "duration",
+      "fast": {
+        "$value": "150ms"
+      },
+      "base": {
+        "$value": "250ms"
+      },
+      "slow": {
+        "$value": "400ms"
+      },
+      "spin": {
+        "$value": "800ms",
+        "$description": "One turn of the loading spinner"
+      }
+    },
+    "easing": {
+      "$type": "cubicBezier",
+      "standard": {
+        "$value": "ease"
+      },
+      "out": {
+        "$value": "cubic-bezier(0.2, 0, 0, 1)"
+      }
+    }
+  },
+  "z": {
+    "$type": "number",
+    "base": {
+      "$value": 0
+    },
+    "raised": {
+      "$value": 1
+    },
+    "header": {
+      "$value": 10
+    },
+    "overlay": {
+      "$value": 90
+    },
+    "drawer": {
+      "$value": 100
+    },
+    "toast": {
+      "$value": 200
+    }
+  },
+  "breakpoint": {
+    "$type": "dimension",
+    "$description": "Reference values. CSS can't read custom properties inside @media or @container, so queries repeat these numbers (Stylelint allows rem there only).",
+    "sm": {
+      "$value": "26.25rem",
+      "$description": "420px"
+    },
+    "md": {
+      "$value": "53.75rem",
+      "$description": "860px"
+    },
+    "lg": {
+      "$value": "64rem",
+      "$description": "1024px"
+    }
+  },
+  "ratio": {
+    "$type": "number",
+    "square": {
+      "$value": "1 / 1"
+    },
+    "portrait": {
+      "$value": "4 / 5"
+    },
+    "landscape": {
+      "$value": "4 / 3"
+    },
+    "wide": {
+      "$value": "16 / 9"
+    }
+  },
+  "opacity": {
+    "$type": "number",
+    "disabled": {
+      "$value": 0.5
+    },
+    "hover": {
+      "$value": 0.88
+    }
+  }
+}

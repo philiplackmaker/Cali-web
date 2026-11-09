@@ -1,0 +1,40 @@
+{
+  "button": {
+    "radius": {
+      "$type": "dimension",
+      "$value": "{shape.control}"
+    },
+    "padding-block": {
+      "$type": "dimension",
+      "$value": "{space.4}"
+    },
+    "padding-inline": {
+      "$type": "dimension",
+      "$value": "{space.5}"
+    }
+  },
+  "product-card": {
+    "image": {
+      "ratio": {
+        "$type": "number",
+        "$value": "{aspect.artwork}"
+      },
+      "padding": {
+        "$type": "dimension",
+        "$value": "{space.inset.lg}",
+        "$description": "Space around a painting inside its frame"
+      }
+    },
+    "gap": {
+      "$type": "dimension",
+      "$value": "{space.stack.md}",
+      "$description": "Space between the framed painting and its caption"
+    }
+  },
+  "cart-drawer": {
+    "width": {
+      "$type": "dimension",
+      "$value": "{size.drawer}"
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{#-
+  Hero: one painting, large, with the name and a short line. The painting is the page's
+  LCP image: set preloadImage to the same image in the page's front matter.
+  {% from "patterns/hero/hero.njk" import hero %}
+  {{ hero({ image, title: "Calico Melton", line: "…", primary: { href, label }, secondary: { href, label } }) }}
+-#}
+{%- from "components/artwork-image/artwork-image.njk" import artworkImage -%}
+{%- from "components/button/button.njk" import button -%}
+{%- from "components/link/link.njk" import link -%}
+{%- macro hero(opts) -%}
+<section class="ds-hero" aria-labelledby="hero-title">
+  <div class="ds-hero__art">
+    {{ artworkImage(opts.image, { priority: true, sizes: "(width >= 53.75rem) 55vw, 100vw" }) }}
+  </div>
+  <div class="ds-hero__text">
+    {%- if opts.eyebrow %}<p class="ds-hero__eyebrow">{{ opts.eyebrow }}</p>{% endif %}
+    <h1 class="ds-hero__title" id="hero-title">{{ opts.title }}</h1>
+    <p class="ds-hero__line">{{ opts.line }}</p>
+    <div class="ds-hero__actions">
+      {%- if opts.primary %}{{ button({ label: opts.primary.label, href: opts.primary.href }) }}{% endif %}
+      {%- if opts.secondary %}{{ link({ label: opts.secondary.label, href: opts.secondary.href, variant: "arrow" }) }}{% endif %}
+    </div>
+  </div>
+</section>
+{%- endmacro -%}
