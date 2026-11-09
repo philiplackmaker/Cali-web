@@ -13,6 +13,7 @@
 {%- from "components/product-details/product-details.njk" import productDetails -%}
 {%- from "components/collector-note/collector-note.njk" import collectorNote -%}
 {%- from "components/link/link.njk" import link -%}
+{%- from "components/video-clip/video-clip.njk" import videoClip -%}
 {%- from "patterns/sold-notice/sold-notice.njk" import soldNotice -%}
 {%- from "patterns/error-banner/error-banner.njk" import errorBanner -%}
 {%- from "components/product-live/product-live.njk" import productLive -%}
@@ -45,6 +46,12 @@
     {{ productLive(product) }}
     {%- endif %}
     <div class="ds-product__description">{{ product.descriptionHtml | safe }}</div>
+    {%- if product.clip %}
+    <figure class="ds-product__clip">
+      {{ videoClip(product.clip, product.featuredImage) }}
+      <figcaption class="ds-product__clip-caption">In the studio</figcaption>
+    </figure>
+    {%- endif %}
     {{ productDetails(product) }}
     <p class="ds-product__shipping">
       {%- if original %}Originals ship from Bristol within 5 working days, insured and tracked. UK delivery is free; I'll quote for anywhere else.{% else %}Prints are made to order and ship within 7 working days, rolled in a sturdy tube.{% endif %}

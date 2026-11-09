@@ -1,0 +1,26 @@
+{#-
+  Video clip: a short, silent, looping clip (a brush at work, a painting being unwrapped),
+  like a living photo. It plays only while it's on screen, never for visitors who ask for
+  reduced motion, and always has a pause button (WCAG 2.2.2). The poster photo shows until it
+  plays, and stands in completely without JavaScript (the browser's own controls show then).
+  {% from "components/video-clip/video-clip.njk" import videoClip %}
+  {{ videoClip({ url: "/content/uploads/x.mp4", type: "video/mp4", label: "What the clip shows" }, poster, { framed: true }) }}
+  clip:   { url, type, label }   from the admin's video fields (scripts/content.js)
+  poster: an image ({ url, width, height }), usually the photo it sits with
+-#}
+{%- from "components/icon/icon.njk" import icon -%}
+{%- macro videoClip(clip, poster, opts = {}) -%}
+{%- set posterWidth = (poster | largestWidth) if poster else null -%}
+<video-clip class="ds-video-clip{% if opts.framed %} ds-video-clip--framed{% endif %}">
+  <video class="ds-video-clip__video" muted loop playsinline controls preload="none"
+    {%- if poster %} poster="{{ poster.url | imageUrl(posterWidth if posterWidth < 800 else 800) }}" width="{{ poster.width }}" height="{{ poster.height }}"{% endif %}
+    aria-label="{{ clip.label or 'A short clip from the studio' }}">
+    <source src="{{ clip.url }}" type="{{ clip.type or 'video/mp4' }}">
+  </video>
+  <button class="ds-video-clip__toggle" type="button" hidden>
+    <span class="ds-video-clip__icon ds-video-clip__icon--pause">{{ icon("pause") }}</span>
+    <span class="ds-video-clip__icon ds-video-clip__icon--play">{{ icon("play") }}</span>
+    <span class="ds-visually-hidden" data-video-label>Play clip</span>
+  </button>
+</video-clip>
+{%- endmacro -%}

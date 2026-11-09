@@ -1,5 +1,8 @@
 {
   "homeHero": null,
-  "aboutPortrait": null,
+  "aboutPortrait": {
+    "image": "/content/uploads/cali-canvas.jpg",
+    "alt": "Calico Melton peeking over the top of a large blank canvas in her studio."
+  },
   "studio": []
 }

@@ -71,3 +71,16 @@
   display: grid;
   gap: var(--ds-space-stack-md);
 }
+
+/* A short studio clip under the description (product.clip, from the admin). */
+.ds-product__clip {
+  display: grid;
+  gap: var(--ds-space-stack-xs);
+  max-inline-size: var(--ds-layout-column-md);
+  margin: 0;
+}
+
+.ds-product__clip-caption {
+  color: var(--ds-color-text-muted);
+  font-size: var(--ds-type-small-size);
+}

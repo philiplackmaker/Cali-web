@@ -19,8 +19,9 @@ site_url: https://calicomelton.com
 display_url: https://calicomelton.com
 logo_url: /favicon-180.png
 
-# Photos Cali uploads. The build makes web-sized copies; upload the best version you have
-# (a JPEG around 2,400 pixels wide and under 10 MB is ideal).
+# Photos and clips Cali uploads. The build makes web-sized copies of photos; upload the best
+# version you have (a JPEG around 2,400 pixels wide and under 10 MB is ideal). Clips are
+# served as uploaded, so keep them short (an MP4 under 15 MB).
 media_folder: content/uploads
 public_folder: /content/uploads
 
@@ -97,6 +98,21 @@ collections:
         widget: text
         required: false
         hint: A blank line starts a new paragraph.
+      - label: Studio clip
+        name: clip
+        widget: object
+        required: false
+        collapsed: true
+        hint: Optional. Shown under the description, as "In the studio".
+        fields:
+          - label: Clip
+            name: video
+            widget: file
+            required: false
+            choose_url: false
+            pattern: ['\.(mp4|m4v|webm)$', 'Please upload an MP4 video']
+            hint: 'A short, silent clip that loops, like a living photo: an MP4 under 15 MB, ideally 5 to 20 seconds. Phones record MP4; on an iPhone, set Camera → Formats → Most Compatible.'
+          - { label: What the clip shows, name: alt, widget: string, required: false }
       - { label: How it was made, name: made, widget: text, required: false }
       - {
           label: Medium,
@@ -118,8 +134,7 @@ collections:
           name: edition,
           widget: string,
           required: false,
-          hint: Prints only,
-          if it's a limited edition.,
+          hint: "Prints only, if it's a limited edition.",
         }
 
   - name: site
@@ -144,6 +159,13 @@ collections:
             required: false
             fields:
               - { label: Photo, name: image, widget: image, required: false, choose_url: false }
+              - label: Clip (optional)
+                name: video
+                widget: file
+                required: false
+                choose_url: false
+                pattern: ['\.(mp4|m4v|webm)$', 'Please upload an MP4 video']
+                hint: 'A short, silent clip that loops, like a living photo: an MP4 under 15 MB, ideally 5 to 20 seconds. Phones record MP4; on an iPhone, set Camera → Formats → Most Compatible. The photo shows until it plays.'
               - { label: What the photo shows, name: alt, widget: string, required: false }
           - label: Studio photos
             name: studio
@@ -153,5 +175,12 @@ collections:
             hint: Shown on the home page when there are no Instagram posts. Three works best.
             fields:
               - { label: Photo, name: image, widget: image, choose_url: false }
+              - label: Clip (optional)
+                name: video
+                widget: file
+                required: false
+                choose_url: false
+                pattern: ['\.(mp4|m4v|webm)$', 'Please upload an MP4 video']
+                hint: 'A short, silent clip that loops, like a living photo: an MP4 under 15 MB, ideally 5 to 20 seconds. Phones record MP4; on an iPhone, set Camera → Formats → Most Compatible. The photo shows until it plays.'
               - { label: What the photo shows, name: alt, widget: string }
               - { label: Caption, name: caption, widget: string, required: false }

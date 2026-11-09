@@ -9,6 +9,7 @@ const COMPONENTS = {
   'theme-toggle': '../components/header/theme-toggle.js',
   'product-gallery': '../components/product-gallery/product-gallery.js',
   'product-live': '../components/product-live/product-live.js',
+  'video-clip': '../components/video-clip/video-clip.js',
   'error-banner': '../patterns/error-banner/error-banner.js',
   'enquiry-form': '../patterns/enquiry-form/enquiry-form.js',
 };

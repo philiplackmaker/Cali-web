@@ -1,0 +1,49 @@
+---
+title: Video clip
+order: 20
+description: Short, silent, looping studio clips with a pause button.
+---
+{% from "docs.njk" import example, usage, props %}
+{% from "components/video-clip/video-clip.njk" import videoClip %}
+{% set p = mock.byHandle["sun-hat-with-tulip"] %}
+{% set clip = { url: "/assets/images/mock/clip-sample.mp4", type: "video/mp4", label: "A slow zoom across a painting of a swan." } %}
+<header class="docs-header">
+  <p class="docs-eyebrow">Component · Web Component</p>
+  <h1>Video clip</h1>
+  <p class="docs-lede">A living photo: a few seconds of a brush at work or a painting being unwrapped, playing silently on a loop. Cali adds a clip next to a photo in the admin; the photo is the poster and the fallback.</p>
+</header>
+
+<section class="docs-section" aria-labelledby="use">
+  <h2 id="use">Use it</h2>
+  {% set code %}{% raw %}{% from "components/video-clip/video-clip.njk" import videoClip %}
+{{ videoClip(photo.video, photo.image) }}
+{{ videoClip(product.clip, product.featuredImage, { framed: true }) }}{% endraw %}{% endset %}
+  {{ usage(code) }}
+  {{ props([
+    ["clip", "{ url, type, label }", "From the admin's Clip fields, via scripts/content.js. label is “What the clip shows”, read out by screen readers."],
+    ["poster", "Image", "Shown until the clip plays, sized like artwork-image. Sets width and height, so there's no layout shift."],
+    ["framed", "boolean", "Fixed-ratio frame, to line up with framed photos (the studio strip). The clip fills it."]
+  ]) }}
+</section>
+
+<section class="docs-section" aria-labelledby="variants">
+  <h2 id="variants">Variants</h2>
+  <div class="docs-examples">
+    {% set ex %}<div class="docs-stack" style="max-inline-size: 20rem">{{ videoClip(clip, p.featuredImage) }}</div>{% endset %}
+    {{ example("Natural ratio (artist intro, product page)", ex) }}
+    {% set ex %}<div class="docs-grid">{{ videoClip(clip, p.featuredImage, { framed: true }) }}</div>{% endset %}
+    {{ example("Framed (studio strip)", ex) }}
+  </div>
+</section>
+
+<section class="docs-section" aria-labelledby="a11y">
+  <h2 id="a11y">Accessibility and performance</h2>
+  <ul class="docs-list">
+    <li>Always silent (<code>muted</code>), so it can play on its own. Clips with sound belong on YouTube, not here.</li>
+    <li>Plays only while at least half of it is on screen, and pauses when it scrolls away.</li>
+    <li>Moving content needs a way to stop it (WCAG 2.2.2): the round button pauses and plays, and says which it will do. A visitor's pause sticks.</li>
+    <li>With “reduce motion” turned on, it never starts by itself: the poster shows, with a Play button.</li>
+    <li>Without JavaScript, the browser's own controls show instead.</li>
+    <li><code>preload="none"</code> until it's about to play, so a page full of clips costs nothing until you scroll to them. Keep uploads under 15 MB; the build log warns above that.</li>
+  </ul>
+</section>

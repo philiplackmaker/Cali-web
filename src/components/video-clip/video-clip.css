@@ -1,0 +1,52 @@
+.ds-video-clip {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  background: var(--ds-color-surface-artwork);
+  border-radius: var(--ds-shape-image);
+}
+
+.ds-video-clip__video {
+  display: block;
+  inline-size: 100%;
+  block-size: auto;
+  object-fit: cover;
+}
+
+/* Framed: the same fixed-ratio frame as artwork-image, so clips and photos line up. */
+.ds-video-clip--framed {
+  aspect-ratio: var(--ds-product-card-image-ratio);
+}
+
+.ds-video-clip--framed .ds-video-clip__video {
+  block-size: 100%;
+}
+
+.ds-video-clip__toggle {
+  position: absolute;
+  inset-block-end: var(--ds-space-inline-xs);
+  inset-inline-end: var(--ds-space-inline-xs);
+  display: grid;
+  place-items: center;
+  inline-size: var(--ds-target-min);
+  block-size: var(--ds-target-min);
+  padding: 0;
+  border: 0;
+  border-radius: var(--ds-shape-badge);
+  background: var(--ds-color-surface-inverse);
+  color: var(--ds-color-text-inverse);
+  cursor: pointer;
+}
+
+.ds-video-clip__toggle[hidden] {
+  display: none;
+}
+
+.ds-video-clip__icon {
+  display: contents;
+}
+
+.ds-video-clip[data-playing] .ds-video-clip__icon--play,
+.ds-video-clip:not([data-playing]) .ds-video-clip__icon--pause {
+  display: none;
+}

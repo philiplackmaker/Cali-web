@@ -2,11 +2,11 @@
 // config in src/admin/config.yml). Each Publish commits a file to the repo:
 //   content/products/<handle>.json   one per print or original
 //   content/photos.json               home painting, About photo, studio photos
-//   content/uploads/                  the photos she uploads
+//   content/uploads/                  the photos and short clips she uploads
 // The build turns them into the product shape the rest of the site uses (first designed
 // around Shopify's Storefront API), and makes web-sized WebP copies of every photo.
 import Image from '@11ty/eleventy-img';
-import { readFile, readdir } from 'node:fs/promises';
+import { readFile, readdir, stat } from 'node:fs/promises';
 import { join } from 'node:path';
 
 const gbp = (amount) => ({ amount: Number(amount).toFixed(1), currencyCode: 'GBP' });
@@ -94,6 +94,35 @@ export function productFromEntry(handle, entry, images, { warn = console.warn } 
   };
 }
 
+// Clips play on a silent loop, so keep them short: over this, the build log warns.
+export const CLIP_WARN_BYTES = 15 * 1024 * 1024;
+const VIDEO_TYPES = { mp4: 'video/mp4', webm: 'video/webm', m4v: 'video/mp4' };
+
+/**
+ * An uploaded clip (/content/uploads/x.mp4) → { url, type, label }, or null if there's none
+ * or the file is missing. Clips are served as uploaded, from /content/uploads/.
+ */
+export async function clipFor(path, label, { root = '.', warn = console.warn } = {}) {
+  if (!path) return null;
+  const type = VIDEO_TYPES[path.split('.').pop().toLowerCase()];
+  if (!type) {
+    warn(`[content] ${path}: clips need to be MP4 (or WebM) files.`);
+    return null;
+  }
+  try {
+    const { size } = await stat(join(root, path.replace(/^\//, '')));
+    if (size > CLIP_WARN_BYTES) {
+      warn(
+        `[content] ${path} is ${Math.round(size / 1048576)} MB: pages load faster with clips under 15 MB.`,
+      );
+    }
+  } catch {
+    warn(`[content] Couldn't find the clip ${path}.`);
+    return null;
+  }
+  return { url: path, type, label: label || null };
+}
+
 export const IMAGE_WIDTHS = [320, 480, 640, 800, 1080, 1440];
 
 /**
@@ -165,7 +194,10 @@ export async function loadContent({
       `${entry.title}, a painting by Calico Melton.`,
     );
     const product = productFromEntry(handle, entry, images, { warn });
-    if (product) products.push(product);
+    if (product) {
+      product.clip = await clipFor(entry.clip?.video, entry.clip?.alt, { warn });
+      products.push(product);
+    }
   }
 
   let photos = { homeHero: null, aboutPortrait: null, studio: [] };
@@ -175,14 +207,18 @@ export async function loadContent({
       item?.image ? (await resolveAll([item], name, resolveImage, ''))[0] : null;
     const hero = await one(raw.homeHero, 'photo-home');
     const portrait = await one(raw.aboutPortrait, 'photo-about');
+    const portraitClip = await clipFor(raw.aboutPortrait?.video, raw.aboutPortrait?.alt, { warn });
     const studio = [];
     for (const [i, item] of (raw.studio ?? []).entries()) {
       const image = await one(item, `photo-studio-${i + 1}`);
-      if (image) studio.push({ image, caption: item.caption || null });
+      if (image) {
+        const video = await clipFor(item.video, item.alt, { warn });
+        studio.push({ image, caption: item.caption || null, video });
+      }
     }
     photos = {
       homeHero: hero ? { image: hero } : null,
-      aboutPortrait: portrait ? { image: portrait } : null,
+      aboutPortrait: portrait ? { image: portrait, video: portraitClip } : null,
       studio,
     };
   } catch (error) {

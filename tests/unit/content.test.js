@@ -133,3 +133,26 @@ test('loadContent: newest first, photos resolved, site photos read', async () =>
     [['The studio', 'Studio']],
   );
 });
+
+test('clips: MP4s found and labelled; wrong types, missing files and big files warned about', async () => {
+  const { clipFor } = await import('../../scripts/content.js');
+  const dir = await mkdtemp(join(tmpdir(), 'cali-clips-'));
+  await mkdir(join(dir, 'content', 'uploads'), { recursive: true });
+  await writeFile(join(dir, 'content', 'uploads', 'brush.mp4'), Buffer.alloc(1024));
+  await writeFile(join(dir, 'content', 'uploads', 'big.mp4'), Buffer.alloc(16 * 1024 * 1024));
+  const warnings = [];
+  const opts = { root: dir, warn: (m) => warnings.push(m) };
+  assert.deepEqual(await clipFor('/content/uploads/brush.mp4', 'A brush at work.', opts), {
+    url: '/content/uploads/brush.mp4',
+    type: 'video/mp4',
+    label: 'A brush at work.',
+  });
+  assert.equal(await clipFor(undefined, 'x', opts), null);
+  assert.equal(await clipFor('/content/uploads/clip.mov', 'x', opts), null);
+  assert.equal(await clipFor('/content/uploads/gone.mp4', 'x', opts), null);
+  assert.ok(await clipFor('/content/uploads/big.mp4', 'x', opts));
+  assert.deepEqual(
+    warnings.map((w) => w.match(/MP4|find|15 MB/)[0]),
+    ['MP4', 'find', '15 MB'],
+  );
+});
