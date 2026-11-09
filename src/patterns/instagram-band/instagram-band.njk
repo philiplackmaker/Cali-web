@@ -1,8 +1,8 @@
 {#-
-  Instagram: the three latest posts, each linking to the post. They're fetched and resized at
-  build time (scripts/instagram.js), so there's no embed, third-party script or tracking.
-  Without an Instagram token it falls back to studio photos linking to the profile, or their
-  short clip if the photo has one.
+  From the studio: Cali's own studio photos (or short clips), then her latest Instagram posts,
+  side by side. Studio photos come from the admin (Site photos); posts are fetched and resized
+  at build time (scripts/instagram.js), so there's no embed, third-party script or tracking.
+  Either can be missing: without an Instagram token, it's just the studio photos.
   {% from "patterns/instagram-band/instagram-band.njk" import instagramBand %}
   {{ instagramBand({ id: "instagram", posts: instagram.posts, photos: shop.photos.studio }) }}
 -#}
@@ -16,22 +16,29 @@
     <p>Paintings in progress, the odd brush clean, and new work before it's in the shop.</p>
     <a class="ds-instagram__handle" href="{{ site.instagram }}" target="_blank" rel="noopener">{{ icon("instagram", { size: "md" }) }}<span>Follow {{ site.instagramHandle }}<span class="ds-visually-hidden"> on Instagram (opens in a new tab)</span></span></a>
   </div>
-  {%- if opts.posts and opts.posts.length %}
-  <ul class="ds-instagram__photos" role="list">
-    {%- for post in opts.posts | batch(3) | first %}
-    <li><a class="ds-instagram__photo" href="{{ post.permalink }}" target="_blank" rel="noopener"><img src="{{ post.src }}" srcset="{{ post.srcset }}" sizes="(width &gt;= 53.75rem) 20vw, 33vw" width="{{ post.width }}" height="{{ post.height }}" alt="{{ post.alt }}" loading="lazy" decoding="async"><span class="ds-visually-hidden"> (opens in a new tab)</span></a></li>
-    {%- endfor %}
-  </ul>
-  {%- elif opts.photos and opts.photos.length %}
-  <ul class="ds-instagram__photos" role="list">
-    {%- for photo in opts.photos | batch(3) | first %}
-    {%- if photo.video %}
-    <li class="ds-instagram__photo">{{ videoClip(photo.video, photo.image, { framed: true }) }}</li>
-    {%- else %}
-    <li><a class="ds-instagram__photo" href="{{ site.instagram }}" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">{{ artworkImage(photo.image, { alt: "", sizes: "(width >= 53.75rem) 25vw, 33vw" }) }}</a></li>
+  <div class="ds-instagram__media">
+    {%- if opts.photos and opts.photos.length %}
+    <ul class="ds-instagram__photos" role="list" aria-label="Studio photos">
+      {%- for photo in opts.photos | batch(3) | first %}
+      <li>
+        <figure class="ds-instagram__figure">
+          <div class="ds-instagram__photo">
+            {%- if photo.video %}{{ videoClip(photo.video, photo.image, { framed: true }) }}{% else %}{{ artworkImage(photo.image, { sizes: "(width >= 53.75rem) 18vw, 33vw" }) }}{% endif -%}
+          </div>
+          {%- if photo.caption %}<figcaption class="ds-instagram__caption">{{ photo.caption }}</figcaption>{% endif %}
+        </figure>
+      </li>
+      {%- endfor %}
+    </ul>
     {%- endif %}
-    {%- endfor %}
-  </ul>
-  {%- endif %}
+    {%- if opts.posts and opts.posts.length %}
+    <p class="ds-instagram__label" id="{{ opts.id or 'instagram' }}-posts">{{ icon("instagram") }}<span>Latest on Instagram</span></p>
+    <ul class="ds-instagram__photos ds-instagram__photos--posts" role="list" aria-labelledby="{{ opts.id or 'instagram' }}-posts">
+      {%- for post in opts.posts | batch(3) | first %}
+      <li><a class="ds-instagram__photo" href="{{ post.permalink }}" target="_blank" rel="noopener"><img src="{{ post.src }}" srcset="{{ post.srcset }}" sizes="(width &gt;= 53.75rem) 18vw, 33vw" width="{{ post.width }}" height="{{ post.height }}" alt="{{ post.alt }}" loading="lazy" decoding="async"><span class="ds-visually-hidden"> (opens in a new tab)</span></a></li>
+      {%- endfor %}
+    </ul>
+    {%- endif %}
+  </div>
 </div>
 {%- endmacro -%}

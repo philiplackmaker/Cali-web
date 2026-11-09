@@ -1,8 +1,24 @@
 {
   "homeHero": null,
   "aboutPortrait": {
-    "image": "/content/uploads/cali-canvas.jpg",
-    "alt": "Calico Melton peeking over the top of a large blank canvas in her studio."
+    "image": "/content/uploads/cali-portrait.jpg",
+    "alt": "Calico Melton in her studio, holding a framed painting of a girl in a blue sun hat with a pink tulip."
   },
-  "studio": []
+  "studio": [
+    {
+      "image": "/content/uploads/cali-easel.jpg",
+      "alt": "Cali at the easel, seen from behind in a cap and white shirt, painting a brown ground.",
+      "caption": "At the easel"
+    },
+    {
+      "image": "/content/uploads/kitchen-shelves.jpg",
+      "alt": "Kitchen shelves of jars and jugs, with the prints Vase, Bird and Tall Vase propped among them.",
+      "caption": "Prints at home"
+    },
+    {
+      "image": "/content/uploads/monstera-room.jpg",
+      "alt": "Monstera hanging on a sunlit wall, beneath a shelf of vases and a garland of felt faces.",
+      "caption": "Monstera on the wall"
+    }
+  ]
 }

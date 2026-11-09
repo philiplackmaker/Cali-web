@@ -144,8 +144,10 @@ export function imageResolver(outputDir, { root = '.', warn = console.warn } = {
         sharpOptions: { limitInputPixels: false },
       });
       const largest = meta.webp.at(-1);
+      // Use the names eleventy-img actually wrote: a photo used twice (say, on a painting and
+      // in the studio strip) is only resized once, under the first name it was given.
       return {
-        url: `/assets/images/art/${name}-{width}.webp`,
+        url: largest.url.replace(`-${largest.width}.webp`, '-{width}.webp'),
         width: largest.width,
         height: largest.height,
       };

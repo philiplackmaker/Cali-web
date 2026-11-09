@@ -9,7 +9,7 @@ description: "The three latest Instagram posts, fetched and resized at build tim
 <header class="docs-header">
   <p class="docs-eyebrow">Pattern</p>
   <h1>Instagram</h1>
-  <p class="docs-lede">Cali's three latest Instagram posts, each linking to its post. Studio photos stand in when there's no Instagram token.</p>
+  <p class="docs-lede">Cali's own studio photos, then her three latest Instagram posts, each linking to its post. Without an Instagram token, it's just the studio photos.</p>
 </header>
 
 <section class="docs-section" aria-labelledby="use">
@@ -18,7 +18,7 @@ description: "The three latest Instagram posts, fetched and resized at build tim
 {{ instagramBand({ id: "instagram", posts: instagram.posts, photos: shop.photos.studio }) }}{% endraw %}{% endset %}
   {{ usage(code) }}
   <p><strong>Used on:</strong> Home, About (without photos)</p>
-  <p>Posts come from <code>scripts/instagram.js</code>: fetched with the Instagram API at build time, then downloaded and resized onto this site. That means no embed, third-party script or tracking. Each post is a link named by its caption (“Instagram post (1 November 2026): …”). Without <code>INSTAGRAM_ACCESS_TOKEN</code>, the studio photos below stand in as one decorative link to the profile.</p>
+  <p>Posts come from <code>scripts/instagram.js</code>: fetched with the Instagram API at build time, then downloaded and resized onto this site. That means no embed, third-party script or tracking. Each post is a link named by its caption (“Instagram post (1 November 2026): …”). Studio photos come from the admin (Site photos), with their descriptions and captions; a photo with a clip plays it. Without <code>INSTAGRAM_ACCESS_TOKEN</code>, only the studio photos show.</p>
 </section>
 
 <section class="docs-section" aria-labelledby="example">
