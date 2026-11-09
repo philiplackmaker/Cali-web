@@ -57,6 +57,23 @@
   display: none;
 }
 
+/* Phones: logo, menu, light/dark switch and basket share one row, so the menu shows just its
+   icon (like the basket). The label stays for screen readers. */
+@media (width < 26.25rem) {
+  .ds-header__inner {
+    gap: var(--ds-space-inline-xs);
+  }
+
+  .ds-nav__toggle-label {
+    position: absolute;
+    inline-size: 1px; /* stylelint-disable-line unit-disallowed-list -- visually-hidden pattern */
+    block-size: 1px; /* stylelint-disable-line unit-disallowed-list -- visually-hidden pattern */
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
 .ds-nav__menu[open] .ds-nav__list--stacked {
   position: absolute;
   inset-inline: 0;
@@ -120,5 +137,31 @@
 }
 
 .ds-header__count[hidden] {
+  display: none;
+}
+
+/* Light/dark switch: a moon in light mode, a sun in dark mode. Pressed = dark. */
+.ds-theme-toggle[hidden] {
+  display: none;
+}
+
+.ds-theme-toggle__button {
+  display: grid;
+  place-items: center;
+  min-inline-size: var(--ds-target-min);
+  min-block-size: var(--ds-target-min);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ds-color-text-default);
+  cursor: pointer;
+}
+
+.ds-theme-toggle__icon {
+  display: contents;
+}
+
+.ds-theme-toggle__button[aria-pressed='true'] .ds-theme-toggle__icon--dark,
+.ds-theme-toggle__button[aria-pressed='false'] .ds-theme-toggle__icon--light {
   display: none;
 }

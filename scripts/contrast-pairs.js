@@ -30,7 +30,7 @@ export default [
   ['color.focus.ring', 'color.surface.page', 3],
   ['color.focus.ring', 'color.surface.band', 3],
   ['color.focus.ring', 'color.surface.band-deep', 3],
-  ['color.focus.ring-on-dark', 'color.surface.inverse', 3],
+  // ring-on-dark is for the full-screen viewer, which is dark in both modes.
   ['color.focus.ring-on-dark', 'color.surface.artwork', 3],
   ['color.status.success', 'color.surface.band', 3],
   ['color.action.primary', 'color.surface.band', 3],

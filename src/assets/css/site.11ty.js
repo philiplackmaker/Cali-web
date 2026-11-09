@@ -36,7 +36,7 @@ export async function buildSiteCss() {
     ORDER,
     await readFile('src/styles/fonts.css', 'utf8'),
     await layer('reset', ['src/styles/reset.css']),
-    await layer('tokens', ['src/styles/tokens.css']),
+    await layer('tokens', ['src/styles/tokens.css', 'src/styles/tokens-dark.css']),
     await layer('base', ['src/styles/base.css']),
     await layer('components', await cssIn('src/components')),
     await layer('patterns', await cssIn('src/patterns')),

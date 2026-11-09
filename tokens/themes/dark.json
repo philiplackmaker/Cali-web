@@ -1,0 +1,47 @@
+{
+  "$description": "Dark mode: new values for the semantic colours. Anything not listed here keeps its light value. Used when the visitor's device is set to dark (unless they chose Light), or when they choose Dark.",
+  "color": {
+    "$type": "color",
+    "surface": {
+      "page": { "$value": "{color.umber.900}" },
+      "raised": { "$value": "{color.umber.800}" },
+      "band": { "$value": "{color.rose.800}" },
+      "band-deep": { "$value": "{color.rose.900}" },
+      "inverse": { "$value": "{color.cream.100}" },
+      "wall": { "$value": "{color.umber.850}" }
+    },
+    "text": {
+      "default": { "$value": "{color.cream.200}" },
+      "strong": { "$value": "{color.cream.100}" },
+      "muted": { "$value": "{color.alpha.cream-70}" },
+      "inverse": { "$value": "{color.brown.900}" },
+      "error": { "$value": "{color.coral.300}" },
+      "error-on-band": { "$value": "{color.coral.300}" },
+      "link": { "$value": "{color.cream.200}" },
+      "link-hover": { "$value": "{color.pink.200}" }
+    },
+    "border": {
+      "subtle": { "$value": "{color.alpha.cream-20}" },
+      "strong": { "$value": "{color.cream.200}" },
+      "error": { "$value": "{color.coral.300}" }
+    },
+    "action": {
+      "primary": { "$value": "{color.cream.100}" },
+      "primary-text": { "$value": "{color.brown.900}" },
+      "secondary": { "$value": "{color.cream.100}" },
+      "quiet": { "$value": "{color.pink.200}" }
+    },
+    "status": {
+      "sold": { "$value": "{color.pink.300}" },
+      "sold-text": { "$value": "{color.brown.900}" },
+      "success": { "$value": "{color.pink.200}" },
+      "error": { "$value": "{color.coral.300}" }
+    },
+    "focus": {
+      "ring": { "$value": "{color.cream.100}" }
+    },
+    "brand": {
+      "mark": { "$value": "{color.brown.400}" }
+    }
+  }
+}

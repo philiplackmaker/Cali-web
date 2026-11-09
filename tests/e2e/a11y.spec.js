@@ -1,4 +1,4 @@
-// WCAG 2.2 AA: zero axe violations on every page, plus the open drawer and gallery viewer,
+// WCAG 2.2 AA: zero axe violations on every page in light and dark mode, plus the open drawer and gallery viewer,
 // and the main flows with the keyboard only.
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
@@ -17,22 +17,25 @@ async function pageList(request) {
   return [...new Set([...urls, '/cart/', '/contact/thanks/', '/404.html'])];
 }
 
-test('every page has zero axe violations', async ({ page, request }) => {
-  test.setTimeout(180_000);
-  await mockShop(page);
-  const failures = {};
-  for (const url of await pageList(request)) {
-    await page.goto(url);
-    await page.waitForLoadState('networkidle');
-    const { violations } = await new AxeBuilder({ page }).withTags(TAGS).analyze();
-    if (violations.length) {
-      failures[url] = violations.map(
-        (v) => `${v.id}: ${v.nodes.map((n) => n.target.join(' ')).join(', ')}`,
-      );
+for (const colorScheme of ['light', 'dark']) {
+  test(`every page has zero axe violations (${colorScheme} mode)`, async ({ page, request }) => {
+    test.setTimeout(180_000);
+    await page.emulateMedia({ colorScheme });
+    await mockShop(page);
+    const failures = {};
+    for (const url of await pageList(request)) {
+      await page.goto(url);
+      await page.waitForLoadState('networkidle');
+      const { violations } = await new AxeBuilder({ page }).withTags(TAGS).analyze();
+      if (violations.length) {
+        failures[url] = violations.map(
+          (v) => `${v.id}: ${v.nodes.map((n) => n.target.join(' ')).join(', ')}`,
+        );
+      }
     }
-  }
-  expect(failures).toEqual({});
-});
+    expect(failures).toEqual({});
+  });
+}
 
 test('the open cart drawer and gallery viewer have zero axe violations', async ({ page }) => {
   await mockShop(page);

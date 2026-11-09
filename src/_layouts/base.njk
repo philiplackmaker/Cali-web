@@ -3,6 +3,8 @@
 <html lang="{{ site.lang }}" data-commerce="{{ commerce }}" data-catalogue="{{ shop.source }}">
 <head>
   <meta charset="utf-8">
+  {#- A visitor's light/dark choice (theme-toggle.js), applied before anything paints. #}
+  <script>try { var t = localStorage.getItem('ds-theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; } catch (e) {}</script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   {%- set pageTitle = (title ~ " · " ~ site.name) if title else site.name %}
   <title>{{ pageTitle }}</title>
@@ -19,7 +21,9 @@
   <meta property="og:url" content="{{ site.url }}{{ page.url }}">
   <meta property="og:locale" content="{{ site.locale }}">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="theme-color" content="{{ designTokens | tokenValue('color.surface.page') }}">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="{{ designTokens | tokenValue('color.surface.page') }}">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="{{ designTokensDark | tokenValue('color.surface.page') }}">
+  <meta name="color-scheme" content="light dark">
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" href="/favicon-32.png">
   <link rel="apple-touch-icon" href="/favicon-180.png">

@@ -25,10 +25,13 @@ description: Colour, type, space and motion tokens for the Calico Melton shop.
 <ul class="docs-swatches" role="list">
   {%- for t in list %}
   <li class="docs-swatch">
-    <span class="docs-swatch__chip" style="--chip: var({{ t.cssVar }})"></span>
+    {%- set dark = designTokensDark | tokenAt(t.path) %}
+    {#- Literal values, so the docs show both modes whichever one you're viewing in. #}
+    <span class="docs-swatch__chip{% if dark %} docs-swatch__chip--split{% endif %}" style="--chip: {{ t.value }}{% if dark %}; --chip-dark: {{ dark.value }}{% endif %}"></span>
     <span class="docs-swatch__name">{{ t.path | tokenTail(prefix) }}</span>
     <code class="docs-swatch__value">{{ t.value }}</code>
     {%- if t.alias %}<span class="docs-alias">→ {{ t.alias }}</span>{% endif %}
+    {%- if dark %}<span class="docs-swatch__dark">Dark: <code>{{ dark.value }}</code>{% if dark.alias %} <span class="docs-alias">→ {{ dark.alias }}</span>{% endif %}</span>{% endif %}
     {%- if t.description %}<span class="docs-swatch__note">{{ t.description }}</span>{% endif %}
     <code class="docs-swatch__var">{{ t.cssVar }}</code>
   </li>
@@ -72,6 +75,7 @@ description: Colour, type, space and motion tokens for the Calico Melton shop.
 <section class="docs-section" aria-labelledby="colour">
   <h2 id="colour">Colour</h2>
   <p>A calm cream page lets the paintings lead. Pink is for bands like the Studio Letter. Blue, pink and maroon are accents for small moments, never large fills.</p>
+  <p><strong>Dark mode</strong> gives some semantic colours a second value, in <code>tokens/themes/dark.json</code> (split chips below: light | dark). It follows the visitor's device until they press the switch in the header, which then wins. Components don't change: they use the same <code>--ds-color-*</code> variables, which <code>tokens-dark.css</code> redefines. To change a dark colour, edit that file; to add one, give it a primitive first, then add the pair to the contrast check.</p>
 
   <h3>Semantic</h3>
   {%- for group in ["surface", "text", "border", "action", "status", "accent", "focus", "scrim"] %}
@@ -85,18 +89,19 @@ description: Colour, type, space and motion tokens for the Calico Melton shop.
 
 <section class="docs-section" aria-labelledby="contrast">
   <h2 id="contrast">Contrast</h2>
-  <p>Every colour pairing the system allows, checked against WCAG 2.2 AA on each build (<code>npm run contrast</code>). Text needs 4.5:1. Control edges and focus rings need 3:1. A pairing that isn't listed here isn't allowed: add it to <code>scripts/contrast-pairs.js</code> first.</p>
+  <p>Every colour pairing the system allows, checked against WCAG 2.2 AA in light and dark mode on each build (<code>npm run contrast</code>). Text needs 4.5:1. Control edges and focus rings need 3:1. A pairing that isn't listed here isn't allowed: add it to <code>scripts/contrast-pairs.js</code> first.</p>
   <div class="docs-table-wrap">
     <table class="docs-table docs-contrast">
       <caption class="ds-visually-hidden">Colour contrast checks</caption>
-      <thead><tr><th scope="col">Sample</th><th scope="col">Foreground on background</th><th scope="col">Ratio</th><th scope="col">Result</th></tr></thead>
+      <thead><tr><th scope="col">Foreground on background</th><th scope="col">Light</th><th scope="col">Dark</th><th scope="col">Needs</th></tr></thead>
       <tbody>
         {%- for c in contrast %}
         <tr>
-          <td><span class="docs-contrast__sample" style="--fg: var({{ c.fgVar }}); --bg: var({{ c.bgVar }})">Aa</span></td>
           <th scope="row"><code>{{ c.fg }}</code> on <code>{{ c.bg }}</code></th>
-          <td>{{ c.ratio }}:1 <span class="docs-muted">(needs {{ c.min }})</span></td>
-          <td>{{ "Pass" if c.pass else "Fail" }}</td>
+          {%- for mode in [c.light, c.dark] %}
+          <td><span class="docs-contrast__sample" style="--fg: {{ mode.fgValue }}; --bg: {{ mode.bgValue }}">Aa</span> {{ mode.ratio }}:1 {{ "Pass" if mode.pass else "Fail" }}</td>
+          {%- endfor %}
+          <td>{{ c.min }}:1</td>
         </tr>
         {%- endfor %}
       </tbody>

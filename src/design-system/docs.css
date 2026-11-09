@@ -156,6 +156,14 @@
   border-radius: var(--ds-shape-control);
 }
 
+.docs-swatch__chip--split {
+  background: linear-gradient(to right, var(--chip) 50%, var(--chip-dark) 50%);
+}
+
+.docs-swatch__dark {
+  color: var(--ds-color-text-muted);
+}
+
 .docs-swatch__name {
   font-size: var(--ds-type-label-size);
   font-weight: var(--ds-type-label-weight);

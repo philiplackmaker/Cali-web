@@ -127,6 +127,8 @@ export default function (eleventyConfig) {
     if (!token) throw new Error(`Unknown token: ${path}`);
     return token.value;
   });
+  // designTokensDark | tokenAt("color.surface.page"): one token, or undefined.
+  eleventyConfig.addFilter('tokenAt', (tokens, path) => tokens.find((t) => t.path === path));
   // tokens | tokensAtAny(["font.family", "font.weight"])
   eleventyConfig.addFilter('tokensAtAny', (tokens, prefixes) =>
     tokens.filter((t) => prefixes.some((p) => t.path === p || t.path.startsWith(`${p}.`))),

@@ -1,6 +1,6 @@
 /* Element defaults. Layer: base. Tokens only. */
 html {
-  color-scheme: light;
+  /* color-scheme comes from tokens-dark.css: light, or dark in dark mode. */
   background: var(--ds-color-surface-page);
 }
 

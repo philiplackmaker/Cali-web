@@ -67,7 +67,7 @@
   padding: var(--ds-space-gutter);
   border: 0;
   background: var(--ds-color-surface-artwork);
-  color: var(--ds-color-text-inverse);
+  color: var(--ds-color-text-on-artwork);
 }
 
 .ds-gallery__viewer[open] {

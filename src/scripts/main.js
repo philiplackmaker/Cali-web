@@ -6,6 +6,7 @@ const COMPONENTS = {
   'add-to-cart': '../components/add-to-cart/add-to-cart.js',
   'cart-drawer': '../components/cart-drawer/cart-drawer.js',
   'cart-count': '../components/header/cart-count.js',
+  'theme-toggle': '../components/header/theme-toggle.js',
   'product-gallery': '../components/product-gallery/product-gallery.js',
   'product-live': '../components/product-live/product-live.js',
   'error-banner': '../patterns/error-banner/error-banner.js',
