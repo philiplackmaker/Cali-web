@@ -72,7 +72,8 @@ Do this when steps 1–3 are done, ideally on a quiet morning. Lower the TTLs a 
       Google Sheet. (The tests only check that the form posts to the Apps Script; they can't see the sheet.)
 - [ ] Place a real order, then refund it.
 - [ ] In GitHub → Settings → Pages, turn Pages off (or remove the custom domain), so it doesn't
-      fight Netlify for the domain.
+      fight Netlify for the domain. `main` has a `CNAME` file (added on github.com on 8 November)
+      that points Pages at calicomelton.com: delete it at the same time.
 - [ ] Merge `shop-foundations` into `main`, then switch Netlify's production branch to `main`.
 - [ ] Google Search Console: add the domain and submit `https://calicomelton.com/sitemap.xml`.
 - [ ] Run Lighthouse against the live product page. Real Shopify images (served as WebP or AVIF by
