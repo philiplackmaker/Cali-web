@@ -7,7 +7,8 @@
   "studio": [
     {
       "image": "/content/uploads/cali-easel.jpg",
-      "alt": "Cali at the easel, seen from behind in a cap and white shirt, painting a brown ground.",
+      "video": "/content/uploads/cali-easel.mp4",
+      "alt": "Cali at the easel, seen from behind in a cap and white shirt, painting a deep red ground.",
       "caption": "At the easel"
     },
     {
@@ -16,9 +17,10 @@
       "caption": "Prints at home"
     },
     {
-      "image": "/content/uploads/monstera-room.jpg",
-      "alt": "Monstera hanging on a sunlit wall, beneath a shelf of vases and a garland of felt faces.",
-      "caption": "Monstera on the wall"
+      "image": "/content/uploads/canvas-reveal.jpg",
+      "video": "/content/uploads/canvas-reveal.mp4",
+      "alt": "Cali turns a canvas round to reveal a large abstract painting in soft pinks, blues and deep reds.",
+      "caption": "A new painting"
     }
   ]
 }
