@@ -44,3 +44,4 @@ module.exports = {
     upload: { target: 'filesystem', outputDir: '.lighthouseci/reports' },
   },
 };
+
