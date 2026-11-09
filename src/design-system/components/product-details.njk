@@ -16,7 +16,7 @@ description: Medium, size, year, framing and edition, set out like a gallery wal
   {% set code %}{% raw %}{% from "components/product-details/product-details.njk" import productDetails %}
 {{ productDetails(product) }}{% endraw %}{% endset %}
   {{ usage(code) }}
-  <p>Rows come from Shopify metafields (medium, dimensions, year, framing, edition size) and only show when filled in. The promises under originals are set in <code>src/_data/site.js</code> as <code>originalPromises</code>. <strong>Cali needs to confirm each one before launch.</strong></p>
+  <p>Rows come from the sheet’s columns (medium, dimensions, year, framing, edition size) and only show when filled in. The promises under originals are set in <code>src/_data/site.js</code> as <code>originalPromises</code>. <strong>Cali needs to confirm each one before launch.</strong></p>
 </section>
 
 <section class="docs-section" aria-labelledby="variants">

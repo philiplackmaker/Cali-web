@@ -51,7 +51,7 @@ description: The basket, in a modal dialog with line edits, subtotal and checkou
     <li><strong>Updating:</strong> the lines fade a little and <code>aria-busy</code> is set.</li>
     <li><strong>Sold or short of stock:</strong> a notice stays at the top until the next change, e.g. “Sorry, “Blue Jug” has just sold, so I've taken it out of your basket.”</li>
     <li><strong>Shop unreachable:</strong> a red notice: “I can't reach the shop just now. Please try again in a minute.”</li>
-    <li><strong>Checkout:</strong> a link to Shopify's hosted <code>checkoutUrl</code>. In the mock it goes to checkout.example.</li>
+    <li><strong>Checkout:</strong> a form that posts the basket and delivery choice to <code>/api/checkout</code>, which sends the buyer to Stripe. In the docs it goes to checkout.example.</li>
   </ul>
 </section>
 

@@ -1,15 +1,18 @@
-// A stand-in for the Storefront API cart, used until step 4 and in tests.
-// Same method names and response shapes as the real thing:
+// The basket, kept in the browser. Prices and stock come from the built catalogue
+// (/assets/data/catalog.json), so they're whatever the last build read from the sheet.
+// Payment happens at Stripe: the basket's checkoutUrl is where the checkout form posts.
+// Responses keep the shape cart.js expects:
 // { cart, userErrors: [], warnings: [{ code, target, message }] }.
-// Stock is enforced like Shopify checkout: originals have quantityAvailable 1.
+// Stock is enforced: originals have quantityAvailable 1, sold variants 0.
 
 let seq = 0;
-const uid = (prefix) => `gid://shopify/${prefix}/mock-${Date.now().toString(36)}-${++seq}`;
+const uid = (prefix) => `${prefix}-${Date.now().toString(36)}-${++seq}`;
 
-export function createMockClient({
+export function createLocalCart({
   catalog,
   storage,
-  key = 'ds-mock-carts',
+  key = 'ds-carts',
+  checkoutUrl = '/api/checkout',
   latency = 0,
   fail = () => false,
 }) {
@@ -39,14 +42,14 @@ export function createMockClient({
     const subtotal = lines.reduce((sum, l) => sum + Number(l.cost.totalAmount.amount), 0);
     return {
       id: stored.id,
-      checkoutUrl: `https://checkout.example/mock/${encodeURIComponent(stored.id)}`,
+      checkoutUrl,
       totalQuantity: lines.reduce((n, l) => n + l.quantity, 0),
       cost: { subtotalAmount: { amount: subtotal.toFixed(2), currencyCode } },
       lines,
     };
   }
 
-  // Caps each line at what's in stock and drops sold lines, reporting warnings like Shopify.
+  // Caps each line at what's in stock and drops sold lines, reporting warnings.
   async function reconcile(stored) {
     const warnings = [];
     const kept = [];
@@ -85,7 +88,7 @@ export function createMockClient({
 
   async function guard(op) {
     await wait();
-    if (fail(op)) throw new Error(`Mock Storefront API unavailable (${op})`);
+    if (fail(op)) throw new Error(`Shop catalogue unavailable (${op})`);
   }
 
   function getStored(id) {
@@ -98,12 +101,12 @@ export function createMockClient({
     for (const { merchandiseId, quantity = 1 } of lines) {
       const existing = stored.lines.find((l) => l.merchandiseId === merchandiseId);
       if (existing) existing.quantity += quantity;
-      else stored.lines.push({ id: uid('CartLine'), merchandiseId, quantity });
+      else stored.lines.push({ id: uid('line'), merchandiseId, quantity });
     }
   }
 
   return {
-    // Like Shopify, a plain cart read reports no warnings: a sold line just comes back
+    // A plain cart read reports no warnings: a sold line just comes back
     // with availableForSale: false, and the cart store deals with it.
     async cart(id) {
       await guard('cart');
@@ -112,7 +115,7 @@ export function createMockClient({
     },
     async cartCreate({ lines = [] } = {}) {
       await guard('cartCreate');
-      const stored = { id: uid('Cart'), lines: [] };
+      const stored = { id: uid('cart'), lines: [] };
       addTo(stored, lines);
       return respond(stored);
     },

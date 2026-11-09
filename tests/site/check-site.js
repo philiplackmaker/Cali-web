@@ -51,7 +51,9 @@ for (const file of pages) {
   }
   if (!/<html lang="en-GB"/.test(html)) fail(rel, 'html lang is not en-GB');
   if (launch) {
-    if (/data-commerce="mock"/.test(html)) fail(rel, 'built with the mock catalogue, not Shopify');
+    if (/data-catalogue="(local|fixture)"/.test(html)) {
+      fail(rel, 'built from the local catalogue, not the Google Sheet (set SHEET_CSV_URL)');
+    }
     if (/TODO copy|Placeholder|placeholder copy/i.test(html.replace(/placeholder="[^"]*"/g, '')))
       fail(rel, 'still has placeholder copy (search the template for TODO)');
   }
@@ -107,9 +109,7 @@ if (!(await readFile(join(dir, 'robots.txt'), 'utf8')).includes('Sitemap:'))
 // JS budget: everything a shop page could load, gzipped, under 30 KB. Docs and mock-only files excluded.
 const js = files.filter(
   (f) =>
-    f.endsWith('.js') &&
-    f.includes(`${sep}assets${sep}js${sep}`) &&
-    !/docs-demo|mock-storefront|contrast/.test(f),
+    f.endsWith('.js') && f.includes(`${sep}assets${sep}js${sep}`) && !/docs-demo|contrast/.test(f),
 );
 const gz = (await Promise.all(js.map((f) => readFile(f)))).reduce(
   (n, b) => n + gzipSync(b).length,

@@ -17,7 +17,7 @@ class VariantPicker extends HTMLElement {
     this.update({ initial: true });
   }
 
-  /** Swap in live variant data (price, stock) from Shopify and re-check everything. */
+  /** Swap in live variant data (price, stock) from the catalogue and re-check everything. */
   setVariants(variants) {
     this.variants = variants;
     this.update({ initial: true });

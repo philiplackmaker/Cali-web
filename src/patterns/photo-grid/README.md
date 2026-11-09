@@ -8,6 +8,6 @@ Studio photos with captions.
 ```
 
 - **Used on:** About
-- The photos are the `studio` site photos in Shopify, ordered by their Order field.
+- The photos are the `studio` rows in the sheet's Photos tab, ordered by their Order column.
 
 Docs: `/design-system/patterns/photo-grid/`

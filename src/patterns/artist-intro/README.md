@@ -8,6 +8,6 @@ A photo of Cali and a few lines in her voice.
 ```
 
 - **Used on:** Home, About
-- The photo is the `about-portrait` site photo in Shopify.
+- The photo is the `about portrait` row in the sheet's Photos tab (a placeholder until there is one).
 
 Docs: `/design-system/patterns/artist-intro/`

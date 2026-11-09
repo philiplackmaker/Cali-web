@@ -7,7 +7,7 @@
   {% from "components/add-to-cart/add-to-cart.njk" import addToCart %}
   {% call addToCart(product) %}{{ variantPicker(product) }}{% endcall %}
   Options: { state: "loading" | "unavailable" | "in-basket" } to render a state for docs.
-           { domain: "store.myshopify.com" } adds no-JS buy links (Shopify cart permalinks).
+  Without JavaScript, buy buttons post straight to Stripe checkout (/api/checkout).
 -#}
 {%- from "components/button/button.njk" import button -%}
 {%- from "components/link/link.njk" import link -%}
@@ -42,16 +42,20 @@
     {%- if not sold and not onRequest %}
     <noscript>
       <div class="ds-add-to-cart__nojs">
-        {%- if opts.domain %}
-        <p>Buy straight away at Shopify's secure checkout:</p>
+        <p>Buy straight away at Stripe’s secure checkout:</p>
+        <p>
+          <label for="nojs-delivery-{{ product.handle }}">Delivery to</label>
+          <select id="nojs-delivery-{{ product.handle }}" name="delivery">
+            {%- for d in site.delivery %}
+            <option value="{{ d.id }}">{{ d.label }}, {{ { amount: d.amount, currencyCode: "GBP" } | money }}</option>
+            {%- endfor %}
+          </select>
+        </p>
         <ul role="list">
           {%- for v in product.variants.nodes %}{% if v.availableForSale %}
-          <li><a href="{{ v | cartPermalink(opts.domain, 1) }}">{{ "Buy now" if original else ("Buy " ~ v.title) }}, {{ v.price | money }}</a></li>
+          <li><button type="submit" formaction="/api/checkout" formmethod="post" name="buy" value="{{ v.id }}">{{ "Buy now" if original else ("Buy " ~ v.title) }}, {{ v.price | money }}</button></li>
           {%- endif %}{% endfor %}
         </ul>
-        {%- else %}
-        <p>The basket needs JavaScript switched on. You can still <a href="/contact/?about={{ product.handle }}">ask me about buying this</a>.</p>
-        {%- endif %}
       </div>
     </noscript>
     {%- endif %}

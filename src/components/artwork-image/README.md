@@ -1,6 +1,6 @@
 # Artwork image
 
-Responsive painting images: a `srcset` from Shopify CDN widths (never upscaled), real width and height, and lazy loading unless `priority`.
+Responsive painting images: a `srcset` from the image widths made at build time (never upscaled), real width and height, and lazy loading unless `priority`.
 
 ```njk
 {% from "components/artwork-image/artwork-image.njk" import artworkImage %}

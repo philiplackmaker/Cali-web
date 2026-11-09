@@ -34,12 +34,27 @@
         </div>
       </div>
       <footer class="ds-cart-drawer__footer" data-cart-footer hidden>
-        <dl class="ds-cart-drawer__subtotal">
-          <dt>Subtotal</dt>
-          <dd data-cart-subtotal></dd>
-        </dl>
-        <p class="ds-cart-drawer__note">Shipping and tax are worked out at checkout.</p>
-        {{ button({ label: "Checkout", href: "/cart/", full: true, iconEnd: "arrow-right", attrs: { "data-cart-checkout": "" } }) }}
+        {#- Posts the basket to /api/checkout (netlify/functions/checkout.mjs), which sends the
+            buyer to Stripe. The basket's lines go in as hidden id + quantity pairs. #}
+        <form class="ds-cart-drawer__checkout" method="post" action="/api/checkout" data-cart-checkout>
+          <dl class="ds-cart-drawer__subtotal">
+            <dt>Subtotal</dt>
+            <dd data-cart-subtotal></dd>
+          </dl>
+          <fieldset class="ds-cart-drawer__delivery">
+            <legend class="ds-cart-drawer__delivery-legend">Delivery to</legend>
+            {%- for d in site.delivery %}
+            <label class="ds-cart-drawer__delivery-option">
+              <input type="radio" name="delivery" value="{{ d.id }}"{% if loop.first %} checked{% endif %}>
+              <span class="ds-cart-drawer__delivery-label">{{ d.label }}, {{ { amount: d.amount, currencyCode: "GBP" } | money }}</span>
+              <span class="ds-cart-drawer__note">{{ d.description }}</span>
+            </label>
+            {%- endfor %}
+          </fieldset>
+          <div data-cart-checkout-lines hidden></div>
+          {{ button({ label: "Checkout", type: "submit", full: true, iconEnd: "arrow-right", attrs: { "data-cart-checkout-button": "" } }) }}
+          <p class="ds-cart-drawer__note">You’ll pay securely with Stripe: card, Apple Pay or Google Pay.</p>
+        </form>
       </footer>
     </div>
   {% if opts.inline %}</div>{% else %}</dialog>{% endif %}

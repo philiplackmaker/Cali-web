@@ -1,6 +1,6 @@
 # Calico Melton: shop
 
-Cali's online shop for original paintings and prints. It's plain HTML, CSS and vanilla JS, built with [Eleventy](https://www.11ty.dev/). Shopify runs products, stock and checkout through the Storefront API. Netlify hosts it.
+Cali's online shop for original paintings and prints. It's plain HTML, CSS and vanilla JS, built with [Eleventy](https://www.11ty.dev/). Products come from Cali's **Google Sheet**, payments go through **Stripe Checkout**, and Netlify hosts it.
 
 The site is built as a **design system first**: tokens, then components, then patterns, then pages. Pages only use documented parts, so adding a page should never need new CSS. You can browse the system at `/design-system/`, which isn't linked from the public site and is set to `noindex`.
 
@@ -13,24 +13,24 @@ npm install
 npm run dev        # builds tokens, serves at http://localhost:8080 with live reload
 ```
 
-| Command                | What it does                                                                                                                |
-| ---------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| `npm run dev`          | Build tokens and serve locally                                                                                              |
-| `npm run build`        | Build tokens, check token contrast, build the site into `_site/`                                                            |
-| `npm run tokens`       | Compile `/tokens/*.json` → `src/styles/tokens.css` and docs data                                                            |
-| `npm run contrast`     | Fail if any allowed colour pairing misses WCAG AA                                                                           |
-| `npm run lint`         | Stylelint, ESLint, Prettier check                                                                                           |
-| `npm run format`       | Prettier, writing changes                                                                                                   |
-| `npm test`             | Unit tests (`node:test`)                                                                                                    |
-| `npm run test:e2e`     | Playwright: shop flows, edge cases, forms, axe on every page, keyboard only, in 5 browsers, against a mocked Storefront API |
-| `npm run check:site`   | Titles, descriptions, canonicals, image sizes, JSON-LD, sitemap, JS budget                                                  |
-| `npm run check:launch` | The same, plus no placeholder copy or mock data: the go-live gate                                                           |
-| `npm run lighthouse`   | Lighthouse CI on mobile: 95+ in every category, LCP ≤ 2.5s, CLS < 0.1                                                       |
-| `npm run quality`      | All of the above, in order                                                                                                  |
+| Command                | What it does                                                                                                                 |
+| ---------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `npm run dev`          | Build tokens and serve locally                                                                                               |
+| `npm run build`        | Build tokens, check token contrast, build the site into `_site/`                                                             |
+| `npm run tokens`       | Compile `/tokens/*.json` → `src/styles/tokens.css` and docs data                                                             |
+| `npm run contrast`     | Fail if any allowed colour pairing misses WCAG AA                                                                            |
+| `npm run lint`         | Stylelint, ESLint, Prettier check                                                                                            |
+| `npm run format`       | Prettier, writing changes                                                                                                    |
+| `npm test`             | Unit tests (`node:test`)                                                                                                     |
+| `npm run test:e2e`     | Playwright: shop flows, edge cases, forms, axe on every page, keyboard only, in 5 browsers, against a mocked Stripe checkout |
+| `npm run check:site`   | Titles, descriptions, canonicals, image sizes, JSON-LD, sitemap, JS budget                                                   |
+| `npm run check:launch` | The same, plus no placeholder copy or mock data: the go-live gate                                                            |
+| `npm run lighthouse`   | Lighthouse CI on mobile: 95+ in every category, LCP ≤ 2.5s, CLS < 0.1                                                        |
+| `npm run quality`      | All of the above, in order                                                                                                   |
 
 CI (`.github/workflows/ci.yml`) runs the whole quality bar on every push to `main` and every pull request, in three jobs: checks, Playwright, and Lighthouse. Going live is covered step by step in [LAUNCH.md](LAUNCH.md).
 
-The e2e tests build the site in live (`storefront`) mode against a fake store (`tests/support/fake-storefront.mjs`), then answer the browser's Storefront API calls with `tests/support/storefront-mock.js`. No real Shopify store is needed.
+The e2e tests build the site with the test products in `src/_data/mock.js` (`SHOP_FIXTURE=mock`, which has originals, sold work and sales), fake the Instagram API at build time (`tests/support/fake-apis.mjs`), and stand in for the checkout function and Stripe in the browser (`tests/support/shop-mock.js`). No Google Sheet or Stripe account is needed.
 
 ## How the code is laid out
 
@@ -109,7 +109,7 @@ The checklist:
 - `footerSignup: false`: on pages that already have a Studio Letter band.
 - `noindex: true` and `eleventyExcludeFromSitemap: true`: for utility pages like /cart/.
 
-Product and collection pages are generated from `src/_data/shop.js`. It returns mock data for now and will fetch from Shopify in step 4, in the same shape.
+Product and collection pages are generated from the `shop` data (`scripts/shop.js`): the Google Sheet, or its local copy.
 
 | Page                    | URL                                           | Template                              |
 | ----------------------- | --------------------------------------------- | ------------------------------------- |
@@ -128,74 +128,58 @@ Placeholder copy is marked `<!-- TODO copy -->` or `TODO` in the templates. Sear
 
 ### How the cart fits together
 
-- `src/scripts/cart.js` is the cart store. It wraps a client with the Storefront API's cart methods, keeps the cart id in `localStorage`, runs one operation at a time, and emits `change` events with messages in Cali's voice.
-- `src/scripts/commerce.js` creates one client and one store per page. On a live build the page says `<html data-commerce="storefront">`, and the client is `src/scripts/shopify-client.js`, talking to the real Storefront API. Without Shopify settings, and always on the `/design-system/` pages, it's `mock-storefront.js`.
-- `<add-to-cart>`, `<cart-drawer>` and `<cart-count>` all share that store. Checkout is Shopify's hosted `checkoutUrl`.
-- `<product-live>` checks live stock and price when a product page opens, because pages are built ahead of time. A painting that sold since the last build shows as sold. If Shopify can't be reached, buying pauses with a message.
-- Without JS, product pages show "Buy" links: Shopify cart permalinks that go straight to checkout.
+- `scripts/shop.js` loads the catalogue at build time: Cali's Google Sheet (`SHEET_CSV_URL`, read by `scripts/sheet.js`), or the local copy in `scripts/local-catalogue.js` when that isn't set. Products keep the shape the site was first built around (Shopify's Storefront API), so templates don't care where they came from. The build writes every variant to `/assets/data/catalog.json`.
+- `src/scripts/cart.js` is the cart store, over `src/scripts/local-cart.js`: the basket lives in the browser's `localStorage`, with prices and stock from `catalog.json`. It runs one operation at a time and emits `change` events with messages in Cali's voice. `src/scripts/commerce.js` creates one of each per page; the `/design-system/` pages use the docs' example products instead (`data-commerce="mock"`).
+- `<add-to-cart>`, `<cart-drawer>` and `<cart-count>` all share that store.
+- **Checkout** is a form in the basket. It posts the lines (variant id + quantity) and the delivery choice (UK or rest of the world, from `site.delivery`) to `/api/checkout`: `netlify/functions/checkout.mjs`, with the logic in `scripts/checkout.js`. That checks every line against `catalog.json` (so a price can't be changed in the page), creates a Stripe Checkout Session with the prices, delivery and allowed countries, and redirects to Stripe. After paying, Stripe sends the buyer to `/order-thanks/`, which empties the basket.
+- **Originals** can only be bought once: the checkout function asks Stripe whether that painting has already been paid for, even if the sheet doesn't say Sold yet.
+- Without JS, product pages show "Buy" buttons that post straight to `/api/checkout`.
 
-## Connect Shopify (one-time setup)
+## Connect the Google Sheet (one-time setup)
 
-1. **Storefront API token.** In the Shopify admin, add the **Headless** sales channel and create a storefront. Copy its **public** access token. Give it these Storefront API permissions:
-   - read products, variants and collections (`unauthenticated_read_product_listings`)
-   - read product inventory (`unauthenticated_read_product_inventory`), for "only 1 left" and sold-out checks
-   - read and write carts (`unauthenticated_read_checkouts`, `unauthenticated_write_checkouts`)
-   - read metaobjects (`unauthenticated_read_metaobjects`), for the site photos
-2. **Publish products** to the Headless channel. The site can only see products published there.
-3. **Metafield definitions** (Settings → Custom data → Products), all in the `custom` namespace with **Storefront access** turned on:
+1. **Share the sheet.** In Google Sheets → Share → General access → **Anyone with the link**, Viewer. (Or File → Share → Publish to web → CSV.) The build reads it as CSV.
+2. **Columns.** One row per print size, or one row per original. The build understands these headers (any order, any case; others are ignored):
 
-   | Name         | Key                   | Type             | For              |
-   | ------------ | --------------------- | ---------------- | ---------------- |
-   | Medium       | `custom.medium`       | Single line text | "Oil on canvas"  |
-   | Dimensions   | `custom.dimensions`   | Single line text | "60 × 80 cm"     |
-   | Year         | `custom.year`         | Integer          | 2026             |
-   | Framing      | `custom.framing`      | Single line text | "Oak tray frame" |
-   | Edition size | `custom.edition_size` | Integer          | 50 (prints)      |
+   | Column                                            | Example                                 | Notes                                                           |
+   | ------------------------------------------------- | --------------------------------------- | --------------------------------------------------------------- |
+   | `Name`                                            | Blue Tulips                             | Rows with the same name are one product                         |
+   | `Description`                                     | Giclee, museum quality print on 300gsm… | First paragraph on the product page                             |
+   | `Cost`                                            | £30                                     | Or "on request" for an original sold by enquiry                 |
+   | `Size`                                            | 20cm x 25cm, A4                         | Becomes "20 × 25 cm"                                            |
+   | `How it was made`                                 | Prints are scanned from…                | Second paragraph                                                |
+   | `Dropbox…`                                        | a Dropbox share link to the scan        | The main image. Any header starting "Dropbox" or "Image" works  |
+   | `alternative images`                              | more Dropbox links                      | Extra photos, e.g. framed in a room                             |
+   | `Type` (optional)                                 | Original                                | Blank means Print                                               |
+   | `Sold` (optional)                                 | yes                                     | On a print row, sells out that size                             |
+   | `Alt text` (optional)                             | A white swan holding a red tulip…       | Describes the painting for screen readers. Strongly recommended |
+   | `Medium`, `Year`, `Framing`, `Edition` (optional) | Oil on canvas, 2026                     | Shown in the product's details                                  |
 
-4. **Environment variables.** Locally, copy `.env.example` to `.env`. On Netlify, set them under Site configuration → Environment variables:
-   - `SHOPIFY_STORE_DOMAIN` (e.g. `calicomelton.myshopify.com`) and `SHOPIFY_STOREFRONT_TOKEN`. With both set, the build fetches live data, and the log says `[shop] Fetched N products`. Without them it uses the mock catalogue and says so. `SHOPIFY_MOCK=1` forces the mock.
-   - `NETLIFY_BUILD_HOOK_URL`: see the next step.
-   - `INSTAGRAM_ACCESS_TOKEN` (optional): for the latest Instagram posts. See "Instagram" below.
-5. **Rebuilds.**
-   - In Netlify, create a build hook (Site configuration → Build & deploy → Build hooks) and copy its URL.
-   - In Shopify (Settings → Notifications → Webhooks), add three webhooks, **Product creation**, **Product update** and **Product deletion**, all in JSON format, all pointing at that URL. New work and price changes go live within a few minutes.
-   - Set the same URL as `NETLIFY_BUILD_HOOK_URL`. The scheduled function `netlify/functions/nightly-rebuild.mjs` rebuilds every night at 04:00 UTC. That picks up site photo changes, because Shopify's admin can't send webhooks for metaobjects. To see a photo change straight away, use Netlify's **Trigger deploy** button.
+   Put the newest work at the top: the home page shows the first six.
 
-The Storefront token is public by design. It's in every page's HTML, like the Buy Button's, and only allows reading the catalogue and managing carts.
+3. **Images.** Dropbox share links work as they are. The build downloads each one, makes web-sized WebP copies (320 to 1440 px wide) and caches the download in `.cache/`. Very large scans (over 100 MB) slow the build down, so a 3000 px JPEG is plenty. A product whose image can't be loaded, or with no price, is left out, with a warning in the build log.
+4. **Photos tab (optional).** Add a second tab with `Placement` (`home hero`, `about portrait` or `studio`), `Image` (Dropbox link), `Alt text`, `Caption` and `Order`. Set `SHEET_PHOTOS_CSV_URL` to that tab's link. Without it, the home page uses the first painting, the studio photos use the paintings' extra views, and the About photo is a placeholder.
+5. **Environment variables** (Netlify → Site configuration → Environment variables; locally, `.env`, see `.env.example`): `SHEET_CSV_URL` (the sheet's normal link is fine) and, if used, `SHEET_PHOTOS_CSV_URL`. The build log says `[shop] N products from the Google Sheet.`
+6. **Rebuilds.** Sheet changes go live on the next build. `netlify/functions/nightly-rebuild.mjs` rebuilds every night at 04:00 UTC (it needs `NETLIFY_BUILD_HOOK_URL`, a build hook from Site configuration → Build & deploy → Build hooks). To see a change straight away, use Netlify's **Trigger deploy** button.
 
-## Add a product in Shopify
+## Connect Stripe (one-time setup)
 
-- **Original:** one product, inventory **1**, tag `original`. Fill in the metafields for medium, dimensions (cm), year and **framing** (e.g. "Oak tray frame, ready to hang"). Add it to the **Originals** collection.
-- **Price on request:** also tag a major piece `price-on-request`. Its price is hidden, and the page offers "Enquire about this painting" instead of the basket. Keep a real price in Shopify anyway, for your own records.
-- **Print:** one product with variants for **size** and **paper**, tag `print`, and an edition-size metafield. Add it to the **Prints** collection.
-- Upload the photos to the product in Shopify. The first image is the main one, so make it the painting straight on. Next, add a detail shot and a photo of the painting on a wall in a room, so collectors can judge its scale.
-- Publish it to the **Headless** sales channel. Saving it triggers a rebuild through the product webhooks, and it's live within a few minutes.
+1. Create a Stripe account for Cali (UK, GBP) and finish the business details so payouts can start.
+2. Developers → API keys: copy the **secret** key. Set it as `STRIPE_SECRET_KEY` on Netlify. Use the **test** key (`sk_test_…`) first; test card `4242 4242 4242 4242`, any future date and CVC.
+3. Settings → Payment methods: card is on by default. Turn on Apple Pay and Google Pay (and Klarna if wanted, then set `site.payments.instalments`).
+4. Settings → Customer emails: turn on **Successful payments** so buyers get a receipt. Settings → Business → Public details: the name buyers see on the payment page and their statement.
+5. Orders: each paid checkout shows under Payments, with the shipping address and the items. Turn on email notifications for successful payments (your profile → Communication preferences) so Cali hears about each order. Refunds are done from the payment.
+6. Delivery prices and countries are in `src/_data/site.js` → `delivery` (and the "Rest of the world" country list in `scripts/checkout.js`).
+
+The secret key only ever lives on Netlify, inside the checkout function. Pages never see it.
+
+## Add a print or an original
+
+- **Print:** add a row per size to the sheet, with the same Name, a Cost and a Size, and the Dropbox link to the scan. Add Alt text on the first row.
+- **Original:** one row, with Type "Original", Cost, Size (e.g. "60cm x 80cm"), Medium and Year. It's sold one at a time. When it's sold, write "yes" in Sold (the checkout already stops a second sale, but this shows it as sold on the site).
+- **Price on request:** write "on request" in Cost. The page offers "Enquire about this painting" instead of the basket.
+- Then trigger a deploy, or wait for the nightly rebuild.
 
 **Enquiries** from /contact/ arrive as Netlify Forms submissions (form name `enquiry`). In Netlify, go to Site configuration → Forms → Notifications and set them to email Cali.
-
-## Add or change site photos (hero, About, studio)
-
-Photos that aren't products, like the home hero, the About portrait and the studio shots, are kept in Shopify too, as **metaobjects**. Shopify stays the only place Cali edits content. Until there are entries, the hero falls back to the newest painting and the other spots use placeholders.
-
-**One-time setup (Shopify admin → Settings → Custom data → Metaobjects):** add a definition called **Site photo**, type `site_photo`, with these fields:
-
-| Field                   | Type                                                               | Notes                                             |
-| ----------------------- | ------------------------------------------------------------------ | ------------------------------------------------- |
-| Placement (`placement`) | Single line text, choices: `home-hero`, `about-portrait`, `studio` | Where on the site the photo goes                  |
-| Image (`image`)         | File (images only)                                                 | Upload the largest version you have               |
-| Alt text (`alt_text`)   | Single line text, required                                         | Describe the painting or scene for screen readers |
-| Caption (`caption`)     | Single line text, optional                                         | Shown under studio photos                         |
-| Order (`order`)         | Integer, optional                                                  | Lower numbers first, for the studio photos        |
-
-Turn on **Storefront access** for the definition. Otherwise the site can't read it.
-
-**Day to day (Content → Metaobjects → Site photo):**
-
-- To change the hero, edit the `home-hero` entry and swap the image. Only one entry should use `home-hero`, and the same goes for `about-portrait`.
-- To add a studio photo, add an entry with placement `studio`, then set its order.
-- Changes go live on the nightly rebuild, or straight away with Netlify's **Trigger deploy** button.
-
-Shopify's CDN serves every photo, and the site requests the size each screen needs.
 
 ## Instagram: the latest three posts
 

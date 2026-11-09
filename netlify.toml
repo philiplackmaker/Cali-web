@@ -18,3 +18,10 @@
   for = "/assets/fonts/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
+
+# Keep downloaded Dropbox scans and Instagram images between builds (.cache/eleventy-fetch),
+# so the nightly rebuild doesn't download every painting again.
+[[plugins]]
+  package = "netlify-plugin-cache"
+  [plugins.inputs]
+    paths = [".cache"]

@@ -1,6 +1,6 @@
 # Price
 
-Formats Storefront `MoneyV2` with `Intl.NumberFormat` (en-GB). Whole pounds have no pence.
+Formats money (`{ amount, currencyCode }`) with `Intl.NumberFormat` (en-GB). Whole pounds have no pence.
 
 ```njk
 {% from "components/price/price.njk" import price %}

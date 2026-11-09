@@ -8,6 +8,6 @@ One painting, large, with the name and a line of introduction.
 ```
 
 - **Used on:** Home
-- The hero painting is the page’s LCP image. Also set `preloadImage` to it in the page’s data, so the browser fetches it before anything else. The photo comes from the `home-hero` site photo in Shopify.
+- The hero painting is the page’s LCP image. Also set `preloadImage` to it in the page’s data, so the browser fetches it before anything else. The photo is the `home hero` row in the sheet's Photos tab, or else the first painting.
 
 Docs: `/design-system/patterns/hero/`

@@ -1,6 +1,6 @@
 // Every night: refresh the Instagram token (so it doesn't expire after 60 days), then rebuild
-// the site. The rebuild picks up the latest Instagram posts and any changes Shopify can't send
-// a webhook for from its admin (site photos, which are metaobjects).
+// the site. The rebuild picks up the latest Instagram posts and any changes to the Google Sheet
+// (products and photos). Cali can also rebuild straight away with Netlify's Trigger deploy.
 // Needs NETLIFY_BUILD_HOOK_URL; uses INSTAGRAM_ACCESS_TOKEN if it's set.
 
 async function refreshInstagramToken(token) {

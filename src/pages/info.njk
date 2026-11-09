@@ -10,20 +10,23 @@ description: Shipping, framing, caring for your painting, and returns for origin
   {{ pageIntro({ eyebrow: "Good to know", title: "Shipping and FAQ", lede: "How your painting gets to you, and how to look after it once it's there." }) }}
   {% call prose() %}
     <h2 id="shipping">Shipping</h2>
-    <p>Originals are wrapped and packed by me, then sent insured and tracked. Prints are made to order and posted rolled in a sturdy tube. Placeholder times and prices. <!-- TODO copy --></p>
+    <p>Delivery is chosen in your basket:</p>
+    <ul>
+      {%- for d in site.delivery %}
+      <li>{{ d.label }}: {{ { amount: d.amount, currencyCode: "GBP" } | money }}. {{ d.description }}.</li>
+      {%- endfor %}
+    </ul>
+    <p>Placeholder: how prints are packed and posted. <!-- TODO copy --></p>
     <h2 id="framing">Framing</h2>
     <p>Each painting's page says whether it comes framed. Placeholder: frame styles, and framing on request. <!-- TODO copy --></p>
     <h2 id="care">Caring for your painting</h2>
     <p>Hang it out of direct sunlight, away from radiators and damp. Dust it gently with a soft, dry brush. <!-- TODO copy --></p>
     <h2 id="returns">Returns</h2>
-    <p>If a painting isn't right, you can return it within 14 days of delivery. Placeholder: confirm terms against the Shopify refund policy. <!-- TODO copy --></p>
-    <h2 id="policies">Policies</h2>
-    <ul>
-      <li><a href="{{ shop.policiesUrl }}/shipping-policy">Shipping policy</a></li>
-      <li><a href="{{ shop.policiesUrl }}/refund-policy">Refund policy</a></li>
-      <li><a href="{{ shop.policiesUrl }}/privacy-policy">Privacy policy</a></li>
-      <li><a href="{{ shop.policiesUrl }}/terms-of-service">Terms of service</a></li>
-    </ul>
+    <p>If a print isn't right, you can return it within 14 days of delivery for a refund. Placeholder: Cali to confirm the terms. <!-- TODO copy --></p>
+    <h2 id="payment">Paying</h2>
+    <p>Payments are taken securely by Stripe, by card, Apple Pay or Google Pay. I never see your card details.</p>
+    <h2 id="privacy">Your details</h2>
+    <p>I only use your name and address to send your order, and your email to tell you about it. Placeholder: Cali to confirm, and add anything about the Studio Letter. <!-- TODO copy --></p>
     <h2 id="questions">Something else?</h2>
     <p><a href="/contact/">Send me a message</a> and I'll get back to you.</p>
   {% endcall %}

@@ -2,7 +2,7 @@
 // and the main flows with the keyboard only.
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
-import { mockStorefront } from '../support/storefront-mock.js';
+import { mockShop } from '../support/shop-mock.js';
 
 const TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'];
 
@@ -19,7 +19,7 @@ async function pageList(request) {
 
 test('every page has zero axe violations', async ({ page, request }) => {
   test.setTimeout(180_000);
-  await mockStorefront(page);
+  await mockShop(page);
   const failures = {};
   for (const url of await pageList(request)) {
     await page.goto(url);
@@ -35,7 +35,7 @@ test('every page has zero axe violations', async ({ page, request }) => {
 });
 
 test('the open cart drawer and gallery viewer have zero axe violations', async ({ page }) => {
-  await mockStorefront(page);
+  await mockShop(page);
   await page.goto('/shop/sun-hat-with-tulip-print/');
   await page.getByRole('button', { name: 'Add to basket' }).click();
   await expect(page.locator('cart-drawer dialog')).toBeVisible();
@@ -48,7 +48,7 @@ test('the open cart drawer and gallery viewer have zero axe violations', async (
 
 test('keyboard only: choose a print, add it, edit the basket, close it', async ({ page }) => {
   test.skip(test.info().project.name === 'mobile-chrome', 'keyboard flow is a desktop check');
-  await mockStorefront(page);
+  await mockShop(page);
   await page.goto('/shop/sun-hat-with-tulip-print/');
 
   // Skip link first.

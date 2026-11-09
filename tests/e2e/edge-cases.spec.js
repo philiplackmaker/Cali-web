@@ -1,11 +1,11 @@
-// The brief's edge cases: sold originals, two buyers, Storefront API down.
+// The brief's edge cases: sold originals, two buyers, the catalogue not loading.
 import { test, expect } from '@playwright/test';
-import { mockStorefront } from '../support/storefront-mock.js';
+import { mockShop } from '../support/shop-mock.js';
 
 test('a sold original keeps its page, with an enquiry link and no basket button', async ({
   page,
 }) => {
-  await mockStorefront(page);
+  await mockShop(page);
   const res = await page.goto('/shop/afternoon-montpelier/');
   expect(res.status()).toBe(200);
   await expect(page.getByText('This painting has found a home.')).toBeVisible();
@@ -17,7 +17,7 @@ test('a sold original keeps its page, with an enquiry link and no basket button'
 });
 
 test('an original sold since the build shows as sold when the page opens', async ({ page }) => {
-  await mockStorefront(page, { sold: ['gid://shopify/ProductVariant/1021'] });
+  await mockShop(page, { sold: ['gid://shopify/ProductVariant/1021'] });
   await page.goto('/shop/pink-check/');
   await expect(page.getByText('This painting has found a home.')).toBeVisible();
   await expect(page.locator('.ds-product .ds-badge--sold')).toBeVisible();
@@ -26,7 +26,7 @@ test('an original sold since the build shows as sold when the page opens', async
 test('two buyers: a painting someone else bought comes out of the basket, with a message', async ({
   page,
 }) => {
-  const shop = await mockStorefront(page);
+  const shop = await mockShop(page);
   await page.goto('/shop/blue-jug/');
   await page.getByRole('button', { name: 'Add to basket' }).click();
   await expect(page.locator('cart-drawer dialog .ds-cart-line')).toHaveCount(1);
@@ -43,10 +43,10 @@ test('two buyers: a painting someone else bought comes out of the basket, with a
   await expect(dialog.locator('.ds-cart-line')).toHaveCount(0);
 });
 
-test('Storefront API down: the page still reads, buying pauses with a message', async ({
+test('catalogue unreachable: the page still reads, buying pauses with a message', async ({
   page,
 }) => {
-  await mockStorefront(page, { down: true });
+  await mockShop(page, { down: true });
   await page.goto('/shop/sun-hat-with-tulip/');
   await expect(page.getByRole('heading', { level: 1, name: 'Sun Hat with Tulip' })).toBeVisible();
   await expect(page.locator('[data-buy] [data-price]')).toHaveText('£950');
@@ -54,13 +54,17 @@ test('Storefront API down: the page still reads, buying pauses with a message', 
   await expect(page.getByText('I can’t check what’s available just now')).toBeVisible();
 });
 
-test('no JS: product pages offer buy links straight to Shopify checkout', async ({ browser }) => {
+test('no JS: product pages offer buy buttons straight to Stripe checkout', async ({ browser }) => {
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();
+  const shop = await mockShop(page);
   await page.goto('/shop/sun-hat-with-tulip-print/');
-  const buy = page.getByRole('link', { name: 'Buy A4 / Smooth matte, £45' });
-  await expect(buy).toHaveAttribute('href', 'https://e2e-shop.myshopify.com/cart/2011:1');
   // Sold-out combinations aren't offered.
-  await expect(page.getByRole('link', { name: /Buy A2 \/ Cotton rag/ })).toHaveCount(0);
+  await expect(page.getByRole('button', { name: /Buy A2 \/ Cotton rag/ })).toHaveCount(0);
+  await page.locator('select[name="delivery"]').selectOption('world');
+  await page.getByRole('button', { name: 'Buy A4 / Smooth matte, £45' }).click();
+  await expect(page).toHaveTitle('Stripe checkout');
+  expect(shop.checkouts[0].get('buy')).toBe('gid://shopify/ProductVariant/2011');
+  expect(shop.checkouts[0].get('delivery')).toBe('world');
   await context.close();
 });

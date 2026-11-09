@@ -1,9 +1,7 @@
-// Preload for the e2e build (npm run build:e2e): answers the build's Storefront API calls
-// with the mock catalogue, so pages are built in "storefront" mode without a real store,
-// and the Instagram API with three fake posts (images served from a local painting).
+// Preload for the e2e build (npm run build:e2e): answers the build's Instagram API calls with
+// three fake posts, with images served from a local painting.
 import { readFile } from 'node:fs/promises';
 
-const { default: mock } = await import(new URL('../../src/_data/mock.js', import.meta.url));
 const painting = await readFile(
   new URL('../../src/assets/images/calico-painting.jpg', import.meta.url),
 );
@@ -25,10 +23,5 @@ globalThis.fetch = async (url, init) => {
   if (String(url).startsWith('https://scontent.cdninstagram.example/')) {
     return new Response(painting, { status: 200, headers: { 'Content-Type': 'image/jpeg' } });
   }
-  if (!/\/api\/[\d-]+\/graphql\.json$/.test(String(url))) return realFetch(url, init);
-  const { query } = JSON.parse(init.body);
-  const data = query.includes('products(')
-    ? { products: { pageInfo: { hasNextPage: false, endCursor: null }, nodes: mock.products } }
-    : { metaobjects: { nodes: [] } };
-  return new Response(JSON.stringify({ data }), { status: 200 });
+  return realFetch(url, init);
 };

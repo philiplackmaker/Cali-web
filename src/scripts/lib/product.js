@@ -3,7 +3,7 @@
 export const isOriginal = (product) => product.tags?.includes('original') ?? false;
 export const isPrint = (product) => product.tags?.includes('print') ?? false;
 export const isSold = (product) => product.availableForSale === false;
-/** Tag a product `price-on-request` in Shopify to hide its price and sell by enquiry. */
+/** Write "on request" in the sheet's Cost column (tag `price-on-request`) to hide its price and sell by enquiry. */
 export const isPriceOnRequest = (product) => product.tags?.includes('price-on-request') ?? false;
 
 export function editionSize(product) {

@@ -1,4 +1,4 @@
-// Formats Storefront API MoneyV2 values ({ amount: "450.0", currencyCode: "GBP" }).
+// Formats money values ({ amount: "450.0", currencyCode: "GBP" }).
 // Shared by Eleventy (build-time) and the browser (variant switching, cart).
 
 const formatters = new Map();

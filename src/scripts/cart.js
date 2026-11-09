@@ -1,5 +1,5 @@
-// The cart: one shared store over a Storefront-API-shaped client.
-// The client is swappable: mock-storefront.js now, the real Storefront API in step 4.
+// The cart: one shared store over a basket client (local-cart.js), in the shapes the site
+// first used with Shopify's Storefront API.
 // Every change emits a "change" event with { cart, message, warning }: message is
 // copy in Cali's voice for the aria-live region (or null), and warning is true when a
 // line came back sold or short of stock.
@@ -40,7 +40,7 @@ const titleOf = (line) =>
       }`
     : 'that piece';
 
-/** Turns Storefront warnings into one message. Lines that come back unavailable win. */
+/** Turns stock warnings into one message. Lines that come back unavailable win. */
 function warningMessage(warnings = [], lines = []) {
   const byId = new Map(lines.map((l) => [l.merchandise.id, l]));
   for (const w of warnings) {
@@ -55,7 +55,7 @@ export function createCartStore({ client, storage = safeStorage(), key = CART_KE
   const events = new EventTarget();
   let cart = null;
   let queue = Promise.resolve();
-  // Remember lines so a "sold" warning can still name a line Shopify has just dropped.
+  // Remember lines so a "sold" warning can still name a line that has just been dropped.
   let knownLines = [];
 
   const emit = (message = null, warning = false) => {
@@ -99,7 +99,7 @@ export function createCartStore({ client, storage = safeStorage(), key = CART_KE
       return cart?.totalQuantity ?? 0;
     },
 
-    /** Restores the saved cart, if any. Drops it if Shopify no longer knows it (e.g. after checkout). */
+    /** Restores the saved cart, if any. */
     load: () =>
       run(async () => {
         const id = storage.getItem(key);
@@ -155,6 +155,14 @@ export function createCartStore({ client, storage = safeStorage(), key = CART_KE
       }),
 
     remove: (lineId) => run(() => removeLine(lineId)),
+
+    /** Empties the basket: after a paid checkout (the /order-thanks/ page). */
+    clear: () =>
+      run(async () => {
+        setCart(null);
+        emit();
+        return null;
+      }),
   };
 
   async function removeLine(lineId) {

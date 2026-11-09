@@ -1,8 +1,10 @@
-// One Storefront client and one cart store per page, shared by every component.
-//   <html data-commerce="storefront"> + <meta name="shopify-store"> / <meta name="shopify-token">
-//     → the real Storefront API (shopify-client.js)
-//   <html data-commerce="mock">  → mock-storefront.js (no store yet, the docs, tests)
+// One basket client and one cart store per page, shared by every component.
+//   <html data-commerce="stripe"> → the shop's catalogue (/assets/data/catalog.json), and the
+//     checkout form posts to /api/checkout, which sends the buyer to Stripe.
+//   <html data-commerce="mock">   → the docs' example products, a pretend checkout, and
+//     switches for "sold" and "offline" states (see docs-demo.js).
 import { createCartStore } from './cart.js';
+import { createLocalCart } from './local-cart.js';
 
 function storage() {
   try {
@@ -13,28 +15,27 @@ function storage() {
   }
 }
 
-const meta = (name) => document.querySelector(`meta[name="${name}"]`)?.content;
-
 let clientPromise;
 
 export function getClient() {
   clientPromise ??= (async () => {
-    const mode = document.documentElement.dataset.commerce ?? 'mock';
-    if (mode === 'storefront') {
-      const { createStorefrontClient } = await import('./shopify-client.js');
-      return createStorefrontClient({
-        domain: meta('shopify-store'),
-        token: meta('shopify-token'),
-      });
-    }
-    const { createMockClient } = await import('./mock-storefront.js');
+    const mock = document.documentElement.dataset.commerce === 'mock';
     let catalog;
-    return createMockClient({
+    return createLocalCart({
       catalog: async () => {
-        catalog ??= fetch('/assets/data/mock-catalog.json').then((r) => r.json());
+        catalog ??= fetch(mock ? '/assets/data/mock-catalog.json' : '/assets/data/catalog.json')
+          .then((r) => {
+            if (!r.ok) throw new Error(`Catalogue ${r.status}`);
+            return r.json();
+          })
+          .catch((error) => {
+            catalog = null; // try again next time
+            throw error;
+          });
+        const all = await catalog;
+        if (!mock) return all;
         // The docs can mark variants as bought by someone else (see docs-demo.js).
         const sold = JSON.parse(storage()?.getItem('ds-mock-sold') ?? '[]');
-        const all = await catalog;
         return Object.fromEntries(
           Object.entries(all).map(([id, v]) => [
             id,
@@ -43,9 +44,15 @@ export function getClient() {
         );
       },
       storage: storage() ?? sessionStorage,
-      latency: 400,
-      // The docs can switch on "API down" to show error states.
-      fail: () => storage()?.getItem('ds-mock-offline') === '1',
+      ...(mock
+        ? {
+            key: 'ds-mock-carts',
+            checkoutUrl: 'https://checkout.example/mock',
+            latency: 400,
+            // The docs can switch on "offline" to show error states.
+            fail: () => storage()?.getItem('ds-mock-offline') === '1',
+          }
+        : {}),
     });
   })();
   return clientPromise;

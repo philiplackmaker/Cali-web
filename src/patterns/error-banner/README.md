@@ -1,6 +1,6 @@
 # Error banner
 
-A page-level message when Shopify can’t be reached.
+A page-level message when the shop’s catalogue can’t be loaded.
 
 ```njk
 {% from "patterns/error-banner/error-banner.njk" import errorBanner %}

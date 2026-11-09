@@ -2,7 +2,7 @@
   Product detail: gallery beside the wall label, price, buying, details and delivery.
   Handles every case: original, print, sold, price on request.
   {% from "patterns/product-detail/product-detail.njk" import productDetail %}
-  {{ productDetail(product, { domain: shop.domain }) }}   ← domain turns on no-JS buy links
+  {{ productDetail(product) }}
 -#}
 {%- from "components/product-gallery/product-gallery.njk" import productGallery -%}
 {%- from "components/badge/badge.njk" import badges -%}
@@ -33,7 +33,7 @@
     <div class="ds-product__buy" data-buy>
       {{ price(product.variants.nodes[0] if original else product, { size: "lg", onRequest: onRequest }) }}
       {{ errorBanner() }}
-      {% call addToCart(product, { domain: opts.domain }) %}
+      {% call addToCart(product) %}
         {%- if not original %}
         {{ variantPicker(product) }}
         {{ quantityInput({ id: product.handle ~ "-qty", max: 10 }) }}

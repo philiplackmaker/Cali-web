@@ -1,12 +1,13 @@
-// The brief's flows: browse, add a print, change quantity, remove, reach Shopify checkout.
-// Runs against the e2e build (storefront mode) with the Storefront API mocked in the browser.
+// The brief's flows: browse, add a print, change quantity, remove, reach Stripe checkout.
+// Runs against the e2e build (test products), with the checkout function and Stripe mocked.
 import { test, expect } from '@playwright/test';
-import { mockStorefront } from '../support/storefront-mock.js';
+import { mockShop } from '../support/shop-mock.js';
 
 const drawer = (page) => page.locator('cart-drawer:not([data-inline]) dialog');
 
+let shop;
 test.beforeEach(async ({ page }) => {
-  await mockStorefront(page);
+  shop = await mockShop(page);
 });
 
 test('browse: home → originals → prints → a painting', async ({ page }) => {
@@ -49,14 +50,25 @@ test('add a print, change quantity, remove it', async ({ page }) => {
   await expect(drawer(page)).toContainText('Your basket is empty.');
 });
 
-test('reach the Shopify checkout URL', async ({ page }) => {
-  await page.goto('/shop/blue-jug/');
+test('checkout posts the basket and delivery choice, and lands on Stripe', async ({ page }) => {
+  await page.goto('/shop/sun-hat-with-tulip-print/');
+  await page.getByRole('radio', { name: 'A3' }).check();
   await page.getByRole('button', { name: 'Add to basket' }).click();
   await expect(drawer(page)).toBeVisible();
-  const checkout = drawer(page).getByRole('link', { name: 'Checkout' });
-  await expect(checkout).toHaveAttribute('href', /^https:\/\/checkout\.example\//);
-  await checkout.click();
-  await expect(page).toHaveTitle('Shopify checkout');
+  await drawer(page)
+    .locator('.ds-cart-line')
+    .getByRole('button', { name: /Increase/ })
+    .click();
+  await expect(drawer(page).locator('[data-cart-subtotal]')).toHaveText('£150');
+  await drawer(page)
+    .getByRole('radio', { name: /Rest of the world/ })
+    .check();
+  await drawer(page).getByRole('button', { name: 'Checkout' }).click();
+  await expect(page).toHaveTitle('Stripe checkout');
+  const [form] = shop.checkouts;
+  expect(form.getAll('id')).toEqual(['gid://shopify/ProductVariant/2013']);
+  expect(form.getAll('quantity')).toEqual(['2']);
+  expect(form.get('delivery')).toBe('world');
 });
 
 test('the basket survives a page load, and /cart/ shows it', async ({ page }) => {

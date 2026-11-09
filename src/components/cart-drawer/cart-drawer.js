@@ -69,6 +69,7 @@ class CartDrawer extends HTMLElement {
     this.footer = this.querySelector('[data-cart-footer]');
     this.subtotal = this.querySelector('[data-cart-subtotal]');
     this.checkout = this.querySelector('[data-cart-checkout]');
+    this.checkoutLines = this.querySelector('[data-cart-checkout-lines]');
     this.notice = this.querySelector('[data-cart-notice]');
     this.announcer = this.querySelector('[data-cart-announcer]');
 
@@ -150,7 +151,21 @@ class CartDrawer extends HTMLElement {
     this.footer.hidden = !hasLines;
     if (hasLines) {
       this.subtotal.textContent = formatMoney(cart.cost.subtotalAmount);
-      this.checkout.href = cart.checkoutUrl;
+      this.checkout.action = cart.checkoutUrl;
+      this.checkoutLines.replaceChildren(
+        ...cart.lines.flatMap((line) => [
+          Object.assign(document.createElement('input'), {
+            type: 'hidden',
+            name: 'id',
+            value: line.merchandise.id,
+          }),
+          Object.assign(document.createElement('input'), {
+            type: 'hidden',
+            name: 'quantity',
+            value: line.quantity,
+          }),
+        ]),
+      );
     }
     // Sold or short-stock warnings stay visible; routine messages are only announced.
     if (warning) this.showNotice(message);

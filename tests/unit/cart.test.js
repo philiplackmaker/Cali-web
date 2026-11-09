@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createCartStore, COPY } from '../../src/scripts/cart.js';
-import { createMockClient } from '../../src/scripts/mock-storefront.js';
+import { createLocalCart } from '../../src/scripts/local-cart.js';
 
 const gbp = (amount) => ({ amount, currencyCode: 'GBP' });
 
@@ -36,7 +36,7 @@ function setup({ fail } = {}) {
     },
   };
   const storage = memoryStorage();
-  const client = createMockClient({ catalog: async () => catalog, storage, fail });
+  const client = createLocalCart({ catalog: async () => catalog, storage, fail });
   const store = createCartStore({ client, storage });
   return { catalog, storage, store };
 }
@@ -92,7 +92,7 @@ test('an original sold to someone else comes back out of the cart with a clear m
 test('load restores a saved cart', async () => {
   const { store, storage } = setup();
   await store.add('v-print-a4', 1);
-  const client2 = createMockClient({
+  const client2 = createLocalCart({
     catalog: async () => ({}),
     storage,
   });
@@ -125,7 +125,7 @@ test('on load, a line that sold elsewhere is removed with a clear message', asyn
   await store.add('v-original', 1);
   await store.add('v-print-a4', 1);
   catalog['v-original'].availableForSale = false; // another buyer checked out
-  const client = createMockClient({ catalog: async () => catalog, storage });
+  const client = createLocalCart({ catalog: async () => catalog, storage });
   const reloaded = createCartStore({ client, storage });
   let detail;
   reloaded.events.addEventListener('change', (e) => (detail = e.detail));

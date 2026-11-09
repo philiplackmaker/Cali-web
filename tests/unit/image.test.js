@@ -2,10 +2,10 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { imageUrl, srcset, widthsFor } from '../../src/scripts/lib/image.js';
 
-test('adds width to Shopify CDN URLs', () => {
+test('leaves URLs without a {width} placeholder alone', () => {
   assert.equal(
-    imageUrl('https://cdn.shopify.com/s/files/1/0001/files/a.jpg?v=12', 640),
-    'https://cdn.shopify.com/s/files/1/0001/files/a.jpg?v=12&width=640',
+    imageUrl('/assets/images/calico-painting.jpg', 640),
+    '/assets/images/calico-painting.jpg',
   );
 });
 

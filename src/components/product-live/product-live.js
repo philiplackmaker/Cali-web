@@ -1,8 +1,8 @@
-// <product-live data-handle="…">: checks live price and stock with Shopify when a product
-// page opens, so a painting sold since the last build shows as sold straight away.
+// <product-live data-handle="…">: checks price and stock against the catalogue when a product
+// page opens (and the docs' "sold" demo).
 // - Prints: hands fresh variants to <variant-picker>, which re-marks sold-out options.
 // - Originals: updates the price; if it has sold, swaps in the sold notice.
-// - Shopify unreachable: fires product:offline, and <add-to-cart> pauses with a message.
+// - Catalogue unreachable: fires product:offline, and <add-to-cart> pauses with a message.
 import { getClient } from '../../scripts/commerce.js';
 import { describePrice, priceInnerHtml } from '../../scripts/lib/money.js';
 

@@ -4,9 +4,9 @@ import { formatMoney, describePrice } from './src/scripts/lib/money.js';
 import { srcset, imageUrl, widthsFor } from './src/scripts/lib/image.js';
 import * as product from './src/scripts/lib/product.js';
 import site from './src/_data/site.js';
-import { cartPermalink } from './src/scripts/shopify-client.js';
 import { buildTokens } from './scripts/build-tokens.js';
 import { loadInstagram } from './scripts/instagram.js';
+import { loadShop } from './scripts/shop.js';
 import { buildSiteCss } from './src/assets/css/site.11ty.js';
 
 export default function (eleventyConfig) {
@@ -53,6 +53,14 @@ export default function (eleventyConfig) {
     return siteCss;
   });
 
+  // The catalogue (Google Sheet, local copy, or test fixture): see scripts/shop.js. Loaded
+  // once per build or dev-server run (restart to re-read the sheet).
+  let shop;
+  eleventyConfig.addGlobalData('shop', () => {
+    shop ??= loadShop({ outputDir: eleventyConfig.directories.output });
+    return shop;
+  });
+
   // The latest Instagram posts (or [] without a token): see scripts/instagram.js.
   let instagram;
   eleventyConfig.addGlobalData('instagram', () => {
@@ -84,9 +92,6 @@ export default function (eleventyConfig) {
   eleventyConfig.addFilter('productBadges', product.productBadges);
   eleventyConfig.addFilter('editionSize', product.editionSize);
   eleventyConfig.addFilter('optionStates', product.optionStates);
-  eleventyConfig.addFilter('cartPermalink', (variant, domain, qty) =>
-    cartPermalink(domain, variant.id, qty),
-  );
   // products | without(product) | take(3)
   eleventyConfig.addFilter('without', (list, item) => list.filter((x) => x.handle !== item.handle));
   eleventyConfig.addFilter('take', (list, n) => list.slice(0, n));

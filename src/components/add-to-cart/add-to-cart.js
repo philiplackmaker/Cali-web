@@ -17,7 +17,7 @@ class AddToCart extends HTMLElement {
       this.available = e.detail.variant.availableForSale;
       this.render();
     });
-    // <product-live> couldn't reach Shopify to check stock: pause buying until it can.
+    // <product-live> couldn't load the catalogue to check stock: pause buying until it can.
     (this.closest('[data-product]') ?? this).addEventListener('product:offline', (e) => {
       this.offline = e.detail.message;
       this.render();

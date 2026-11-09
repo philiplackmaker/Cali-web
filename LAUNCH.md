@@ -10,45 +10,43 @@ Work through this in order. The order matters for the DNS step: today
 ## 1. Content (Cali)
 
 `npm run check:launch` must pass. It fails while any public page still has placeholder copy or
-was built from mock data. Search the templates for `TODO` to find every spot:
+wasn't built from the Google Sheet. Search the templates for `TODO` to find every spot:
 
-| Where                                            | What's needed                                                                                      |
-| ------------------------------------------------ | -------------------------------------------------------------------------------------------------- |
-| `src/pages/index.njk`                            | Hero line, and the two "Hello, I'm Cali" paragraphs                                                |
-| `src/pages/about.njk`                            | Bio, "How I work", "Exhibitions and shows"                                                         |
-| `src/pages/contact.njk`                          | How commissions work: timings, deposit, guide prices                                               |
-| `src/pages/info.njk`                             | Shipping times and prices, framing, care, returns (to match Shopify)                               |
-| `src/patterns/product-detail/product-detail.njk` | Delivery times on product pages                                                                    |
-| `src/_data/shop.js`                              | Intros for All work, Originals and Prints                                                          |
-| `src/_data/site.js` → `originalPromises`         | Confirm: signed, certificate of authenticity, insured delivery                                     |
-| `src/_data/site.js` → `payments`                 | Leave off unless instalments or Own Art are really set up                                          |
-| Shopify: every product                           | Description in Cali's voice, metafields, photos (straight-on first, then detail, then a room view) |
-| Shopify: Site photo metaobjects                  | `home-hero`, `about-portrait`, and a few `studio` photos                                           |
-| Shopify: Policies                                | Shipping, refund, privacy and terms (linked from /info/)                                           |
-| Logo                                             | Check the SVG flower trace, or supply the original vector                                          |
+| Where                                            | What's needed                                                        |
+| ------------------------------------------------ | -------------------------------------------------------------------- |
+| `src/pages/index.njk`                            | Hero line, and the two "Hello, I'm Cali" paragraphs                  |
+| `src/pages/about.njk`                            | Bio, "How I work", "Exhibitions and shows"                           |
+| `src/pages/contact.njk`                          | How commissions work: timings, deposit, guide prices                 |
+| `src/pages/info.njk`                             | Packing and posting, framing, care, returns, privacy                 |
+| `src/patterns/product-detail/product-detail.njk` | Delivery times on product pages                                      |
+| `scripts/shop.js`                                | Intros for All work, Originals and Prints                            |
+| `src/_data/site.js` → `delivery`                 | Real delivery prices and times, UK and rest of the world             |
+| `src/_data/site.js` → `originalPromises`         | Confirm: signed, certificate of authenticity, insured delivery       |
+| `src/_data/site.js` → `payments`                 | Leave off unless instalments or Own Art are really set up            |
+| The Google Sheet: every product                  | An Alt text column, and photos (straight-on first, then a room view) |
+| The Google Sheet: a Photos tab (optional)        | `home hero`, `about portrait`, and a few `studio` photos             |
+| Logo                                             | Check the SVG flower trace, or supply the original vector            |
 
-## 2. Shopify (PIP)
+## 2. Google Sheet and Stripe (PIP)
 
-Follow **Connect Shopify** in the README: the Headless channel and token, publishing products,
-metafield definitions, the Site photo metaobject, and the webhooks. Also:
+Follow **Connect the Google Sheet** and **Connect Stripe** in the README. Also:
 
-- [ ] **Checkout domain (recommended).** The site lives on Netlify, so give Shopify its own
-      subdomain for checkout. In Shopify → Settings → Domains, connect `shop.calicomelton.com`
-      (a GoDaddy CNAME to `shops.myshopify.com`) and make it the primary domain. Checkout then
-      shows `shop.calicomelton.com` instead of `….myshopify.com`. Set `SHOPIFY_STORE_DOMAIN` to
-      the `.myshopify.com` domain either way.
-- [ ] Shipping rates for the UK and abroad, and taxes, in Shopify.
-- [ ] Payments: Shopify Payments set up, and a real test order refunded.
-- [ ] Check the no-JS "Buy" links on a product page (cart permalinks) reach checkout on the real store.
+- [ ] The sheet is shared as "Anyone with the link can view", and the build log shows
+      `[shop] N products from the Google Sheet.`
+- [ ] Stripe account verified for payouts; receipts and order notifications switched on.
+- [ ] A full test order with the **test** key: basket → Checkout → Stripe → `/order-thanks/`,
+      and the basket is empty afterwards. Try both delivery options.
+- [ ] The no-JS "Buy" buttons on a product page reach Stripe.
+- [ ] Swap `STRIPE_SECRET_KEY` to the **live** key, redeploy, place one real order, refund it.
 
 ## 3. Netlify (PIP)
 
 - [ ] Create the site from the GitHub repo. Production branch: `shop-foundations` for now
       (switch to `main` after step 5). Build command and publish folder come from `netlify.toml`.
-- [ ] Environment variables: `SHOPIFY_STORE_DOMAIN`, `SHOPIFY_STOREFRONT_TOKEN`, `NETLIFY_BUILD_HOOK_URL`,
-      and `INSTAGRAM_ACCESS_TOKEN` for the latest Instagram posts (README → Instagram; needs @calicomelton
+- [ ] Environment variables: `SHEET_CSV_URL` (and `SHEET_PHOTOS_CSV_URL` if there's a Photos tab),
+      `STRIPE_SECRET_KEY`, `NETLIFY_BUILD_HOOK_URL`, and `INSTAGRAM_ACCESS_TOKEN` for the latest Instagram posts (README → Instagram; needs @calicomelton
       to be a free Creator account).
-- [ ] Build hook created, and pointed at by Shopify's product webhooks.
+- [ ] Build hook created (used by the nightly rebuild).
 - [ ] Forms → enable form detection, then set a notification to email Cali for `enquiry`.
 - [ ] On the `….netlify.app` address: browse, add to basket, reach checkout, send a test enquiry.
       Deploy previews show `noindex` and a `Disallow: /` robots.txt automatically.
@@ -72,11 +70,9 @@ Do this when steps 1–3 are done, ideally on a quiet morning. Lower the TTLs a 
 
 - [ ] **Studio Letter:** sign up on the live site with a real address, and check it arrives in the
       Google Sheet. (The tests only check that the form posts to the Apps Script; they can't see the sheet.)
-- [ ] Place a real order, then refund it.
 - [ ] In GitHub → Settings → Pages, turn Pages off (or remove the custom domain), so it doesn't
       fight Netlify for the domain. `main` has a `CNAME` file (added on github.com on 8 November)
       that points Pages at calicomelton.com: delete it at the same time.
 - [ ] Merge `shop-foundations` into `main`, then switch Netlify's production branch to `main`.
 - [ ] Google Search Console: add the domain and submit `https://calicomelton.com/sitemap.xml`.
-- [ ] Run Lighthouse against the live product page. Real Shopify images (served as WebP or AVIF by
-      Shopify's CDN) should beat the mock images CI measures.
+- [ ] Run Lighthouse against the live product page.
