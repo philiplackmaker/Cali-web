@@ -4,9 +4,10 @@ export const data = {
   eleventyExcludeFromCollections: true,
 };
 
-export function render({ mock }) {
+// Covers both the docs' mock products and the preview's real catalogue.
+export function render({ mock, catalogue }) {
   const merchandise = {};
-  for (const p of mock.products) {
+  for (const p of [...mock.products, ...catalogue.products]) {
     for (const v of p.variants.nodes) {
       merchandise[v.id] = {
         ...v,

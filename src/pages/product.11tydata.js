@@ -7,9 +7,9 @@ export default {
     title: (data) => data.product.title,
     description: (data) => {
       const p = data.product;
-      const kind = isOriginal(p) ? 'Original painting' : 'Signed print';
+      const kind = isOriginal(p) ? 'Original painting' : 'Giclée print';
       const status = isSold(p) ? ' Sold.' : '';
-      return `${kind} by Calico Melton. ${productSummary(p)}.${status}`;
+      return `${p.title}: ${kind.toLowerCase()} by Calico Melton. ${productSummary(p)}.${status}`;
     },
     ogImage: (data) => {
       const img = data.product.featuredImage;

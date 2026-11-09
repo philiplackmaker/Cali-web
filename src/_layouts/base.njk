@@ -58,7 +58,7 @@
   {% include "components/icon/sprite.njk" %}
   {{ content | safe }}
   {%- if not noDrawer %}
-  {%- set emptyHtml %}{{ emptyCart() }}{% endset %}
+  {%- set emptyHtml %}{{ emptyCart({ originals: shop.hasOriginals }) }}{% endset %}
   {{ cartDrawer({ empty: emptyHtml }) }}
   {%- endif %}
   <script type="module" src="/assets/js/scripts/main.js"></script>

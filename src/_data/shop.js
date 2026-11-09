@@ -1,9 +1,10 @@
 // The shop's catalogue and site photos, as pages see them.
 // With SHOPIFY_STORE_DOMAIN and SHOPIFY_STOREFRONT_TOKEN set (see .env.example), it's fetched
 // live from the Storefront API at build time. Without them, or with SHOPIFY_MOCK=1, it uses
-// the mock catalogue in mock.js, which has the same shape.
+// Cali's real prints from catalogue.js (same shape, no Shopify needed), so the preview shows
+// her work. mock.js stays the fixture for tests and the design-system docs.
 // TODO copy: collection intros.
-import mock from './mock.js';
+import catalogue from './catalogue.js';
 import { storefrontRequest, QUERIES, normaliseSitePhotos } from '../scripts/shopify-client.js';
 
 const PAINTING = {
@@ -51,9 +52,18 @@ async function load() {
   const token = process.env.SHOPIFY_STOREFRONT_TOKEN;
   if (!domain || !token || process.env.SHOPIFY_MOCK === '1') {
     console.log(
-      '[shop] Using mock catalogue (set SHOPIFY_STORE_DOMAIN and SHOPIFY_STOREFRONT_TOKEN for live data).',
+      '[shop] Using catalogue.js, no Shopify (set SHOPIFY_STORE_DOMAIN and SHOPIFY_STOREFRONT_TOKEN for live data).',
     );
-    return { mode: 'mock', domain: null, token: null, products: mock.products, photos: mockPhotos };
+    const products = catalogue.products;
+    const photos = {
+      homeHero: { image: products[0].featuredImage },
+      aboutPortrait: mockPhotos.aboutPortrait,
+      studio: [
+        ...catalogue.roomPhotos,
+        { image: products.at(-1).featuredImage, caption: 'Sunflowers' },
+      ],
+    };
+    return { mode: 'mock', domain: null, token: null, products, photos };
   }
   const config = { domain, token };
   const [products, photoData] = await Promise.all([
@@ -83,7 +93,9 @@ export default async function () {
       handle: 'all',
       title: 'All work',
       url: '/shop/',
-      intro: 'Original paintings and signed prints, all made in my studio in Bristol.',
+      intro: originals.length
+        ? 'Original paintings and prints, all made in my studio in Bristol.'
+        : 'Prints of my paintings, all made in my studio in Bristol.',
       products,
     },
     {
@@ -97,7 +109,8 @@ export default async function () {
       handle: 'prints',
       title: 'Prints',
       url: '/shop/prints/',
-      intro: 'Giclée prints in small editions, each signed and numbered by me.',
+      intro:
+        'Giclée prints of my paintings, scanned with no digital retouching and printed on 300gsm prestige paper.',
       products: prints,
     },
   ];
@@ -108,6 +121,8 @@ export default async function () {
     products,
     byHandle: Object.fromEntries(products.map((p) => [p.handle, p])),
     collections,
+    // No originals for sale yet: pages link to prints instead of an empty Originals page.
+    hasOriginals: originals.length > 0,
     // Newest first (Shopify returns products by createdAt, newest first).
     latest: products.filter((p) => p.availableForSale).slice(0, 6),
     photos,

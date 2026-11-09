@@ -11,7 +11,7 @@ eleventyExcludeFromSitemap: true
 {%- from "components/cart-drawer/cart-drawer.njk" import cartDrawer -%}
 {% call section({ variant: "narrow tight" }) %}
   {{ errorBanner() }}
-  {%- set emptyHtml %}{{ emptyCart() }}{% endset %}
+  {%- set emptyHtml %}{{ emptyCart({ originals: shop.hasOriginals }) }}{% endset %}
   {{ cartDrawer({ inline: true, empty: emptyHtml }) }}
   <noscript>{{ errorBanner({ message: "The basket needs JavaScript switched on. You can still email me to buy a painting: " ~ site.email }) }}</noscript>
 {% endcall %}

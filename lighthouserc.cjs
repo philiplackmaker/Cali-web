@@ -13,8 +13,8 @@ if (!chromePath) {
 const pages = [
   '/',
   '/shop/',
-  '/shop/sun-hat-with-tulip/',
-  '/shop/sun-hat-with-tulip-print/',
+  '/shop/blue-tulips/',
+  '/shop/sunflowers/',
   '/about/',
   '/studio-letter/',
   '/contact/',
