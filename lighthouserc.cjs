@@ -25,7 +25,9 @@ module.exports = {
     collect: {
       staticDistDir: './_site',
       url: pages.map((p) => `http://localhost${p}`),
-      numberOfRuns: Number(process.env.LHCI_RUNS ?? 3),
+      // 5 runs, judged by the median: the product page's LCP sits close to the limit on the
+      // simulated network, and one slow run shouldn't decide the result.
+      numberOfRuns: Number(process.env.LHCI_RUNS ?? 5),
       chromePath,
       settings: { chromeFlags: '--headless=new --no-sandbox' },
     },

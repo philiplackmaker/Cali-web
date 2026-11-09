@@ -31,6 +31,10 @@
   {#- Preloaded so they arrive before first paint: a late swap shifts the layout (CLS). #}
   <link rel="preload" href="/assets/fonts/figtree-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/assets/fonts/lora-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin>
+  {%- if commerce == "storefront" %}
+  {#- Live mode: paintings come from Shopify's CDN, so open that connection straight away. #}
+  <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+  {%- endif %}
   {%- if preloadImage %}
   {#- The page's LCP image: start fetching it before the CSS is parsed. #}
   <link rel="preload" as="image" href="{{ preloadImage.url | imageUrl(preloadImage | largestWidth) }}" imagesrcset="{{ preloadImage | srcset }}" imagesizes="{{ preloadSizes or '100vw' }}" fetchpriority="high">
