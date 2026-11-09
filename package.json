@@ -17,7 +17,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "node --test \"tests/unit/**/*.test.js\"",
-    "build:e2e": "SHOPIFY_STORE_DOMAIN=e2e-shop.myshopify.com SHOPIFY_STOREFRONT_TOKEN=e2e-public-token node --import ./tests/support/fake-storefront.mjs node_modules/@11ty/eleventy/cmd.cjs --output=_site-e2e",
+    "build:e2e": "SHOPIFY_STORE_DOMAIN=e2e-shop.myshopify.com SHOPIFY_STOREFRONT_TOKEN=e2e-public-token INSTAGRAM_ACCESS_TOKEN=e2e-instagram-token node --import ./tests/support/fake-storefront.mjs node_modules/@11ty/eleventy/cmd.cjs --output=_site-e2e",
     "test:e2e": "playwright test",
     "check:site": "node tests/site/check-site.js _site",
     "lighthouse": "lhci autorun",
@@ -26,6 +26,7 @@
   },
   "devDependencies": {
     "@11ty/eleventy": "^3.1.8",
+    "@11ty/eleventy-img": "^7.1.1",
     "@axe-core/playwright": "^4.14.0",
     "@eslint/js": "^10.0.1",
     "@fontsource/figtree": "^5.3.0",

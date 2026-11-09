@@ -155,6 +155,7 @@ Placeholder copy is marked `<!-- TODO copy -->` or `TODO` in the templates. Sear
 4. **Environment variables.** Locally, copy `.env.example` to `.env`. On Netlify, set them under Site configuration → Environment variables:
    - `SHOPIFY_STORE_DOMAIN` (e.g. `calicomelton.myshopify.com`) and `SHOPIFY_STOREFRONT_TOKEN`. With both set, the build fetches live data, and the log says `[shop] Fetched N products`. Without them it uses the mock catalogue and says so. `SHOPIFY_MOCK=1` forces the mock.
    - `NETLIFY_BUILD_HOOK_URL`: see the next step.
+   - `INSTAGRAM_ACCESS_TOKEN` (optional): for the latest Instagram posts. See "Instagram" below.
 5. **Rebuilds.**
    - In Netlify, create a build hook (Site configuration → Build & deploy → Build hooks) and copy its URL.
    - In Shopify (Settings → Notifications → Webhooks), add three webhooks, **Product creation**, **Product update** and **Product deletion**, all in JSON format, all pointing at that URL. New work and price changes go live within a few minutes.
@@ -195,6 +196,19 @@ Turn on **Storefront access** for the definition. Otherwise the site can't read 
 - Changes go live on the nightly rebuild, or straight away with Netlify's **Trigger deploy** button.
 
 Shopify's CDN serves every photo, and the site requests the size each screen needs.
+
+## Instagram: the latest three posts
+
+The Instagram band on the home and About pages shows Cali's three newest posts, each linking to its post on Instagram. At build time `scripts/instagram.js` fetches them with the Instagram API, then downloads and resizes the images (WebP, 320px and 640px) onto this site. Visitors never load anything from Instagram: there's no embed, third-party script or tracking. The nightly rebuild keeps them current. Without a token, or if Instagram can't be reached, the band shows the studio photos instead, and the build log says why.
+
+**One-time setup:**
+
+1. **Make @calicomelton a professional account.** In the Instagram app: Settings → Account type and tools → Switch to professional account → **Creator**. It's free and doesn't change how the profile looks.
+2. **Create a Meta app.** At [developers.facebook.com](https://developers.facebook.com/), create an app, add the **Instagram** product, and choose **API setup with Instagram login**.
+3. **Generate a token.** Add @calicomelton to the app and generate an access token. This is a long-lived token, valid for 60 days.
+4. **Save it** as `INSTAGRAM_ACCESS_TOKEN` in `.env` locally and in Netlify's environment variables.
+
+**Keeping it alive:** `netlify/functions/nightly-rebuild.mjs` refreshes the token every night, so it shouldn't expire. If Instagram ever issues a different token string, the function's log says so. If the posts disappear, generate a new token (step 3) and update the variable.
 
 ## The Studio Letter
 

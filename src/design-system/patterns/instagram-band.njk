@@ -1,7 +1,7 @@
 ---
 title: Instagram
 order: 7
-description: "Studio photos that link out to @calicomelton."
+description: "The three latest Instagram posts, fetched and resized at build time."
 ---
 {% from "docs.njk" import example, usage %}
 {% from "patterns/section/section.njk" import section %}
@@ -9,20 +9,20 @@ description: "Studio photos that link out to @calicomelton."
 <header class="docs-header">
   <p class="docs-eyebrow">Pattern</p>
   <h1>Instagram</h1>
-  <p class="docs-lede">Studio photos that link out to @calicomelton.</p>
+  <p class="docs-lede">Cali's three latest Instagram posts, each linking to its post. Studio photos stand in when there's no Instagram token.</p>
 </header>
 
 <section class="docs-section" aria-labelledby="use">
   <h2 id="use">Use it</h2>
   {% set code %}{% raw %}{% from "patterns/instagram-band/instagram-band.njk" import instagramBand %}
-{{ instagramBand({ id: "instagram", photos: shop.photos.studio }) }}{% endraw %}{% endset %}
+{{ instagramBand({ id: "instagram", posts: instagram.posts, photos: shop.photos.studio }) }}{% endraw %}{% endset %}
   {{ usage(code) }}
   <p><strong>Used on:</strong> Home, About (without photos)</p>
-  <p>It links out instead of embedding a feed: no third-party script, tracking or slowdown. The photos are one big decorative link, hidden from screen readers. The text link “Follow @calicomelton” is the real one.</p>
+  <p>Posts come from <code>scripts/instagram.js</code>: fetched with the Instagram API at build time, then downloaded and resized onto this site. That means no embed, third-party script or tracking. Each post is a link named by its caption (“Instagram post (1 November 2026): …”). Without <code>INSTAGRAM_ACCESS_TOKEN</code>, the studio photos below stand in as one decorative link to the profile.</p>
 </section>
 
 <section class="docs-section" aria-labelledby="example">
   <h2 id="example">Example</h2>
-  {% set ex %}{{ instagramBand({ id: "ex-instagram", photos: shop.photos.studio }) }}{% endset %}
+  {% set ex %}{{ instagramBand({ id: "ex-instagram", posts: instagram.posts, photos: shop.photos.studio }) }}{% endset %}
   {{ example("Instagram", ex, { wide: true, noCode: true }) }}
 </section>

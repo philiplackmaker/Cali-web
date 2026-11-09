@@ -76,3 +76,25 @@ test('an original goes in once, then says "In your basket"', async ({ page }) =>
   await expect(page.getByRole('button', { name: 'In your basket' })).toBeDisabled();
   await expect(page.getByRole('link', { name: 'View your basket' })).toBeVisible();
 });
+
+test('the home page shows the three latest Instagram posts, each linking to its post', async ({
+  page,
+}) => {
+  await page.goto('/');
+  const band = page.locator('.ds-instagram');
+  const posts = band.locator('.ds-instagram__photos a');
+  await expect(posts).toHaveCount(3);
+  await expect(posts.first()).toHaveAttribute('href', 'https://www.instagram.com/p/E2E1/');
+  await expect(posts.first().locator('img')).toHaveAttribute(
+    'alt',
+    'Instagram post (1 November 2026): Studio day 1.',
+  );
+  await expect(posts.first().locator('img')).toHaveAttribute(
+    'src',
+    /^\/assets\/images\/instagram\/e2e1-320\.webp$/,
+  );
+  // Served from our own site, never from Instagram. (Lazy-loaded, so scroll to it first.)
+  const img = posts.first().locator('img');
+  await img.scrollIntoViewIfNeeded();
+  await expect.poll(() => img.evaluate((el) => el.complete && el.naturalWidth > 0)).toBe(true);
+});

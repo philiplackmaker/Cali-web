@@ -44,7 +44,9 @@ metafield definitions, the Site photo metaobject, and the webhooks. Also:
 
 - [ ] Create the site from the GitHub repo. Production branch: `shop-foundations` for now
       (switch to `main` after step 5). Build command and publish folder come from `netlify.toml`.
-- [ ] Environment variables: `SHOPIFY_STORE_DOMAIN`, `SHOPIFY_STOREFRONT_TOKEN`, `NETLIFY_BUILD_HOOK_URL`.
+- [ ] Environment variables: `SHOPIFY_STORE_DOMAIN`, `SHOPIFY_STOREFRONT_TOKEN`, `NETLIFY_BUILD_HOOK_URL`,
+      and `INSTAGRAM_ACCESS_TOKEN` for the latest Instagram posts (README → Instagram; needs @calicomelton
+      to be a free Creator account).
 - [ ] Build hook created, and pointed at by Shopify's product webhooks.
 - [ ] Forms → enable form detection, then set a notification to email Cali for `enquiry`.
 - [ ] On the `….netlify.app` address: browse, add to basket, reach checkout, send a test enquiry.

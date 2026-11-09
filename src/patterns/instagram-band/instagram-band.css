@@ -46,15 +46,16 @@
 }
 
 .ds-instagram__photo .ds-artwork-image,
-.ds-instagram__photo .ds-artwork-image__img {
+.ds-instagram__photo img {
+  inline-size: 100%;
   block-size: 100%;
 }
 
-.ds-instagram__photo .ds-artwork-image__img {
+.ds-instagram__photo img {
   object-fit: cover;
   transition: scale var(--ds-transition-panel-duration) var(--ds-transition-panel-easing);
 }
 
-.ds-instagram__photo:hover .ds-artwork-image__img {
+.ds-instagram__photo:hover img {
   scale: 1.03;
 }

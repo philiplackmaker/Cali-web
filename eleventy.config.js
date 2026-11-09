@@ -6,6 +6,7 @@ import * as product from './src/scripts/lib/product.js';
 import site from './src/_data/site.js';
 import { cartPermalink } from './src/scripts/shopify-client.js';
 import { buildTokens } from './scripts/build-tokens.js';
+import { loadInstagram } from './scripts/instagram.js';
 import { buildSiteCss } from './src/assets/css/site.11ty.js';
 
 export default function (eleventyConfig) {
@@ -50,6 +51,16 @@ export default function (eleventyConfig) {
   eleventyConfig.addNunjucksAsyncShortcode('siteCss', async () => {
     siteCss ??= buildSiteCss();
     return siteCss;
+  });
+
+  // The latest Instagram posts (or [] without a token): see scripts/instagram.js.
+  let instagram;
+  eleventyConfig.addGlobalData('instagram', () => {
+    instagram ??= loadInstagram({ outputDir: eleventyConfig.directories.output }).then((posts) => {
+      if (posts.length) console.log(`[instagram] ${posts.length} latest posts.`);
+      return { posts };
+    });
+    return instagram;
   });
 
   // Tokens are compiled before every build, so editing /tokens/*.json shows up live.

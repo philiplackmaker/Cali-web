@@ -9,3 +9,4 @@ _site-e2e/
 .lighthouseci/
 test-results/
 playwright-report/
+.cache/
