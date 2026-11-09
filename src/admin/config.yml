@@ -1,0 +1,157 @@
+# Decap CMS: the admin Cali uses at /admin/ to add prints and change photos.
+# Every Publish commits to the repo, and Netlify rebuilds the site (a few minutes).
+# Login is Netlify Identity + Git Gateway (README → "The admin").
+backend:
+  name: git-gateway
+  # The branch Netlify publishes. Change to main when shop-foundations is merged (LAUNCH.md).
+  branch: shop-foundations
+  commit_messages:
+    create: 'Add “{{slug}}” ({{author-name}})'
+    update: 'Update “{{slug}}” ({{author-name}})'
+    delete: 'Remove “{{slug}}” ({{author-name}})'
+    uploadMedia: 'Upload “{{path}}” ({{author-name}})'
+    deleteMedia: 'Delete “{{path}}” ({{author-name}})'
+
+# On localhost, `npx decap-server` lets the admin edit these files directly, no login.
+local_backend: true
+
+site_url: https://calicomelton.com
+display_url: https://calicomelton.com
+logo_url: /favicon-180.png
+
+# Photos Cali uploads. The build makes web-sized copies; upload the best version you have
+# (a JPEG around 2,400 pixels wide and under 10 MB is ideal).
+media_folder: content/uploads
+public_folder: /content/uploads
+
+collections:
+  - name: products
+    label: Prints and paintings
+    label_singular: print or painting
+    description: Everything in the shop. Newest first on the site; the home page shows the six newest.
+    folder: content/products
+    format: json
+    extension: json
+    create: true
+    delete: true
+    identifier_field: title
+    # The site itself is the preview: Publish, then look at it a few minutes later.
+    editor: { preview: false }
+    slug: '{{slug}}'
+    summary: '{{title}} · {{type}}'
+    sortable_fields: [added, title]
+    view_filters:
+      - { label: Prints, field: type, pattern: Print }
+      - { label: Originals, field: type, pattern: Original }
+    fields:
+      - { label: Title, name: title, widget: string }
+      - label: Show it in the shop
+        name: published
+        widget: boolean
+        default: true
+        hint: Switch off to hide it without deleting it.
+      - label: Print or original
+        name: type
+        widget: select
+        options: [Print, Original]
+        default: Print
+      - label: Added
+        name: added
+        widget: datetime
+        format: 'YYYY-MM-DDTHH:mm'
+        hint: Newer work shows first.
+      - label: Photos
+        name: images
+        widget: list
+        min: 1
+        summary: '{{fields.alt}}'
+        hint: First the painting straight on. Then, if you have them, a close-up or a photo of it framed in a room.
+        fields:
+          - { label: Photo, name: image, widget: image, choose_url: false }
+          - label: What the photo shows (for blind visitors)
+            name: alt
+            widget: string
+            hint: 'Describe the picture, e.g. "Three sunflowers in a blue and red checked bowl, on a pale pink ground."'
+      - label: Sizes and prices
+        name: options
+        widget: list
+        min: 1
+        summary: '{{fields.size}}: £{{fields.price}}'
+        hint: Prints, one row per size. Originals, one row with the painting's size.
+        fields:
+          - { label: Size, name: size, widget: string, hint: 'e.g. 20 × 25 cm, or A4' }
+          - { label: Price (£), name: price, widget: number, value_type: float, min: 0 }
+          - label: Sold
+            name: sold
+            widget: boolean
+            default: false
+            hint: For an original, switch this on once it's sold. (Checkout already stops a second sale.)
+      - label: Price on request
+        name: priceOnRequest
+        widget: boolean
+        default: false
+        required: false
+        hint: Hides the price, and visitors enquire instead of buying.
+      - label: Description
+        name: description
+        widget: text
+        required: false
+        hint: A blank line starts a new paragraph.
+      - { label: How it was made, name: made, widget: text, required: false }
+      - {
+          label: Medium,
+          name: medium,
+          widget: string,
+          required: false,
+          hint: 'e.g. Giclée print, or Oil on canvas',
+        }
+      - { label: Year, name: year, widget: string, required: false }
+      - {
+          label: Framing,
+          name: framing,
+          widget: string,
+          required: false,
+          hint: 'e.g. Oak tray frame, ready to hang',
+        }
+      - {
+          label: Edition size,
+          name: edition,
+          widget: string,
+          required: false,
+          hint: Prints only,
+          if it's a limited edition.,
+        }
+
+  - name: site
+    label: Site photos
+    editor: { preview: false }
+    files:
+      - name: photos
+        label: Home, About and studio photos
+        file: content/photos.json
+        fields:
+          - label: Home page painting
+            name: homeHero
+            widget: object
+            required: false
+            hint: The big picture at the top of the home page. Empty means the newest painting.
+            fields:
+              - { label: Photo, name: image, widget: image, required: false, choose_url: false }
+              - { label: What the photo shows, name: alt, widget: string, required: false }
+          - label: Photo of you (About and home page)
+            name: aboutPortrait
+            widget: object
+            required: false
+            fields:
+              - { label: Photo, name: image, widget: image, required: false, choose_url: false }
+              - { label: What the photo shows, name: alt, widget: string, required: false }
+          - label: Studio photos
+            name: studio
+            widget: list
+            required: false
+            summary: '{{fields.caption}}'
+            hint: Shown on the home page when there are no Instagram posts. Three works best.
+            fields:
+              - { label: Photo, name: image, widget: image, choose_url: false }
+              - { label: What the photo shows, name: alt, widget: string }
+              - { label: Caption, name: caption, widget: string, required: false }

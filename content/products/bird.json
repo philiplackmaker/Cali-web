@@ -1,0 +1,28 @@
+{
+  "title": "Bird",
+  "type": "Print",
+  "published": true,
+  "added": "2026-11-09T11:55",
+  "description": "Giclee, museum quality print on 300gsm, beautiful prestige paper",
+  "made": "Prints are scanned from original hand painted work with no digital retouching. Each print is then professionally printed on a beautiful prestige paper.",
+  "medium": "Giclée print",
+  "options": [
+    {
+      "size": "20 × 20 cm",
+      "price": 25,
+      "sold": false
+    },
+    {
+      "size": "40 × 40 cm",
+      "price": 50,
+      "sold": false
+    }
+  ],
+  "priceOnRequest": false,
+  "images": [
+    {
+      "image": "/content/uploads/bird.jpg",
+      "alt": "Bird by Calico Melton: a pale pink bird with outstretched wings and a rosy cheek, against a dark brown ground."
+    }
+  ]
+}

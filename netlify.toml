@@ -8,9 +8,14 @@
 [build.environment]
   NODE_VERSION = "24"
 
-# Internal docs stay out of search engines.
+# Internal docs and the CMS admin stay out of search engines.
 [[headers]]
   for = "/design-system/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
+[[headers]]
+  for = "/admin/*"
   [headers.values]
     X-Robots-Tag = "noindex, nofollow"
 
@@ -19,8 +24,7 @@
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
-# Keep downloaded Dropbox scans and Instagram images between builds (.cache/eleventy-fetch),
-# so the nightly rebuild doesn't download every painting again.
+# Keep downloaded Instagram images between builds (.cache/eleventy-fetch).
 [[plugins]]
   package = "netlify-plugin-cache"
   [plugins.inputs]

@@ -53,6 +53,14 @@
   {{ cartDrawer({ empty: emptyHtml }) }}
   {%- endif %}
   <script type="module" src="/assets/js/scripts/main.js"></script>
+  {%- if site.analyticsToken and commerce != "mock" %}
+  {#- Cloudflare Web Analytics: page views, no cookies. #}
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "{{ site.analyticsToken }}"}'></script>
+  {%- endif %}
+  {%- if page.url == "/" %}
+  {#- Netlify's login emails (invite, password reset) link to the home page: hand them to /admin/. #}
+  <script>if (/(invite|recovery|confirmation|email_change)_token=/.test(location.hash)) location.replace('/admin/' + location.hash);</script>
+  {%- endif %}
   {%- for script in scripts %}
   <script type="module" src="{{ script }}"></script>
   {%- endfor %}

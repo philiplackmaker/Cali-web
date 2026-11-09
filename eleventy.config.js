@@ -26,6 +26,10 @@ export default function (eleventyConfig) {
 
   eleventyConfig.addPassthroughCopy({ 'src/assets/images': 'assets/images' });
   eleventyConfig.addPassthroughCopy({ 'src/assets/favicon*': '/' });
+  // The CMS admin (Decap): a static page and its config.
+  eleventyConfig.addPassthroughCopy({ 'src/admin': 'admin' });
+  // Uploaded originals, so the admin can show thumbnails. Pages use the resized WebP copies.
+  eleventyConfig.addPassthroughCopy({ 'content/uploads': 'content/uploads' });
   // Browser JS keeps the source tree's shape, so relative imports work the same in
   // Node tests and in the browser: src/components/x/x.js → /assets/js/components/x/x.js
   eleventyConfig.addPassthroughCopy({ 'src/scripts': 'assets/js/scripts' });
@@ -78,6 +82,7 @@ export default function (eleventyConfig) {
   eleventyConfig.addWatchTarget('src/components/');
   eleventyConfig.addWatchTarget('src/patterns/');
   eleventyConfig.addWatchTarget('src/design-system/docs.css');
+  eleventyConfig.addWatchTarget('content/');
 
   // Commerce helpers, shared with the browser so build and runtime agree.
   eleventyConfig.addFilter('money', (money) => formatMoney(money));

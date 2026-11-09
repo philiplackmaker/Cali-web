@@ -24,7 +24,12 @@ async function walk(d) {
 }
 
 const files = await walk(dir);
-const pages = files.filter((f) => f.endsWith('.html') && !f.includes(`${sep}design-system${sep}`));
+const pages = files.filter(
+  (f) =>
+    f.endsWith('.html') &&
+    !f.includes(`${sep}design-system${sep}`) &&
+    !f.includes(`${sep}admin${sep}`),
+);
 const seen = { title: new Map(), description: new Map() };
 
 for (const file of pages) {
@@ -51,8 +56,8 @@ for (const file of pages) {
   }
   if (!/<html lang="en-GB"/.test(html)) fail(rel, 'html lang is not en-GB');
   if (launch) {
-    if (/data-catalogue="(local|fixture)"/.test(html)) {
-      fail(rel, 'built from the local catalogue, not the Google Sheet (set SHEET_CSV_URL)');
+    if (/data-catalogue="fixture"/.test(html)) {
+      fail(rel, 'built from the test products, not content/ (unset SHOP_FIXTURE)');
     }
     if (/TODO copy|Placeholder|placeholder copy/i.test(html.replace(/placeholder="[^"]*"/g, '')))
       fail(rel, 'still has placeholder copy (search the template for TODO)');

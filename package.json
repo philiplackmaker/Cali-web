@@ -2,7 +2,7 @@
   "name": "calico-melton-shop",
   "private": true,
   "type": "module",
-  "description": "Calico Melton's shop: Eleventy + Web Components, a Google Sheet catalogue and Stripe Checkout.",
+  "description": "Calico Melton's shop: Eleventy + Web Components, Decap CMS and Stripe Checkout.",
   "engines": {
     "node": ">=22"
   },

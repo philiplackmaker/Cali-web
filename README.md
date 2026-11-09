@@ -1,6 +1,6 @@
 # Calico Melton: shop
 
-Cali's online shop for original paintings and prints. It's plain HTML, CSS and vanilla JS, built with [Eleventy](https://www.11ty.dev/). Products come from Cali's **Google Sheet**, payments go through **Stripe Checkout**, and Netlify hosts it.
+Cali's online shop for original paintings and prints. It's plain HTML, CSS and vanilla JS, built with [Eleventy](https://www.11ty.dev/). Cali edits products and photos in a simple admin at **/admin/** (Decap CMS), payments go through **Stripe Checkout**, and Netlify hosts it.
 
 The site is built as a **design system first**: tokens, then components, then patterns, then pages. Pages only use documented parts, so adding a page should never need new CSS. You can browse the system at `/design-system/`, which isn't linked from the public site and is set to `noindex`.
 
@@ -30,7 +30,7 @@ npm run dev        # builds tokens, serves at http://localhost:8080 with live re
 
 CI (`.github/workflows/ci.yml`) runs the whole quality bar on every push to `main` and every pull request, in three jobs: checks, Playwright, and Lighthouse. Going live is covered step by step in [LAUNCH.md](LAUNCH.md).
 
-The e2e tests build the site with the test products in `src/_data/mock.js` (`SHOP_FIXTURE=mock`, which has originals, sold work and sales), fake the Instagram API at build time (`tests/support/fake-apis.mjs`), and stand in for the checkout function and Stripe in the browser (`tests/support/shop-mock.js`). No Google Sheet or Stripe account is needed.
+The e2e tests build the site with the test products in `src/_data/mock.js` (`SHOP_FIXTURE=mock`, which has originals, sold work and sales), fake the Instagram API at build time (`tests/support/fake-apis.mjs`), and stand in for the checkout function and Stripe in the browser (`tests/support/shop-mock.js`). No Stripe account is needed.
 
 ## How the code is laid out
 
@@ -109,7 +109,7 @@ The checklist:
 - `footerSignup: false`: on pages that already have a Studio Letter band.
 - `noindex: true` and `eleventyExcludeFromSitemap: true`: for utility pages like /cart/.
 
-Product and collection pages are generated from the `shop` data (`scripts/shop.js`): the Google Sheet, or its local copy.
+Product and collection pages are generated from the `shop` data (`scripts/shop.js`), read from `content/`.
 
 | Page                    | URL                                           | Template                              |
 | ----------------------- | --------------------------------------------- | ------------------------------------- |
@@ -128,38 +128,35 @@ Placeholder copy is marked `<!-- TODO copy -->` or `TODO` in the templates. Sear
 
 ### How the cart fits together
 
-- `scripts/shop.js` loads the catalogue at build time: Cali's Google Sheet (`SHEET_CSV_URL`, read by `scripts/sheet.js`), or the local copy in `scripts/local-catalogue.js` when that isn't set. Products keep the shape the site was first built around (Shopify's Storefront API), so templates don't care where they came from. The build writes every variant to `/assets/data/catalog.json`.
+- `scripts/shop.js` loads the catalogue at build time from `content/` (`scripts/content.js`): one JSON file per product in `content/products/`, site photos in `content/photos.json`, uploaded photos in `content/uploads/`, all edited at /admin/. Every photo is resized to WebP (320 to 1440 px) during the build. Products keep the shape the site was first built around (Shopify's Storefront API), so templates don't care where they came from. The build writes every variant to `/assets/data/catalog.json`.
 - `src/scripts/cart.js` is the cart store, over `src/scripts/local-cart.js`: the basket lives in the browser's `localStorage`, with prices and stock from `catalog.json`. It runs one operation at a time and emits `change` events with messages in Cali's voice. `src/scripts/commerce.js` creates one of each per page; the `/design-system/` pages use the docs' example products instead (`data-commerce="mock"`).
 - `<add-to-cart>`, `<cart-drawer>` and `<cart-count>` all share that store.
 - **Checkout** is a form in the basket. It posts the lines (variant id + quantity) and the delivery choice (UK or rest of the world, from `site.delivery`) to `/api/checkout`: `netlify/functions/checkout.mjs`, with the logic in `scripts/checkout.js`. That checks every line against `catalog.json` (so a price can't be changed in the page), creates a Stripe Checkout Session with the prices, delivery and allowed countries, and redirects to Stripe. After paying, Stripe sends the buyer to `/order-thanks/`, which empties the basket.
 - **Originals** can only be bought once: the checkout function asks Stripe whether that painting has already been paid for, even if the sheet doesn't say Sold yet.
 - Without JS, product pages show "Buy" buttons that post straight to `/api/checkout`.
 
-## Connect the Google Sheet (one-time setup)
+## The admin (Decap CMS)
 
-1. **Share the sheet.** In Google Sheets → Share → General access → **Anyone with the link**, Viewer. (Or File → Share → Publish to web → CSV.) The build reads it as CSV.
-2. **Columns.** One row per print size, or one row per original. The build understands these headers (any order, any case; others are ignored):
+Cali goes to **calicomelton.com/admin/**, signs in with her email and password, and edits:
 
-   | Column                                            | Example                                 | Notes                                                           |
-   | ------------------------------------------------- | --------------------------------------- | --------------------------------------------------------------- |
-   | `Name`                                            | Blue Tulips                             | Rows with the same name are one product                         |
-   | `Description`                                     | Giclee, museum quality print on 300gsm… | First paragraph on the product page                             |
-   | `Cost`                                            | £30                                     | Or "on request" for an original sold by enquiry                 |
-   | `Size`                                            | 20cm x 25cm, A4                         | Becomes "20 × 25 cm"                                            |
-   | `How it was made`                                 | Prints are scanned from…                | Second paragraph                                                |
-   | `Dropbox…`                                        | a Dropbox share link to the scan        | The main image. Any header starting "Dropbox" or "Image" works  |
-   | `alternative images`                              | more Dropbox links                      | Extra photos, e.g. framed in a room                             |
-   | `Type` (optional)                                 | Original                                | Blank means Print                                               |
-   | `Sold` (optional)                                 | yes                                     | On a print row, sells out that size                             |
-   | `Alt text` (optional)                             | A white swan holding a red tulip…       | Describes the painting for screen readers. Strongly recommended |
-   | `Medium`, `Year`, `Framing`, `Edition` (optional) | Oil on canvas, 2026                     | Shown in the product's details                                  |
+- **Prints and paintings:** title, print or original, photos (with a description of each for blind visitors), sizes and prices, sold, price on request, description, medium, year, framing. "Show it in the shop" hides a piece without deleting it.
+- **Site photos:** the home page painting, the photo of Cali, and studio photos.
 
-   Put the newest work at the top: the home page shows the first six.
+Pressing **Publish** saves the change to the repo (`content/`), and Netlify rebuilds the site: it's live in a few minutes. The config is `src/admin/config.yml`.
 
-3. **Images.** Dropbox share links work as they are. The build downloads each one, makes web-sized WebP copies (320 to 1440 px wide) and caches the download in `.cache/`. Very large scans (over 100 MB) slow the build down, so a 3000 px JPEG is plenty. A product whose image can't be loaded, or with no price, is left out, with a warning in the build log.
-4. **Photos tab (optional).** Add a second tab with `Placement` (`home hero`, `about portrait` or `studio`), `Image` (Dropbox link), `Alt text`, `Caption` and `Order`. Set `SHEET_PHOTOS_CSV_URL` to that tab's link. Without it, the home page uses the first painting, the studio photos use the paintings' extra views, and the About photo is a placeholder.
-5. **Environment variables** (Netlify → Site configuration → Environment variables; locally, `.env`, see `.env.example`): `SHEET_CSV_URL` (the sheet's normal link is fine) and, if used, `SHEET_PHOTOS_CSV_URL`. The build log says `[shop] N products from the Google Sheet.`
-6. **Rebuilds.** Sheet changes go live on the next build. `netlify/functions/nightly-rebuild.mjs` rebuilds every night at 04:00 UTC (it needs `NETLIFY_BUILD_HOOK_URL`, a build hook from Site configuration → Build & deploy → Build hooks). To see a change straight away, use Netlify's **Trigger deploy** button.
+**One-time setup (PIP, after the Netlify site exists):**
+
+1. Netlify → the site → **Identity** → Enable Identity.
+2. Identity → Settings → **Registration: Invite only**. (Otherwise anyone could sign up.)
+3. Identity → Services → **Enable Git Gateway**. This lets the admin save to GitHub without Cali needing a GitHub account.
+4. Identity → **Invite users** → Cali's email (and yours). The invite email links to the site; the home page passes it on to /admin/, where she sets her password.
+5. Optional: Identity → Emails, to make the invite and password-reset emails sound like Cali.
+
+The admin saves to the branch in `src/admin/config.yml` (`shop-foundations` until launch; change it to `main` when that's merged, see LAUNCH.md).
+
+**Trying the admin locally:** run `npx decap-server` in one terminal and `npm run dev` in another, then open http://localhost:8080/admin/ and press Login (no account needed). Changes are written straight to `content/`.
+
+**Photos:** upload the best version you have; a JPEG around 2,400 pixels wide and under 10 MB is ideal. The build makes the small web copies.
 
 ## Connect Stripe (one-time setup)
 
@@ -174,12 +171,25 @@ The secret key only ever lives on Netlify, inside the checkout function. Pages n
 
 ## Add a print or an original
 
-- **Print:** add a row per size to the sheet, with the same Name, a Cost and a Size, and the Dropbox link to the scan. Add Alt text on the first row.
-- **Original:** one row, with Type "Original", Cost, Size (e.g. "60cm x 80cm"), Medium and Year. It's sold one at a time. When it's sold, write "yes" in Sold (the checkout already stops a second sale, but this shows it as sold on the site).
-- **Price on request:** write "on request" in Cost. The page offers "Enquire about this painting" instead of the basket.
-- Then trigger a deploy, or wait for the nightly rebuild.
+In the admin, **Prints and paintings → New print or painting**:
+
+- **Print:** type Print, one row in "Sizes and prices" per size.
+- **Original:** type Original, one row with the painting's size and price. It sells once. When it has sold, switch on **Sold** (checkout already stops a second sale, but this marks it sold on the site).
+- **Price on request:** switch it on; the page offers "Enquire about this painting" instead of the basket.
+- Then **Publish**. It's live in a few minutes.
 
 **Enquiries** from /contact/ arrive as Netlify Forms submissions (form name `enquiry`). In Netlify, go to Site configuration → Forms → Notifications and set them to email Cali.
+
+## Monitoring
+
+| What                        | How                                                                                                                                                                                                                                                                         | Setup                                                                                                                                                                     |
+| --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Site up, checkout works** | `.github/workflows/monitor.yml` runs `scripts/monitor.js` every 30 minutes: home, shop and a product page load, and `/api/health` (`netlify/functions/health.mjs`) confirms the catalogue loads and Stripe accepts the key. A failure fails the run, and GitHub emails you. | Set the repository variable `MONITOR_URL` to `https://calicomelton.com`. GitHub → Settings → Notifications → Actions: notify for failed workflows. Runs from `main` only. |
+| **Orders**                  | Stripe emails each successful payment.                                                                                                                                                                                                                                      | Stripe → your profile → Communication preferences → Successful payments. Add Cali's email too.                                                                            |
+| **Builds**                  | Netlify emails if a deploy fails (for example a broken file from the admin).                                                                                                                                                                                                | Netlify → Site configuration → Notifications → Emails → Deploy failed.                                                                                                    |
+| **Visitors**                | Cloudflare Web Analytics: page views, top pages, where visitors come from. No cookies, so no consent banner.                                                                                                                                                                | Cloudflare → Analytics & Logs → Web Analytics → Add a site (calicomelton.com), copy the token, set `CLOUDFLARE_ANALYTICS_TOKEN` on Netlify. Production only.              |
+
+Check by hand any time: `node scripts/monitor.js https://calicomelton.com`, or open `/api/health`.
 
 ## Instagram: the latest three posts
 

@@ -13,6 +13,13 @@ export default {
   instagramHandle: '@calicomelton',
   email: 'calicomelton@gmail.com',
 
+  // Visitor stats: Cloudflare Web Analytics (free, no cookies, so no consent banner). Only on
+  // the production site, and only once the token is set on Netlify (README → Monitoring).
+  analyticsToken:
+    !process.env.CONTEXT || process.env.CONTEXT === 'production'
+      ? (process.env.CLOUDFLARE_ANALYTICS_TOKEN ?? null)
+      : null,
+
   // What comes with every original. Shown in Product details.
   // TODO copy: Cali to confirm each promise before launch.
   originalPromises: [

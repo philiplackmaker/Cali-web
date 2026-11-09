@@ -1,0 +1,28 @@
+{
+  "title": "Daisies",
+  "type": "Print",
+  "published": true,
+  "added": "2026-11-09T11:59",
+  "description": "Giclee, museum quality print on 300gsm, beautiful prestige paper",
+  "made": "Prints are scanned from original hand painted work with no digital retouching. Each print is then professionally printed on a beautiful prestige paper.",
+  "medium": "Giclée print",
+  "options": [
+    {
+      "size": "20 × 25 cm",
+      "price": 30,
+      "sold": false
+    },
+    {
+      "size": "40 × 50 cm",
+      "price": 60,
+      "sold": false
+    }
+  ],
+  "priceOnRequest": false,
+  "images": [
+    {
+      "image": "/content/uploads/daisies.jpg",
+      "alt": "Daisies by Calico Melton: a branching stem of white daisies in a red and white checked pot, against a deep green ground."
+    }
+  ]
+}

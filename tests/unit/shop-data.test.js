@@ -2,11 +2,10 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { loadShop } from '../../scripts/shop.js';
 
-test('without a sheet, the build uses the local copy of Cali’s sheet', async () => {
-  delete process.env.SHEET_CSV_URL;
+test('the build reads Cali’s products from content/ (what /admin/ edits)', async () => {
   delete process.env.SHOP_FIXTURE;
-  const shop = await loadShop();
-  assert.equal(shop.source, 'local');
+  const shop = await loadShop({ outputDir: '_site' });
+  assert.equal(shop.source, 'content');
   assert.equal(shop.products.length, 8);
   assert.equal(shop.hasOriginals, false);
   assert.deepEqual(
@@ -14,7 +13,7 @@ test('without a sheet, the build uses the local copy of Cali’s sheet', async (
     ['/shop/', '/shop/originals/', '/shop/prints/'],
   );
   assert.ok(shop.byHandle['blue-tulips']);
-  // No photos tab: the hero is the first painting, the studio band its other views.
+  // No site photos set yet: the hero is the newest painting, the studio band its other views.
   assert.equal(shop.photos.homeHero.image.url, shop.products[0].featuredImage.url);
   assert.equal(shop.photos.studio.length, 3);
 });

@@ -23,7 +23,7 @@
   <h2 class="ds-visually-hidden">{{ current.title }}, {{ current.products.length }} {{ "piece" if current.products.length == 1 else "pieces" }}</h2>
   <ul class="ds-card-grid" role="list">
     {%- for product in current.products %}
-    <li>{{ productCard(product, { headingLevel: 3, priority: loop.index <= 2 }) }}</li>
+    <li>{{ productCard(product, { headingLevel: 3, priority: loop.first }) }}</li>
     {%- endfor %}
   </ul>
   {%- else %}
