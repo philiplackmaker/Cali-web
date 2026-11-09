@@ -123,6 +123,8 @@ export async function clipFor(path, label, { root = '.', warn = console.warn } =
   return { url: path, type, label: label || null };
 }
 
+const SITE_PHOTO = { quality: 62 };
+
 export const IMAGE_WIDTHS = [320, 480, 640, 800, 1080, 1440];
 
 /**
@@ -130,7 +132,9 @@ export const IMAGE_WIDTHS = [320, 480, 640, 800, 1080, 1440];
  * Returns { url, width, height } with a "{width}" placeholder, or null if it can't be read.
  */
 export function imageResolver(outputDir, { root = '.', warn = console.warn } = {}) {
-  return async (path, name) => {
+  // quality: paintings 72 (it looks the same); site photos (people, rooms) 62, which is
+  // lighter still and keeps the About page's LCP under 2.5 s on a slow phone.
+  return async (path, name, { quality = 72 } = {}) => {
     try {
       const meta = await Image(join(root, path.replace(/^\//, '')), {
         widths: IMAGE_WIDTHS,
@@ -138,8 +142,7 @@ export function imageResolver(outputDir, { root = '.', warn = console.warn } = {
         outputDir: join(outputDir, 'assets/images/art'),
         urlPath: '/assets/images/art/',
         filenameFormat: (id, src, width, format) => `${name}-${width}.${format}`,
-        // Paintings compress well: quality 72 looks the same and keeps mobile LCP under 2.5 s.
-        sharpWebpOptions: { quality: 72, effort: 6, smartSubsample: true },
+        sharpWebpOptions: { quality, effort: 6, smartSubsample: true },
         // Some scans are huge (18,000 px wide): let sharp open them.
         sharpOptions: { limitInputPixels: false },
       });
@@ -158,11 +161,11 @@ export function imageResolver(outputDir, { root = '.', warn = console.warn } = {
   };
 }
 
-async function resolveAll(list, prefix, resolveImage, fallbackAlt) {
+async function resolveAll(list, prefix, resolveImage, fallbackAlt, options) {
   const images = [];
   for (const [i, item] of (list ?? []).entries()) {
     if (!item?.image) continue;
-    const image = await resolveImage(item.image, `${prefix}-${i + 1}`);
+    const image = await resolveImage(item.image, `${prefix}-${i + 1}`, options);
     if (image)
       images.push({ id: `image/${prefix}/${i + 1}`, ...image, altText: item.alt ?? fallbackAlt });
   }
@@ -205,9 +208,10 @@ export async function loadContent({
   let photos = { homeHero: null, aboutPortrait: null, studio: [] };
   try {
     const raw = JSON.parse(await readFile(join(dir, 'photos.json'), 'utf8'));
-    const one = async (item, name) =>
-      item?.image ? (await resolveAll([item], name, resolveImage, ''))[0] : null;
-    const hero = await one(raw.homeHero, 'photo-home');
+    const one = async (item, name, options = SITE_PHOTO) =>
+      item?.image ? (await resolveAll([item], name, resolveImage, '', options))[0] : null;
+    // The home page picture is usually a painting: painting quality.
+    const hero = await one(raw.homeHero, 'photo-home', {});
     const portrait = await one(raw.aboutPortrait, 'photo-about');
     const portraitClip = await clipFor(raw.aboutPortrait?.video, raw.aboutPortrait?.alt, { warn });
     const studio = [];
