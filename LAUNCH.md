@@ -38,17 +38,29 @@ Follow **Connect Stripe** in the README. Also:
 
 ## 3. Netlify (PIP)
 
-- [ ] Create the site from the GitHub repo. Production branch: `shop-foundations` for now
-      (switch to `main` after step 5). Build command and publish folder come from `netlify.toml`.
+**Free plan:** 300 credits a month. Each **production deploy costs 15** (about 20 a month), and
+traffic about 20 per GB. If they run out, Netlify pauses the site until the next month. Deploy
+previews and branch deploys are free. So: the live site deploys only from `main`, development
+happens on a free branch deploy, and the Instagram check only rebuilds when there's a new post
+(README → Netlify credits).
+
+- [ ] Create the site from the GitHub repo (Add new project → Import from GitHub →
+      `philiplackmaker/Cali-web`). **Production branch: `main`.** Until launch that's the old
+      one-page site, so the first deploy just puts it on a `….netlify.app` address. Build command
+      and publish folder come from `netlify.toml` (on `shop-foundations`).
+- [ ] Site configuration → Build & deploy → Branches and deploy contexts → Branch deploys:
+      **Let me add individual branches** → `shop-foundations`. Its preview lives at
+      `https://shop-foundations--<site-name>.netlify.app`, updates on every push, and costs no credits.
+- [ ] Team settings → Billing → usage notifications on, so you hear before credits run low.
 - [ ] Environment variables: `STRIPE_SECRET_KEY`, `NETLIFY_BUILD_HOOK_URL`, `CLOUDFLARE_ANALYTICS_TOKEN`
       (README → Monitoring), and `INSTAGRAM_ACCESS_TOKEN` for the latest Instagram posts (README → Instagram; needs @calicomelton
       to be a free Creator account).
-- [ ] Build hook created (used by the nightly rebuild).
+- [ ] Build hook created (used by the daily Instagram check, which only rebuilds for new posts).
 - [ ] **The admin:** enable Identity (invite only) and Git Gateway, invite Cali (README → The admin).
       She signs in at `/admin/`, changes a price, publishes, and sees it live a few minutes later.
 - [ ] Notifications → email on **Deploy failed**.
 - [ ] Forms → enable form detection, then set a notification to email Cali for `enquiry`.
-- [ ] On the `….netlify.app` address: browse, add to basket, reach checkout, send a test enquiry.
+- [ ] On the `shop-foundations--….netlify.app` preview: browse, add to basket, reach checkout, send a test enquiry.
       Deploy previews show `noindex` and a `Disallow: /` robots.txt automatically.
 - [ ] CI is green: lint, unit tests, site checks, Playwright (5 browsers, axe), Lighthouse.
 
@@ -73,8 +85,9 @@ Do this when steps 1–3 are done, ideally on a quiet morning. Lower the TTLs a 
 - [ ] In GitHub → Settings → Pages, turn Pages off (or remove the custom domain), so it doesn't
       fight Netlify for the domain. `main` has a `CNAME` file (added on github.com on 8 November)
       that points Pages at calicomelton.com: delete it at the same time.
-- [ ] Merge `shop-foundations` into `main`, then switch Netlify's production branch to `main`,
-      and change `branch:` in `src/admin/config.yml` to `main` (or the admin keeps saving to the old branch).
+- [ ] Change `branch:` in `src/admin/config.yml` to `main` (or the admin keeps saving to the old
+      branch), then merge `shop-foundations` into `main`. That merge is the production deploy that
+      puts the shop live (Netlify's production branch is already `main`).
 - [ ] **Monitoring:** set the repository variable `MONITOR_URL` to `https://calicomelton.com`, run the
       "Monitor the live shop" workflow once by hand, and check it's green (README → Monitoring).
 - [ ] Google Search Console: add the domain and submit `https://calicomelton.com/sitemap.xml`.

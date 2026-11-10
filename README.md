@@ -180,6 +180,20 @@ In the admin, **Prints and paintings → New print or painting**:
 
 **Enquiries** from /contact/ arrive as Netlify Forms submissions (form name `enquiry`). In Netlify, go to Site configuration → Forms → Notifications and set them to email Cali.
 
+## Netlify credits (free plan)
+
+Netlify's free plan gives 300 credits a month, and **pauses the site if they run out**. What uses them:
+
+| What                        | Credits                   | How this site keeps it low                                                                                               |
+| --------------------------- | ------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| A production deploy         | 15 (failed ones are free) | Only `main` is production. Development is pushed to `shop-foundations`, a branch deploy (free).                          |
+| Publishing in /admin/       | 15 per Publish            | Each Publish is a commit to `main`. Cali makes all her changes, then publishes; about 10 publishes a month is plenty.    |
+| The daily Instagram check   | 0, or 15 for a new post   | `nightly-rebuild.mjs` compares Instagram's latest posts with `/assets/data/instagram-posts.json` and only then rebuilds. |
+| Traffic                     | about 20 per GB           | Pages and images are small (WebP, lazy loading, clips under 0.5 MB). About 5,000 visits a month fit.                     |
+| Form submissions, functions | small                     | Enquiries, checkout and `/api/health`.                                                                                   |
+
+Turn on usage notifications (Team settings → Billing). If the shop gets busy, Netlify's Personal plan has 1,000 credits a month.
+
 ## Monitoring
 
 | What                        | How                                                                                                                                                                                                                                                                         | Setup                                                                                                                                                                     |

@@ -29,7 +29,7 @@ collections:
   - name: products
     label: Prints and paintings
     label_singular: print or painting
-    description: Everything in the shop. Newest first on the site; the home page shows the six newest.
+    description: Everything in the shop. Newest first on the site; the home page shows the six newest. Each Publish updates the live site and uses part of the free monthly hosting allowance, so make all your changes, then publish.
     folder: content/products
     format: json
     extension: json
