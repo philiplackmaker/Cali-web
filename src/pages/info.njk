@@ -1,13 +1,14 @@
 ---
 permalink: /info/
-title: Shipping and FAQ
-description: Shipping, framing, caring for your painting, and returns for original paintings and prints by Calico Melton.
+eleventyComputed:
+  title: "{{ pages.info.title }}"
+  description: "{{ pages.info.description }}"
 ---
 {%- from "patterns/section/section.njk" import section -%}
 {%- from "patterns/page-intro/page-intro.njk" import pageIntro -%}
 {%- from "patterns/prose/prose.njk" import prose -%}
 {% call section({ variant: "narrow tight" }) %}
-  {{ pageIntro({ eyebrow: "Good to know", title: "Shipping and FAQ", lede: "How your painting gets to you, and how to look after it once it's there." }) }}
+  {{ pageIntro({ eyebrow: "Good to know", title: pages.info.title, lede: pages.info.lede }) }}
   {% call prose() %}
     <h2 id="shipping">Shipping</h2>
     <p>Delivery is chosen in your basket:</p>
@@ -16,18 +17,7 @@ description: Shipping, framing, caring for your painting, and returns for origin
       <li>{{ d.label }}: {{ { amount: d.amount, currencyCode: "GBP" } | money }}. {{ d.description }}.</li>
       {%- endfor %}
     </ul>
-    <p>Placeholder: how prints are packed and posted. <!-- TODO copy --></p>
-    <h2 id="framing">Framing</h2>
-    <p>Each painting's page says whether it comes framed. Placeholder: frame styles, and framing on request. <!-- TODO copy --></p>
-    <h2 id="care">Caring for your painting</h2>
-    <p>Hang it out of direct sunlight, away from radiators and damp. Dust it gently with a soft, dry brush. <!-- TODO copy --></p>
-    <h2 id="returns">Returns</h2>
-    <p>If a print isn't right, you can return it within 14 days of delivery for a refund. Placeholder: Cali to confirm the terms. <!-- TODO copy --></p>
-    <h2 id="payment">Paying</h2>
-    <p>Payments are taken securely by Stripe, by card, Apple Pay or Google Pay. I never see your card details.</p>
-    <h2 id="privacy">Your details</h2>
-    <p>I only use your name and address to send your order, and your email to tell you about it. I count visits to the site with Cloudflare Web Analytics, which uses no cookies and doesn't track you from site to site. Placeholder: Cali to confirm, and add anything about the Studio Letter. <!-- TODO copy --></p>
-    <h2 id="questions">Something else?</h2>
-    <p><a href="/contact/">Send me a message</a> and I'll get back to you.</p>
+    {{ pages.info.shipping | md | safe }}
+    {{ pages.info.body | md | safe }}
   {% endcall %}
 {% endcall %}

@@ -9,22 +9,21 @@ Work through this in order. The order matters for the DNS step: today
 
 ## 1. Content (Cali)
 
-`npm run check:launch` must pass. It fails while any public page still has placeholder copy. Search the templates for `TODO` to find every spot:
+`npm run check:launch` must pass. It fails while any public page still has placeholder copy. Most of it is in the admin now: anything that still says "Placeholder" needs writing.
 
-| Where                                            | What's needed                                                  |
-| ------------------------------------------------ | -------------------------------------------------------------- |
-| `src/pages/index.njk`                            | Hero line, and the two "Hello, I'm Cali" paragraphs            |
-| `src/pages/about.njk`                            | Bio, "How I work", "Exhibitions and shows"                     |
-| `src/pages/contact.njk`                          | How commissions work: timings, deposit, guide prices           |
-| `src/pages/info.njk`                             | Packing and posting, framing, care, returns, privacy           |
-| `src/patterns/product-detail/product-detail.njk` | Delivery times on product pages                                |
-| `scripts/shop.js`                                | Intros for All work, Originals and Prints                      |
-| `src/_data/site.js` → `delivery`                 | Real delivery prices and times, UK and rest of the world       |
-| `src/_data/site.js` → `originalPromises`         | Confirm: signed, certificate of authenticity, insured delivery |
-| `src/_data/site.js` → `payments`                 | Leave off unless instalments or Own Art are really set up      |
-| /admin/ → Prints and paintings                   | Check each piece: photo descriptions, sizes, prices            |
-| /admin/ → Site photos                            | The photo of Cali, and a few studio photos                     |
-| Logo                                             | Check the SVG flower trace, or supply the original vector      |
+| Where                                     | What's needed                                                           |
+| ----------------------------------------- | ----------------------------------------------------------------------- |
+| /admin/ → Pages → Home page               | The line under her name, and the "Hello, I'm Cali" text                 |
+| /admin/ → Pages → About                   | Opening line, "In the studio", How I work, Exhibitions                  |
+| /admin/ → Pages → Commissions and contact | How commissions work: timings, deposit, guide prices                    |
+| /admin/ → Pages → Shipping and FAQ        | Packing and posting, framing, care, returns, privacy                    |
+| `scripts/shop.js`                         | Intros for All work, Originals and Prints                               |
+| /admin/ → Settings → Delivery             | Real delivery prices and times, and the delivery lines on product pages |
+| `src/_data/site.js` → `originalPromises`  | Confirm: signed, certificate of authenticity, insured delivery          |
+| `src/_data/site.js` → `payments`          | Leave off unless instalments or Own Art are really set up               |
+| /admin/ → Prints and paintings            | Check each piece: photo descriptions, sizes, prices                     |
+| /admin/ → Site photos                     | The photo of Cali, and a few studio photos                              |
+| Logo                                      | Check the SVG flower trace, or supply the original vector               |
 
 ## 2. Stripe (PIP)
 

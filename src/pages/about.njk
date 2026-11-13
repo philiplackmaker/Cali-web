@@ -1,7 +1,8 @@
 ---
 permalink: /about/
 title: About
-description: Calico Melton paints people, flowers and quiet rooms from a studio in Bristol. About Cali, how she works, and where to see her paintings.
+eleventyComputed:
+  description: "{{ pages.about.description }}"
 ---
 {%- from "patterns/section/section.njk" import section -%}
 {%- from "patterns/page-intro/page-intro.njk" import pageIntro -%}
@@ -10,7 +11,7 @@ description: Calico Melton paints people, flowers and quiet rooms from a studio 
 {%- from "patterns/photo-grid/photo-grid.njk" import photoGrid -%}
 {%- from "patterns/instagram-band/instagram-band.njk" import instagramBand -%}
 {% call section({ variant: "tight" }) %}
-  {{ pageIntro({ eyebrow: "About", title: "Hello, I'm Cali", lede: "I'm a painter in Bristol. I work in oil and gouache, mostly on people and the small things they love." }) }}
+  {{ pageIntro({ eyebrow: "About", title: pages.about.title, lede: pages.about.lede }) }}
 {% endcall %}
 
 {% call section({ labelledby: "studio-life" }) %}
@@ -19,23 +20,13 @@ description: Calico Melton paints people, flowers and quiet rooms from a studio 
     priority: true,
     image: shop.photos.aboutPortrait.image,
     video: shop.photos.aboutPortrait.video,
-    heading: "In the studio",
-    text: [
-      "This is placeholder copy, written in my voice until the real story is ready. It'll say how I started painting, what I keep coming back to, and why the brown grounds.",
-      "Most paintings take a few weeks. I work on several at once and let them sit against the wall until they tell me they're finished."
-    ]
+    heading: pages.about.studioHeading,
+    textHtml: pages.about.studioText | md
   }) }}
-  {#- TODO copy: Cali's bio -#}
 {% endcall %}
 
 {% call section({ variant: "narrow" }) %}
-  {% call prose() %}
-    <h2 id="how-i-work">How I work</h2>
-    <p>Placeholder: materials, process, and how a painting goes from sketch to finished piece. <!-- TODO copy --></p>
-    <h2 id="exhibitions">Exhibitions and shows</h2>
-    <p>Placeholder: recent shows, open studios, and where to see work in person. <!-- TODO copy --></p>
-    <p>If you'd like to see a painting before buying it, I'm happy to <a href="/contact/?viewing=">arrange a viewing in Bristol</a>.</p>
-  {% endcall %}
+  {% call prose() %}{{ pages.about.body | md | safe }}{% endcall %}
 {% endcall %}
 
 {% call section({ labelledby: "studio" }) %}

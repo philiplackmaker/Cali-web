@@ -12,6 +12,7 @@
   <div class="ds-artist-intro__photo">{% if opts.video %}{{ videoClip(opts.video, opts.image) }}{% else %}{{ artworkImage(opts.image, { sizes: "(width >= 53.75rem) 30vw, 100vw", priority: opts.priority }) }}{% endif %}</div>
   <div class="ds-artist-intro__text">
     <h2 class="ds-artist-intro__heading" id="{{ opts.id }}">{{ opts.heading }}</h2>
+    {%- if opts.textHtml %}{{ opts.textHtml | safe }}{% endif %}
     {%- for para in opts.text %}<p>{{ para }}</p>{% endfor %}
     {%- if opts.link %}{{ link({ href: opts.link.href, label: opts.link.label, variant: "arrow" }) }}{% endif %}
   </div>

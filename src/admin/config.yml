@@ -184,3 +184,147 @@ collections:
                 hint: 'A short, silent clip that loops, like a living photo: an MP4 under 15 MB, ideally 5 to 20 seconds. Phones record MP4; on an iPhone, set Camera → Formats → Most Compatible. The photo shows until it plays.'
               - { label: What the photo shows, name: alt, widget: string }
               - { label: Caption, name: caption, widget: string, required: false }
+
+  # Page wording. Long boxes are formatted text: headings, bold, links and lists.
+  # Anything that still says "Placeholder" stops the launch check, so replace it all.
+  - name: pages
+    label: Pages
+    editor: { preview: false }
+    files:
+      - name: home
+        label: Home page
+        file: content/pages/home.json
+        fields:
+          - { label: Small line above your name, name: heroEyebrow, widget: string }
+          - {
+              label: Line under your name,
+              name: heroLine,
+              widget: text,
+              hint: One or two sentences.,
+            }
+          - { label: Intro heading, name: introHeading, widget: string }
+          - {
+              label: Intro text,
+              name: introText,
+              widget: markdown,
+              modes: [rich_text],
+              buttons: [bold, italic, link, heading-two, bulleted-list, numbered-list],
+              editor_components: [],
+            }
+          - { label: Link to the About page, name: introLink, widget: string }
+          - {
+              label: Description for Google,
+              name: description,
+              widget: text,
+              hint: 'One sentence, under about 155 characters. Shown in search results.',
+            }
+      - name: about
+        label: About
+        file: content/pages/about.json
+        fields:
+          - { label: Page heading, name: title, widget: string }
+          - { label: Opening line, name: lede, widget: text }
+          - { label: Heading beside your photo, name: studioHeading, widget: string }
+          - {
+              label: Text beside your photo,
+              name: studioText,
+              widget: markdown,
+              modes: [rich_text],
+              buttons: [bold, italic, link, heading-two, bulleted-list, numbered-list],
+              editor_components: [],
+            }
+          - {
+              label: The rest of the page,
+              name: body,
+              widget: markdown,
+              modes: [rich_text],
+              buttons: [bold, italic, link, heading-two, bulleted-list, numbered-list],
+              editor_components: [],
+              hint: 'Use Heading 2 for each section, e.g. How I work, Exhibitions.',
+            }
+          - {
+              label: Description for Google,
+              name: description,
+              widget: text,
+              hint: 'One sentence, under about 155 characters. Shown in search results.',
+            }
+      - name: info
+        label: Shipping and FAQ
+        file: content/pages/info.json
+        fields:
+          - { label: Page heading, name: title, widget: string }
+          - { label: Opening line, name: lede, widget: text }
+          - {
+              label: Shipping,
+              name: shipping,
+              widget: markdown,
+              modes: [rich_text],
+              buttons: [bold, italic, link, heading-two, bulleted-list, numbered-list],
+              editor_components: [],
+              hint: 'Shown under the delivery prices (those are in Settings). Say how prints are packed and posted.',
+            }
+          - {
+              label: The rest of the page,
+              name: body,
+              widget: markdown,
+              modes: [rich_text],
+              buttons: [bold, italic, link, heading-two, bulleted-list, numbered-list],
+              editor_components: [],
+              hint: 'Use Heading 2 for each question: Framing, Returns, and so on.',
+            }
+          - {
+              label: Description for Google,
+              name: description,
+              widget: text,
+              hint: 'One sentence, under about 155 characters. Shown in search results.',
+            }
+      - name: contact
+        label: Commissions and contact
+        file: content/pages/contact.json
+        fields:
+          - { label: Page heading, name: title, widget: string }
+          - { label: Opening line, name: lede, widget: text }
+          - {
+              label: Commissions,
+              name: commissions,
+              widget: markdown,
+              modes: [rich_text],
+              buttons: [bold, italic, link, heading-two, bulleted-list, numbered-list],
+              editor_components: [],
+              hint: 'How commissions work: timings, deposit, a guide to prices.',
+            }
+          - {
+              label: Description for Google,
+              name: description,
+              widget: text,
+              hint: 'One sentence, under about 155 characters. Shown in search results.',
+            }
+
+  - name: shop-settings
+    label: Settings
+    editor: { preview: false }
+    files:
+      - name: delivery
+        label: Delivery
+        file: content/settings.json
+        fields:
+          - label: Delivery prices
+            name: delivery
+            widget: list
+            allow_add: false
+            allow_remove: false
+            allow_reorder: false
+            summary: '{{fields.label}}: £{{fields.price}}'
+            hint: Buyers choose one of these in the basket. Stripe adds the price at checkout.
+            fields:
+              - { name: id, widget: hidden }
+              - { label: Name, name: label, widget: string }
+              - { label: Price (£), name: price, widget: number, value_type: float, min: 0 }
+              - {
+                  label: How and how long,
+                  name: description,
+                  widget: string,
+                  hint: 'e.g. Royal Mail tracked, 2 to 5 working days',
+                }
+          - { label: Delivery line on print pages, name: printsDelivery, widget: text }
+          - { label: Delivery line on original pages, name: originalsDelivery, widget: text }

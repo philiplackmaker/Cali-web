@@ -1,3 +1,9 @@
+// Settings Cali edits at /admin/ → Settings (content/settings.json): delivery prices and times.
+import settings from '../../content/settings.json' with { type: 'json' };
+
+// Where each delivery option goes. Stripe only accepts addresses in these countries.
+const COUNTRIES = { uk: ['GB'], world: 'world' };
+
 export default {
   name: 'Calico Melton',
   url: process.env.URL ?? 'https://calicomelton.com',
@@ -38,21 +44,14 @@ export default {
 
   // Delivery, chosen in the basket. The buyer picks UK or the rest of the world; Stripe then
   // only accepts addresses in those countries and adds the price. Amounts in pounds.
-  // TODO: Cali to set the real prices and times before launch.
-  delivery: [
-    {
-      id: 'uk',
-      label: 'UK',
-      amount: 4,
-      description: 'Royal Mail tracked, 2 to 5 working days',
-      countries: ['GB'],
-    },
-    {
-      id: 'world',
-      label: 'Rest of the world',
-      amount: 12,
-      description: 'Tracked international, 5 to 15 working days',
-      countries: 'world',
-    },
-  ],
+  delivery: settings.delivery.map((d) => ({
+    id: d.id,
+    label: d.label,
+    amount: Number(d.price),
+    description: d.description,
+    countries: COUNTRIES[d.id] ?? ['GB'],
+  })),
+  // The delivery line on product pages.
+  printsDelivery: settings.printsDelivery,
+  originalsDelivery: settings.originalsDelivery,
 };

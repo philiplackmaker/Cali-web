@@ -1,5 +1,6 @@
 import { readdirSync } from 'node:fs';
 import nunjucks from 'nunjucks';
+import markdownIt from 'markdown-it';
 import { formatMoney, describePrice } from './src/scripts/lib/money.js';
 import { srcset, imageUrl, widthsFor } from './src/scripts/lib/image.js';
 import * as product from './src/scripts/lib/product.js';
@@ -97,6 +98,10 @@ export default function (eleventyConfig) {
   eleventyConfig.addFilter('productBadges', product.productBadges);
   eleventyConfig.addFilter('editionSize', product.editionSize);
   eleventyConfig.addFilter('optionStates', product.optionStates);
+  // Page wording from /admin/ (content/pages/*.json): Markdown → HTML. Raw HTML is escaped,
+  // so nothing typed in the admin can break a page; smart quotes and dashes are on.
+  const md = markdownIt({ html: false, linkify: true, typographer: true });
+  eleventyConfig.addFilter('md', (text) => md.render(String(text ?? '')));
   // products | without(product) | take(3)
   eleventyConfig.addFilter('without', (list, item) => list.filter((x) => x.handle !== item.handle));
   eleventyConfig.addFilter('take', (list, n) => list.slice(0, n));

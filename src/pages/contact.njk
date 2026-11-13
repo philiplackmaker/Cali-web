@@ -1,18 +1,19 @@
 ---
 permalink: /contact/
 title: Commissions and contact
-description: Commission a painting from Calico Melton, arrange a viewing in Bristol, or ask about a piece.
+eleventyComputed:
+  description: "{{ pages.contact.description }}"
 ---
 {%- from "patterns/section/section.njk" import section -%}
 {%- from "patterns/page-intro/page-intro.njk" import pageIntro -%}
 {%- from "patterns/prose/prose.njk" import prose -%}
 {%- from "patterns/enquiry-form/enquiry-form.njk" import enquiryForm -%}
 {% call section({ variant: "narrow tight" }) %}
-  {{ pageIntro({ eyebrow: "Commissions and contact", title: "Let's talk", lede: "About a commission, a viewing, or a painting you've seen. I read every message myself." }) }}
+  {{ pageIntro({ eyebrow: "Commissions and contact", title: pages.contact.title, lede: pages.contact.lede }) }}
   {% call prose() %}
     <p>Prefer email? Write to <a href="mailto:{{ site.email }}">{{ site.email }}</a>, or message me on Instagram at <a href="{{ site.instagram }}" target="_blank" rel="noopener">{{ site.instagramHandle }}<span class="ds-visually-hidden"> (opens in a new tab)</span></a>.</p>
     <h2 id="commissions">Commissions</h2>
-    <p>I take on a few commissions each year. Placeholder: how it works, timings, deposit, and a guide to prices. <!-- TODO copy --></p>
+    {{ pages.contact.commissions | md | safe }}
   {% endcall %}
 {% endcall %}
 

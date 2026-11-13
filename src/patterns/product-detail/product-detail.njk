@@ -54,8 +54,8 @@
     {%- endif %}
     {{ productDetails(product) }}
     <p class="ds-product__shipping">
-      {%- if original %}Originals ship from Bristol within 5 working days, insured and tracked. UK delivery is free; I'll quote for anywhere else.{% else %}Prints are made to order and ship within 7 working days, rolled in a sturdy tube.{% endif %}
-      <a href="/info/#shipping">Shipping and returns</a>. <!-- TODO copy: confirm delivery times and terms -->
+      {{ site.originalsDelivery if original else site.printsDelivery }}
+      <a href="/info/#shipping">Shipping and returns</a>.
     </p>
   </div>
 </article>

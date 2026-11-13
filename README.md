@@ -141,6 +141,8 @@ Cali goes to **calicomelton.com/admin/**, signs in with her email and password, 
 
 - **Prints and paintings:** title, print or original, photos (with a description of each for blind visitors), sizes and prices, sold, price on request, description, medium, year, framing. "Show it in the shop" hides a piece without deleting it.
 - **Site photos:** the home page painting, the photo of Cali, and studio photos.
+- **Pages:** the wording on Home, About, Shipping and FAQ, and Commissions (`content/pages/*.json`). Longer boxes are formatted text (Markdown): headings, bold, links, lists. Typed HTML is shown as text, so nothing can break a page.
+- **Settings:** delivery prices and times (`content/settings.json`), used in the basket, at Stripe checkout, on product pages and on Shipping and FAQ. In local development, restart `npm run dev` to see a Settings change.
 
 Pressing **Publish** saves the change to the repo (`content/`), and Netlify rebuilds the site: it's live in a few minutes. The config is `src/admin/config.yml`.
 

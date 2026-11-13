@@ -1,6 +1,7 @@
 ---
 permalink: /
-description: Hand-painted flowers, birds and pots by Calico Melton, a painter in Bristol. Giclée prints of her paintings, to buy online.
+eleventyComputed:
+  description: "{{ pages.home.description }}"
 footerSignup: false
 preloadSizes: "(width >= 53.75rem) 55vw, 100vw"
 ---
@@ -13,13 +14,12 @@ preloadSizes: "(width >= 53.75rem) 55vw, 100vw"
 {%- set hasOriginals = shop.hasOriginals -%}
 {{ hero({
   image: shop.photos.homeHero.image,
-  eyebrow: "Paintings from Bristol",
+  eyebrow: pages.home.heroEyebrow,
   title: "Calico Melton",
-  line: "Bright, hand-painted flowers, birds and pots, made in my studio in Bristol and printed on beautiful paper.",
+  line: pages.home.heroLine,
   primary: { href: "/shop/originals/", label: "See the originals" } if hasOriginals else { href: "/shop/prints/", label: "See the prints" },
   secondary: { href: "/shop/prints/", label: "Prints" } if hasOriginals else { href: "/about/", label: "About me" }
 }) }}
-{#- TODO copy: hero line -#}
 
 {% call section({ labelledby: "new-work" }) %}
   {{ featuredStrip({ id: "new-work", title: "New work", products: shop.latest, link: { href: "/shop/", label: "See all work" } }) }}
@@ -30,14 +30,10 @@ preloadSizes: "(width >= 53.75rem) 55vw, 100vw"
     id: "about-cali",
     image: shop.photos.aboutPortrait.image,
     video: shop.photos.aboutPortrait.video,
-    heading: "Hello, I'm Cali",
-    text: [
-      "I paint in a small studio in Bristol: flowers, birds, and the pots and vases they live in.",
-      "My prints are scanned straight from the original paintings, with no digital retouching, then printed on beautiful 300gsm prestige paper."
-    ],
-    link: { href: "/about/", label: "More about me and the studio" }
+    heading: pages.home.introHeading,
+    textHtml: pages.home.introText | md,
+    link: { href: "/about/", label: pages.home.introLink }
   }) }}
-  {#- TODO copy: intro paragraphs -#}
 {% endcall %}
 
 {% call section({ labelledby: "instagram" }) %}
