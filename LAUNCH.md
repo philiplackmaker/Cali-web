@@ -37,6 +37,10 @@ Follow **Connect Stripe** in the README. Also:
 
 ## 3. Netlify (PIP)
 
+**The site:** `calicomelton` on Netlify (free plan, created 14 November 2026).
+Production (`main`): https://calicomelton.netlify.app. Preview of the new shop
+(`shop-foundations`): https://shop-foundations--calicomelton.netlify.app.
+
 **Free plan:** 300 credits a month. Each **production deploy costs 15** (about 20 a month), and
 traffic about 20 per GB. If they run out, Netlify pauses the site until the next month. Deploy
 previews and branch deploys are free. So: the live site deploys only from `main`, development
