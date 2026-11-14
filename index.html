@@ -1,6 +1,13 @@
 <!doctype html>
 <html lang="en">
 <head>
+<script>
+  // Netlify's login emails (invite, password reset) link here. Until the new shop launches,
+  // its admin lives on the preview, so pass the link on. Nothing happens for normal visits.
+  if (/(invite|recovery|confirmation|email_change)_token=/.test(location.hash)) {
+    location.replace('https://shop-foundations--calicomelton.netlify.app/admin/' + location.hash);
+  }
+</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Calico Melton</title>
