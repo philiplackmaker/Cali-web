@@ -10,6 +10,6 @@ Content beside a photo: content left and photo right on laptops (the photo stays
 {% endcall %}
 ```
 
-- **Used on:** Commissions and contact (the form, beside the Commissions photo from Site photos).
+- **Used on:** Commissions and contact (the form, beside the Commissions photo from Site photos: a photo of Cali).
 
 Docs: `/design-system/patterns/split/`

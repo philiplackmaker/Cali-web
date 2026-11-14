@@ -31,6 +31,7 @@
 }
 
 .ds-product__gallery .ds-artwork-image__img {
+  border-radius: var(--ds-shape-artwork);
   inline-size: auto;
   max-inline-size: 100%;
   max-block-size: var(--ds-layout-hero-max);

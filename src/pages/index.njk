@@ -38,7 +38,8 @@ preloadSizes: "(width >= 53.75rem) 55vw, 100vw"
 {% endcall %}
 
 {% call section({ labelledby: "instagram" }) %}
-  {{ instagramBand({ id: "instagram", posts: instagram.posts, photos: shop.photos.studio }) }}
+  {#- Instagram only here; the studio photos and clips are on the About page. #}
+  {{ instagramBand({ id: "instagram", posts: instagram.posts }) }}
 {% endcall %}
 
 {% call section({ variant: "band" }) %}

@@ -21,6 +21,7 @@
 }
 
 .ds-artwork-image--framed .ds-artwork-image__img {
+  border-radius: var(--ds-shape-artwork);
   inline-size: min(100cqi, 100cqb * var(--ds-art-ratio, 1));
   block-size: auto;
   box-shadow: var(--ds-elevation-card);

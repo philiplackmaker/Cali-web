@@ -125,7 +125,11 @@
     },
     "image": {
       "$value": "{radius.xl}",
-      "$description": "Photos, paintings and video: 16px rounded corners"
+      "$description": "Photos and video: 16px rounded corners (paintings use shape.artwork)"
+    },
+    "artwork": {
+      "$value": "{radius.none}",
+      "$description": "Paintings themselves keep square corners; their frames and photos are rounded"
     }
   },
   "line": {

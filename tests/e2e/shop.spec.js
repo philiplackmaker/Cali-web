@@ -89,7 +89,7 @@ test('an original goes in once, then says "In your basket"', async ({ page }) =>
   await expect(page.getByRole('link', { name: 'View your basket' })).toBeVisible();
 });
 
-test('the home page shows studio photos and the three latest Instagram posts, each linking to its post', async ({
+test('the home page shows the three latest Instagram posts, each linking to its post', async ({
   page,
 }) => {
   await page.goto('/');
@@ -105,10 +105,8 @@ test('the home page shows studio photos and the three latest Instagram posts, ea
     'src',
     /^\/assets\/images\/instagram\/e2e1-320\.webp$/,
   );
-  // Cali's own studio photos sit alongside the posts, not instead of them.
-  const studio = band.getByRole('list', { name: 'Studio photos' }).locator('img');
-  await expect(studio.first()).toBeVisible();
-  expect(await studio.count()).toBeLessThanOrEqual(3);
+  // Instagram only: the studio photos are on the About page.
+  await expect(band.getByRole('list', { name: 'Studio photos' })).toHaveCount(0);
   // Served from our own site, never from Instagram. (Lazy-loaded, so scroll to it first.)
   const img = posts.first().locator('img');
   await img.scrollIntoViewIfNeeded();
@@ -123,4 +121,11 @@ test('an original in the basket: UK delivery only, at the highest postage', asyn
   await expect(basket.getByRole('radio', { name: /Rest of the world/ })).toBeHidden();
   await expect(basket.getByRole('radio', { name: /UK, £8/ })).toBeChecked();
   await expect(basket.getByText('Originals are posted within the UK only.')).toBeVisible();
+});
+
+test('the About page shows the studio photos', async ({ page }) => {
+  await page.goto('/about/');
+  const grid = page.locator('.ds-photo-grid');
+  await expect(grid.getByRole('heading', { name: 'The studio' })).toBeVisible();
+  await expect(grid.locator('li').first()).toBeVisible();
 });

@@ -206,7 +206,7 @@ collections:
             widget: list
             required: false
             summary: '{{fields.caption}}'
-            hint: Shown on the home page when there are no Instagram posts. Three works best.
+            hint: The studio photos (and clips) on the About page. Three or six work best.
             fields:
               - { label: Photo, name: image, widget: image, choose_url: false }
               - label: Clip (optional)

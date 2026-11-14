@@ -33,6 +33,15 @@
   object-fit: cover;
 }
 
+/* A clip sits in the same frame as the photos beside it. */
+.ds-photo-grid__item .ds-video-clip {
+  aspect-ratio: var(--ds-aspect-artwork);
+}
+
+.ds-photo-grid__item .ds-video-clip__video {
+  block-size: 100%;
+}
+
 .ds-photo-grid__item figcaption {
   color: var(--ds-color-text-muted);
   font-size: var(--ds-type-small-size);

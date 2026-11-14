@@ -1,9 +1,11 @@
 {#-
-  Photo grid: studio photos with captions, from the site_photo metaobjects.
+  Photo grid: studio photos with captions, from Site photos in the admin. A photo with a clip
+  plays the clip (silent loop, pause button), with the photo as its poster.
   {% from "patterns/photo-grid/photo-grid.njk" import photoGrid %}
   {{ photoGrid({ id: "studio", heading: "The studio", photos: shop.photos.studio }) }}
 -#}
 {%- from "components/artwork-image/artwork-image.njk" import artworkImage -%}
+{%- from "components/video-clip/video-clip.njk" import videoClip -%}
 {%- macro photoGrid(opts) -%}
 <div class="ds-photo-grid">
   {%- if opts.heading %}<h2 class="ds-photo-grid__heading" id="{{ opts.id }}">{{ opts.heading }}</h2>{% endif %}
@@ -11,7 +13,7 @@
     {%- for photo in opts.photos %}
     <li>
       <figure class="ds-photo-grid__item">
-        {{ artworkImage(photo.image, { sizes: "(width >= 53.75rem) 33vw, 100vw" }) }}
+        {%- if photo.video %}{{ videoClip(photo.video, photo.image) }}{% else %}{{ artworkImage(photo.image, { sizes: "(width >= 53.75rem) 33vw, 100vw" }) }}{% endif %}
         {%- if photo.caption %}<figcaption>{{ photo.caption }}</figcaption>{% endif %}
       </figure>
     </li>

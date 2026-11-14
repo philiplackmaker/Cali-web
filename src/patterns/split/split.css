@@ -29,8 +29,8 @@
   block-size: 100%;
   object-fit: cover;
 
-  /* Studio photos usually have their subject in the lower half (Cali's canvas, the bench). */
-  object-position: 50% 72%;
+  /* Keep the upper part in view: faces sit in the top third of a portrait photo. */
+  object-position: 50% 25%;
 }
 
 @media (width >= 53.75rem) {
