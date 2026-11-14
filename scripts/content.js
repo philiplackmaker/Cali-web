@@ -50,7 +50,7 @@ export function productFromEntry(handle, entry, images, { warn = console.warn } 
   const chosen = original ? options.slice(0, 1) : options;
   const variants = chosen.map((o) => {
     const size = original ? 'Default Title' : o.size?.trim() || 'One size';
-    const sold = Boolean(o.sold);
+    const sold = Boolean(entry.sold || o.sold);
     return {
       id: `${handle}/${original ? 'original' : slug(size)}`,
       title: size,
@@ -205,7 +205,7 @@ export async function loadContent({
     }
   }
 
-  let photos = { homeHero: null, aboutPortrait: null, studio: [] };
+  let photos = { homeHero: null, aboutPortrait: null, contact: null, studio: [] };
   try {
     const raw = JSON.parse(await readFile(join(dir, 'photos.json'), 'utf8'));
     const one = async (item, name, options = SITE_PHOTO) =>
@@ -215,6 +215,7 @@ export async function loadContent({
     const hero = await one(raw.homeHero, 'photo-home');
     const heroClip = await clipFor(raw.homeHero?.video, raw.homeHero?.alt, { warn });
     const portrait = await one(raw.aboutPortrait, 'photo-about');
+    const contactPhoto = await one(raw.contactPhoto, 'photo-contact');
     const portraitClip = await clipFor(raw.aboutPortrait?.video, raw.aboutPortrait?.alt, { warn });
     const studio = [];
     for (const [i, item] of (raw.studio ?? []).entries()) {
@@ -227,6 +228,7 @@ export async function loadContent({
     photos = {
       homeHero: hero ? { image: hero, video: heroClip } : null,
       aboutPortrait: portrait ? { image: portrait, video: portraitClip } : null,
+      contact: contactPhoto ? { image: contactPhoto } : null,
       studio,
     };
   } catch (error) {

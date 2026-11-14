@@ -51,6 +51,12 @@ collections:
         widget: boolean
         default: true
         hint: Switch off to hide it without deleting it.
+      - label: Sold
+        name: sold
+        widget: boolean
+        default: false
+        required: false
+        hint: Marks the whole piece as sold, every size. It stays on the site with a Sold label, and can't be added to the basket. (To sell out just one size, use the Sold switch on that size below.)
       - label: Print or original
         name: type
         widget: select
@@ -173,6 +179,14 @@ collections:
                 choose_url: false
                 pattern: ['\.(mp4|m4v|webm)$', 'Please upload an MP4 video']
                 hint: 'A short, silent clip that loops, like a living photo: an MP4 under 15 MB, ideally 5 to 20 seconds. Phones record MP4; on an iPhone, set Camera → Formats → Most Compatible. The photo shows until it plays.'
+              - { label: What the photo shows, name: alt, widget: string, required: false }
+          - label: Photo on the Commissions page
+            name: contactPhoto
+            widget: object
+            required: false
+            hint: Beside the message form. Empty means no photo, and the form runs full width.
+            fields:
+              - { label: Photo, name: image, widget: image, required: false, choose_url: false }
               - { label: What the photo shows, name: alt, widget: string, required: false }
           - label: Studio photos
             name: studio

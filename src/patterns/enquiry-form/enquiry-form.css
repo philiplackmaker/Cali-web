@@ -6,6 +6,11 @@
   margin-inline: auto;
 }
 
+.ds-enquiry__form--start {
+  max-inline-size: none;
+  margin-inline: 0;
+}
+
 .ds-enquiry__form .ds-field {
   inline-size: 100%;
 }

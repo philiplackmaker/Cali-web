@@ -26,5 +26,9 @@
       "alt": "Cali turns a canvas round to reveal a large abstract painting in soft pinks, blues and deep reds.",
       "caption": "A new painting"
     }
-  ]
+  ],
+  "contactPhoto": {
+    "image": "/content/uploads/commission-canvas.jpg",
+    "alt": "Cali lifts a pink canvas with a single red tulip painted on it into view, in a bright room with white panelled walls."
+  }
 }

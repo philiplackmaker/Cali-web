@@ -1,0 +1,35 @@
+---
+title: Split
+order: 20
+description: Content beside a photo, like the message form on Commissions and contact.
+---
+{% from "docs.njk" import example, usage, props %}
+{% from "patterns/split/split.njk" import split %}
+{% set p = mock.byHandle["sun-hat-with-tulip"] %}
+<header class="docs-header">
+  <p class="docs-eyebrow">Pattern · Layout</p>
+  <h1>Split</h1>
+  <p class="docs-lede">Content on the left, a photo on the right. On phones the photo comes first as a landscape strip, cropped towards its lower half where studio photos usually have their subject. Without a photo, the content simply runs full width.</p>
+</header>
+
+<section class="docs-section" aria-labelledby="use">
+  <h2 id="use">Use it</h2>
+  {% set code %}{% raw %}{% from "patterns/split/split.njk" import split %}
+{% call split({ image: shop.photos.contact.image }) %}
+  <h2 class="ds-split__heading">Send me a message</h2>
+  {{ enquiryForm({ products: shop.products, align: "start" }) }}
+{% endcall %}{% endraw %}{% endset %}
+  {{ usage(code) }}
+  {{ props([
+    ["image", "Image | empty", "The photo. Cali sets the Commissions one in the admin under Site photos. Empty means no photo."],
+    ["caller", "content", "Anything: a heading (ds-split__heading lines it up with the content below) and a form, text or buttons."]
+  ]) }}
+</section>
+
+<section class="docs-section" aria-labelledby="example">
+  <h2 id="example">Example</h2>
+  <div class="docs-examples">
+    {% set ex %}{% call split({ image: p.images.nodes[1] }) %}<h2 class="ds-split__heading">A heading</h2><p>Content sits here, lined up with the heading. On a laptop the photo stays in view while this side scrolls.</p>{% endcall %}{% endset %}
+    {{ example("With a photo", ex, { wide: true }) }}
+  </div>
+</section>

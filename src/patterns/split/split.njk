@@ -1,0 +1,16 @@
+{#-
+  Split: content beside a photo. On laptops the content is on the left and the photo on the
+  right; on phones the photo comes first, cropped to a landscape strip so the content isn't
+  pushed far down. Without a photo it's just the content, full width.
+  {% from "patterns/split/split.njk" import split %}
+  {% call split({ image: shop.photos.contact.image }) %} …content… {% endcall %}
+-#}
+{%- from "components/artwork-image/artwork-image.njk" import artworkImage -%}
+{%- macro split(opts = {}) -%}
+<div class="ds-split{% if not opts.image %} ds-split--no-media{% endif %}">
+  <div class="ds-split__main">{{ caller() }}</div>
+  {%- if opts.image %}
+  <div class="ds-split__media">{{ artworkImage(opts.image, { sizes: "(width >= 53.75rem) 38vw, 100vw" }) }}</div>
+  {%- endif %}
+</div>
+{%- endmacro -%}

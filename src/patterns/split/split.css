@@ -1,0 +1,61 @@
+.ds-split {
+  display: grid;
+  gap: var(--ds-space-stack-lg);
+}
+
+.ds-split__main {
+  display: grid;
+  align-content: start;
+  gap: var(--ds-space-stack-md);
+  min-inline-size: 0;
+}
+
+/* A heading at the top of the content, in the page's heading style. */
+.ds-split__heading {
+  font-size: var(--ds-type-heading-lg-size);
+}
+
+/* Phones: the photo first, as a landscape strip. */
+.ds-split__media {
+  order: -1;
+}
+
+.ds-split__media .ds-artwork-image {
+  overflow: hidden;
+  aspect-ratio: var(--ds-aspect-hero);
+}
+
+.ds-split__media .ds-artwork-image__img {
+  block-size: 100%;
+  object-fit: cover;
+
+  /* Studio photos usually have their subject in the lower half (Cali's canvas, the bench). */
+  object-position: 50% 72%;
+}
+
+@media (width >= 53.75rem) {
+  .ds-split {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    align-items: start;
+    gap: var(--ds-space-stack-xl);
+  }
+
+  .ds-split--no-media {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* Laptops: the whole photo, beside the content, staying in view as you scroll. */
+  .ds-split__media {
+    position: sticky;
+    inset-block-start: var(--ds-space-stack-lg);
+    order: 0;
+  }
+
+  .ds-split__media .ds-artwork-image {
+    aspect-ratio: auto;
+  }
+
+  .ds-split__media .ds-artwork-image__img {
+    block-size: auto;
+  }
+}

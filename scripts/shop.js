@@ -32,6 +32,8 @@ function withFallbackPhotos(photos, products) {
         .slice(0, 3);
   return {
     homeHero: photos?.homeHero ?? (paintings[0] ? { image: paintings[0].featuredImage } : null),
+    // The Commissions page photo: none means the form runs full width.
+    contact: photos?.contact ?? null,
     aboutPortrait: photos?.aboutPortrait ?? {
       image: { ...PLACEHOLDER, altText: 'Placeholder for a photo of Cali in the studio.' }, // TODO: real portrait
     },

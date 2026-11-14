@@ -8,6 +8,7 @@ eleventyComputed:
 {%- from "patterns/page-intro/page-intro.njk" import pageIntro -%}
 {%- from "patterns/prose/prose.njk" import prose -%}
 {%- from "patterns/enquiry-form/enquiry-form.njk" import enquiryForm -%}
+{%- from "patterns/split/split.njk" import split -%}
 {% call section({ variant: "narrow tight" }) %}
   {{ pageIntro({ eyebrow: "Commissions and contact", title: pages.contact.title, lede: pages.contact.lede }) }}
   {% call prose() %}
@@ -17,7 +18,9 @@ eleventyComputed:
   {% endcall %}
 {% endcall %}
 
-{% call section({ variant: "narrow", labelledby: "enquiry-heading" }) %}
-  {% call prose() %}<h2 id="enquiry-heading">Send me a message</h2>{% endcall %}
-  {{ enquiryForm({ products: shop.products }) }}
+{% call section({ labelledby: "enquiry-heading" }) %}
+  {% call split({ image: shop.photos.contact.image if shop.photos.contact }) %}
+    <h2 class="ds-split__heading" id="enquiry-heading">Send me a message</h2>
+    {{ enquiryForm({ products: shop.products, align: "start" }) }}
+  {% endcall %}
 {% endcall %}

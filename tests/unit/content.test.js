@@ -73,6 +73,15 @@ test('an original: one variant, its size as dimensions, sold means sold', () => 
   assert.equal(p.availableForSale, false);
 });
 
+test('the whole-piece Sold switch sells out every size', () => {
+  const p = productFromEntry('blue-tulips', { ...PRINT, sold: true }, [IMG()]);
+  assert.deepEqual(
+    p.variants.nodes.map((v) => v.availableForSale),
+    [false, false],
+  );
+  assert.equal(p.availableForSale, false);
+});
+
 test('price on request needs no price; hidden, photo-less and price-less entries are skipped', () => {
   const warnings = [];
   const warn = (m) => warnings.push(m);

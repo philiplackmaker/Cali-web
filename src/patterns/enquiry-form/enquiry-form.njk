@@ -4,12 +4,13 @@
   ?about=<handle> or ?viewing=<handle> in the URL fills in the topic and painting.
   {% from "patterns/enquiry-form/enquiry-form.njk" import enquiryForm %}
   {{ enquiryForm({ products: shop.products }) }}
+  Options: align: "start" (in a split layout, lines up with a heading above it).
 -#}
 {%- from "components/form-field/form-field.njk" import formField -%}
 {%- from "components/button/button.njk" import button -%}
 {%- macro enquiryForm(opts = {}) -%}
 <enquiry-form class="ds-enquiry">
-  <form class="ds-enquiry__form" name="enquiry" method="post" action="/contact/thanks/" data-netlify="true" netlify-honeypot="company">
+  <form class="ds-enquiry__form{% if opts.align == 'start' %} ds-enquiry__form--start{% endif %}" name="enquiry" method="post" action="/contact/thanks/" data-netlify="true" netlify-honeypot="company">
     <input type="hidden" name="form-name" value="enquiry">
     <p class="ds-visually-hidden" aria-hidden="true"><label>Leave this empty <input name="company" tabindex="-1" autocomplete="off"></label></p>
     {{ formField({ id: "enquiry-name", name: "name", label: "Your name", autocomplete: "name", required: true }) }}

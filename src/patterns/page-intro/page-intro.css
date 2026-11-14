@@ -2,7 +2,9 @@
   display: grid;
   justify-items: center;
   gap: var(--ds-space-stack-sm);
-  padding-block: var(--ds-space-stack-xl) var(--ds-space-stack-lg);
+
+  /* The section around it already gives the space under the header. */
+  padding-block: var(--ds-space-stack-xs) var(--ds-space-stack-lg);
   text-align: center;
 }
 
