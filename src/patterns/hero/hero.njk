@@ -1,16 +1,23 @@
 {#-
   Hero: one painting, large, with the name and a short line. The painting is the page's
   LCP image: set preloadImage to the same image in the page's front matter.
+  video (optional): a short silent clip that fades in over the painting once the page has
+  loaded, so the painting is still what loads first. Pause button; waits for Play under
+  reduced motion; without JS the painting just stays.
   {% from "patterns/hero/hero.njk" import hero %}
-  {{ hero({ image, title: "Calico Melton", line: "…", primary: { href, label }, secondary: { href, label } }) }}
+  {{ hero({ image, video, title: "Calico Melton", line: "…", primary: { href, label }, secondary: { href, label } }) }}
 -#}
 {%- from "components/artwork-image/artwork-image.njk" import artworkImage -%}
 {%- from "components/button/button.njk" import button -%}
 {%- from "components/link/link.njk" import link -%}
+{%- from "components/video-clip/video-clip.njk" import videoClip -%}
 {%- macro hero(opts) -%}
 <section class="ds-hero" aria-labelledby="hero-title">
   <div class="ds-hero__art">
-    {{ artworkImage(opts.image, { priority: true, sizes: "(width >= 53.75rem) 55vw, 100vw" }) }}
+    <div class="ds-hero__frame">
+      {{ artworkImage(opts.image, { priority: true, sizes: "(width >= 53.75rem) 55vw, 100vw" }) }}
+      {%- if opts.video %}{{ videoClip(opts.video, null, { overlay: true, afterLoad: true }) }}{% endif %}
+    </div>
   </div>
   <div class="ds-hero__text">
     {%- if opts.eyebrow %}<p class="ds-hero__eyebrow">{{ opts.eyebrow }}</p>{% endif %}

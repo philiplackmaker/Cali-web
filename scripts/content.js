@@ -210,8 +210,10 @@ export async function loadContent({
     const raw = JSON.parse(await readFile(join(dir, 'photos.json'), 'utf8'));
     const one = async (item, name, options = SITE_PHOTO) =>
       item?.image ? (await resolveAll([item], name, resolveImage, '', options))[0] : null;
-    // The home page picture is usually a painting: painting quality.
-    const hero = await one(raw.homeHero, 'photo-home', {});
+    // A home page photo set here is usually a studio photo (or a clip's first frame): photo
+    // quality. Without one, the hero falls back to the newest painting at painting quality.
+    const hero = await one(raw.homeHero, 'photo-home');
+    const heroClip = await clipFor(raw.homeHero?.video, raw.homeHero?.alt, { warn });
     const portrait = await one(raw.aboutPortrait, 'photo-about');
     const portraitClip = await clipFor(raw.aboutPortrait?.video, raw.aboutPortrait?.alt, { warn });
     const studio = [];
@@ -223,7 +225,7 @@ export async function loadContent({
       }
     }
     photos = {
-      homeHero: hero ? { image: hero } : null,
+      homeHero: hero ? { image: hero, video: heroClip } : null,
       aboutPortrait: portrait ? { image: portrait, video: portraitClip } : null,
       studio,
     };

@@ -152,6 +152,13 @@ collections:
             hint: The big picture at the top of the home page. Empty means the newest painting.
             fields:
               - { label: Photo, name: image, widget: image, required: false, choose_url: false }
+              - label: Clip (optional)
+                name: video
+                widget: file
+                required: false
+                choose_url: false
+                pattern: ['\.(mp4|m4v|webm)$', 'Please upload an MP4 video']
+                hint: 'Plays silently on a loop over the photo, once the page has loaded. Keep it calm and short (5 to 20 seconds, an MP4 under 15 MB). The photo still matters: it shows first, and it is what people see if the clip can not play.'
               - { label: What the photo shows, name: alt, widget: string, required: false }
           - label: Photo of you (About and home page)
             name: aboutPortrait

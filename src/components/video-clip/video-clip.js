@@ -15,10 +15,19 @@ class VideoClip extends HTMLElement {
     this.button.addEventListener('click', () => {
       this.userPaused = !this.video.paused;
       if (this.userPaused) this.video.pause();
-      else this.play();
+      else {
+        this.visible = true;
+        this.play();
+      }
     });
     this.video.addEventListener('play', () => this.render());
     this.video.addEventListener('pause', () => this.render());
+
+    // afterLoad (the hero): don't compete with the page's main image for bandwidth.
+    this.ready =
+      this.hasAttribute('data-after-load') && document.readyState !== 'complete'
+        ? new Promise((resolve) => addEventListener('load', resolve, { once: true }))
+        : Promise.resolve();
 
     this.observer = new IntersectionObserver(
       ([entry]) => {
@@ -36,7 +45,9 @@ class VideoClip extends HTMLElement {
     this.observer?.disconnect();
   }
 
-  play() {
+  async play() {
+    await this.ready;
+    if (this.userPaused || !this.visible) return;
     this.video.preload = 'auto';
     // Browsers can refuse (e.g. Low Power Mode): then it just shows the poster and Play.
     this.video.play().catch(() => this.render());
@@ -45,6 +56,8 @@ class VideoClip extends HTMLElement {
   render() {
     const playing = !this.video.paused;
     this.toggleAttribute('data-playing', playing);
+    // Once it has played, a paused overlay stays as a still frame instead of vanishing.
+    if (playing) this.setAttribute('data-started', '');
     this.label.textContent = playing ? 'Pause clip' : 'Play clip';
   }
 }

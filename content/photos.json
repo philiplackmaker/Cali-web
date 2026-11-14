@@ -1,5 +1,9 @@
 {
-  "homeHero": null,
+  "homeHero": {
+    "image": "/content/uploads/studio-display.jpg",
+    "video": "/content/uploads/studio-display.mp4",
+    "alt": "Cali sets up a display in her studio: a large pink painting of a vase with a white horse, a painting of a white dove, and a row of small framed pieces along a wooden bench."
+  },
   "aboutPortrait": {
     "image": "/content/uploads/cali-portrait.jpg",
     "alt": "Calico Melton in her studio, holding a framed painting of a girl in a blue sun hat with a pink tulip."

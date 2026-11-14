@@ -1,5 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import { loadShop } from '../../scripts/shop.js';
 
 test('the build reads Cali’s products from content/ (what /admin/ edits)', async () => {
@@ -13,8 +14,11 @@ test('the build reads Cali’s products from content/ (what /admin/ edits)', asy
     ['/shop/', '/shop/originals/', '/shop/prints/'],
   );
   assert.ok(shop.byHandle['blue-tulips']);
-  // No site photos set yet: the hero is the newest painting, the studio band its other views.
-  assert.equal(shop.photos.homeHero.image.url, shop.products[0].featuredImage.url);
+  // The home picture is the one set in Site photos, or else the newest painting.
+  const photos = JSON.parse(readFileSync('content/photos.json', 'utf8'));
+  if (photos.homeHero?.image) assert.match(shop.photos.homeHero.image.url, /photo-home-1-/);
+  else assert.equal(shop.photos.homeHero.image.url, shop.products[0].featuredImage.url);
+  assert.equal(Boolean(shop.photos.homeHero.video), Boolean(photos.homeHero?.video));
   assert.equal(shop.photos.studio.length, 3);
 });
 

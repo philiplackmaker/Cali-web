@@ -7,11 +7,13 @@
   {{ videoClip({ url: "/content/uploads/x.mp4", type: "video/mp4", label: "What the clip shows" }, poster, { framed: true }) }}
   clip:   { url, type, label }   from the admin's video fields (scripts/content.js)
   poster: an image ({ url, width, height }), usually the photo it sits with
+  opts.overlay:  sits over an image (the hero): no poster, invisible until it plays
+  opts.afterLoad: waits for the page to finish loading before it starts (keeps LCP fast)
 -#}
 {%- from "components/icon/icon.njk" import icon -%}
 {%- macro videoClip(clip, poster, opts = {}) -%}
 {%- set posterWidth = (poster | largestWidth) if poster else null -%}
-<video-clip class="ds-video-clip{% if opts.framed %} ds-video-clip--framed{% endif %}">
+<video-clip class="ds-video-clip{% if opts.framed %} ds-video-clip--framed{% endif %}{% if opts.overlay %} ds-video-clip--overlay{% endif %}"{% if opts.afterLoad %} data-after-load{% endif %}>
   <video class="ds-video-clip__video" muted loop playsinline controls preload="none"
     {%- if poster %} poster="{{ poster.url | imageUrl(posterWidth if posterWidth < 800 else 800) }}" width="{{ poster.width }}" height="{{ poster.height }}"{% endif %}
     aria-label="{{ clip.label or 'A short clip from the studio' }}">

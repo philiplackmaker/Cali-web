@@ -50,3 +50,32 @@
 .ds-video-clip:not([data-playing]) .ds-video-clip__icon--pause {
   display: none;
 }
+
+/* Overlay (the hero): covers the image beneath it and fades in once it's actually playing,
+   so the painting is what loads and shows first. Without JS it stays hidden. */
+.ds-video-clip--overlay {
+  position: absolute;
+  inset: 0;
+  background: transparent;
+}
+
+.ds-video-clip--overlay:not(:defined) {
+  display: none;
+}
+
+.ds-video-clip--overlay .ds-video-clip__video {
+  block-size: 100%;
+  opacity: 0;
+  transition: opacity var(--ds-transition-panel-duration) var(--ds-transition-panel-easing);
+}
+
+.ds-video-clip--overlay[data-playing] .ds-video-clip__video,
+.ds-video-clip--overlay[data-started] .ds-video-clip__video {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-video-clip--overlay .ds-video-clip__video {
+    transition: none;
+  }
+}

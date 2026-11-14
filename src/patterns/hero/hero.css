@@ -14,6 +14,15 @@
   }
 }
 
+.ds-hero__frame {
+  position: relative;
+  display: grid;
+  justify-self: center;
+  inline-size: fit-content;
+  max-inline-size: 100%;
+  margin-inline: auto;
+}
+
 .ds-hero__art .ds-artwork-image {
   display: grid;
   justify-items: center;

@@ -5,6 +5,7 @@ description: Short, silent, looping studio clips with a pause button.
 ---
 {% from "docs.njk" import example, usage, props %}
 {% from "components/video-clip/video-clip.njk" import videoClip %}
+{% from "components/artwork-image/artwork-image.njk" import artworkImage %}
 {% set p = mock.byHandle["sun-hat-with-tulip"] %}
 {% set clip = { url: "/assets/images/mock/clip-sample.mp4", type: "video/mp4", label: "A slow zoom across a painting of a swan." } %}
 <header class="docs-header">
@@ -16,13 +17,16 @@ description: Short, silent, looping studio clips with a pause button.
 <section class="docs-section" aria-labelledby="use">
   <h2 id="use">Use it</h2>
   {% set code %}{% raw %}{% from "components/video-clip/video-clip.njk" import videoClip %}
+{% from "components/artwork-image/artwork-image.njk" import artworkImage %}
 {{ videoClip(photo.video, photo.image) }}
 {{ videoClip(product.clip, product.featuredImage, { framed: true }) }}{% endraw %}{% endset %}
   {{ usage(code) }}
   {{ props([
     ["clip", "{ url, type, label }", "From the admin's Clip fields, via scripts/content.js. label is “What the clip shows”, read out by screen readers."],
     ["poster", "Image", "Shown until the clip plays, sized like artwork-image. Sets width and height, so there's no layout shift."],
-    ["framed", "boolean", "Fixed-ratio frame, to line up with framed photos (the studio strip). The clip fills it."]
+    ["framed", "boolean", "Fixed-ratio frame, to line up with framed photos (the studio strip). The clip fills it."],
+    ["overlay", "boolean", "Sits over an image in a position: relative frame (the hero). No poster: the image underneath is the poster, and stays the page's LCP. Fades in once playing; hidden without JS."],
+    ["afterLoad", "boolean", "Waits for the page's load event before starting, so it never competes with the main image."]
   ]) }}
 </section>
 
@@ -33,6 +37,8 @@ description: Short, silent, looping studio clips with a pause button.
     {{ example("Natural ratio (artist intro, product page)", ex) }}
     {% set ex %}<div class="docs-grid">{{ videoClip(clip, p.featuredImage, { framed: true }) }}</div>{% endset %}
     {{ example("Framed (studio strip)", ex) }}
+    {% set ex %}<div class="docs-stack" style="position: relative; max-inline-size: 20rem" data-overlay-demo>{{ artworkImage(p.featuredImage, { sizes: "20rem" }) }}{{ videoClip(clip, null, { overlay: true, afterLoad: true }) }}</div>{% endset %}
+    {{ example("Overlay (the home page hero): fades in over the painting after the page loads", ex) }}
   </div>
 </section>
 
