@@ -3,8 +3,8 @@
 # Login is Netlify Identity + Git Gateway (README → "The admin").
 backend:
   name: git-gateway
-  # The branch Netlify publishes. Change to main when shop-foundations is merged (LAUNCH.md).
-  branch: shop-foundations
+  # The live branch: each Publish updates calicomelton.com (one Netlify production deploy).
+  branch: main
   commit_messages:
     create: 'Add “{{slug}}” ({{author-name}})'
     update: 'Update “{{slug}}” ({{author-name}})'

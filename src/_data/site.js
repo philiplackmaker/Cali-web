@@ -48,7 +48,7 @@ export default {
     countries: COUNTRIES[d.id] ?? ['GB'],
   })),
   // Returns, for Google's product data (Shopping and rich results need a returns policy).
-  // TODO: Cali to confirm, and keep it matching Shipping and FAQ → Returns.
+  // Confirmed by Cali (14 November 2026). Keep it matching Shipping and FAQ → Returns.
   returnsDays: 14,
 
   // Google Search Console: the code from its "HTML tag" verification, set on Netlify as
