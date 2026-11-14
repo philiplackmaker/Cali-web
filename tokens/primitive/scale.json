@@ -119,6 +119,10 @@
       "$value": "0.875rem",
       "$description": "14px, the current page card"
     },
+    "xl": {
+      "$value": "1rem",
+      "$description": "16px, cards, photos, paintings and video"
+    },
     "pill": {
       "$value": "999px"
     }

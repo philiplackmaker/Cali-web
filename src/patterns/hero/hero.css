@@ -3,7 +3,9 @@
   gap: var(--ds-space-stack-lg);
   max-inline-size: var(--ds-layout-page);
   margin-inline: auto;
-  padding: var(--ds-space-stack-lg) var(--ds-space-gutter) var(--ds-space-section);
+
+  /* No space below: the next section's own top padding gives the gap. */
+  padding: var(--ds-space-stack-lg) var(--ds-space-gutter) 0;
 }
 
 @media (width >= 53.75rem) {

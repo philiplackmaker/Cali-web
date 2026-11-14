@@ -118,14 +118,14 @@
       "$description": "Buttons, inputs"
     },
     "card": {
-      "$value": "{radius.lg}"
+      "$value": "{radius.xl}"
     },
     "badge": {
       "$value": "{radius.pill}"
     },
     "image": {
-      "$value": "{radius.none}",
-      "$description": "Paintings keep square corners"
+      "$value": "{radius.xl}",
+      "$description": "Photos, paintings and video: 16px rounded corners"
     }
   },
   "line": {
