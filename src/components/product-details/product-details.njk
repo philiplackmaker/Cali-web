@@ -1,0 +1,27 @@
+{#-
+  Product details: the facts a collector wants, set out like a gallery wall label,
+  plus what comes with every original.
+  {% from "components/product-details/product-details.njk" import productDetails %}
+  {{ productDetails(product) }}
+-#}
+{%- from "components/icon/icon.njk" import icon -%}
+{%- macro productDetails(product, opts = {}) -%}
+{%- set original = product | isOriginal -%}
+<div class="ds-product-details">
+  <h2 class="ds-product-details__heading">Details</h2>
+  <dl class="ds-product-details__list">
+    {%- if product.medium %}<div><dt>Medium</dt><dd>{{ product.medium.value }}</dd></div>{% endif %}
+    {%- if product.dimensions %}<div><dt>Size</dt><dd>{{ product.dimensions.value }}</dd></div>{% endif %}
+    {%- if product.year %}<div><dt>Year</dt><dd>{{ product.year.value }}</dd></div>{% endif %}
+    {%- if product.framing %}<div><dt>Framing</dt><dd>{{ product.framing.value }}</dd></div>{% endif %}
+    {%- if product | editionSize %}<div><dt>Edition</dt><dd>Edition of {{ product | editionSize }}, signed and numbered</dd></div>{% endif %}
+  </dl>
+  {%- if original and site.originalPromises.length %}
+  <ul class="ds-product-details__promises" role="list">
+    {%- for promise in site.originalPromises %}
+    <li>{{ icon("check") }}<span>{{ promise }}</span></li>
+    {%- endfor %}
+  </ul>
+  {%- endif %}
+</div>
+{%- endmacro -%}

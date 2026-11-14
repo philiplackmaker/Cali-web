@@ -1,0 +1,60 @@
+.ds-product-card {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: var(--ds-product-card-gap);
+}
+
+/* Like a wall label: title, then a quiet line of detail, then price. */
+.ds-product-card__body {
+  display: grid;
+  gap: var(--ds-space-stack-2xs);
+  text-align: center;
+  justify-items: center;
+}
+
+.ds-product-card__title {
+  font-size: var(--ds-type-heading-md-size);
+}
+
+/* The title link covers the whole card, so the card is one tab stop and one click target. */
+.ds-product-card__link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.ds-product-card__link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: var(--ds-layer-raised);
+}
+
+.ds-product-card:hover .ds-product-card__link {
+  text-decoration: underline;
+  text-decoration-thickness: var(--ds-line-hairline);
+  text-underline-offset: var(--ds-line-underline-offset);
+}
+
+.ds-product-card:has(.ds-product-card__link:focus-visible) {
+  outline: var(--ds-line-focus) solid var(--ds-color-focus-ring);
+  outline-offset: var(--ds-line-focus-offset);
+}
+
+.ds-product-card__link:focus-visible {
+  outline: none;
+}
+
+.ds-product-card__meta {
+  color: var(--ds-color-text-muted);
+  font-size: var(--ds-type-small-size);
+}
+
+.ds-product-card .ds-badges {
+  justify-content: center;
+  margin-block-start: var(--ds-space-stack-2xs);
+}
+
+.ds-product-card--sold .ds-artwork-image__img {
+  opacity: var(--ds-state-sold-opacity);
+}

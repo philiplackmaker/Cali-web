@@ -1,0 +1,233 @@
+---
+title: Tokens
+order: 1
+description: Colour, type, space and motion tokens for the Calico Melton shop.
+---
+{%- macro tokenTable(list, caption) -%}
+<div class="docs-table-wrap">
+  <table class="docs-table">
+    <caption class="ds-visually-hidden">{{ caption }}</caption>
+    <thead><tr><th scope="col">Token</th><th scope="col">Value</th><th scope="col">Notes</th></tr></thead>
+    <tbody>
+      {%- for t in list %}
+      <tr>
+        <th scope="row"><code>{{ t.cssVar }}</code></th>
+        <td><code>{{ t.value }}</code>{% if t.alias %}<span class="docs-alias">→ {{ t.alias }}</span>{% endif %}</td>
+        <td>{{ t.description or "" }}</td>
+      </tr>
+      {%- endfor %}
+    </tbody>
+  </table>
+</div>
+{%- endmacro -%}
+
+{%- macro swatches(list, prefix) -%}
+<ul class="docs-swatches" role="list">
+  {%- for t in list %}
+  <li class="docs-swatch">
+    {%- set dark = designTokensDark | tokenAt(t.path) %}
+    {#- Literal values, so the docs show both modes whichever one you're viewing in. #}
+    <span class="docs-swatch__chip{% if dark %} docs-swatch__chip--split{% endif %}" style="--chip: {{ t.value }}{% if dark %}; --chip-dark: {{ dark.value }}{% endif %}"></span>
+    <span class="docs-swatch__name">{{ t.path | tokenTail(prefix) }}</span>
+    <code class="docs-swatch__value">{{ t.value }}</code>
+    {%- if t.alias %}<span class="docs-alias">→ {{ t.alias }}</span>{% endif %}
+    {%- if dark %}<span class="docs-swatch__dark">Dark: <code>{{ dark.value }}</code>{% if dark.alias %} <span class="docs-alias">→ {{ dark.alias }}</span>{% endif %}</span>{% endif %}
+    {%- if t.description %}<span class="docs-swatch__note">{{ t.description }}</span>{% endif %}
+    <code class="docs-swatch__var">{{ t.cssVar }}</code>
+  </li>
+  {%- endfor %}
+</ul>
+{%- endmacro -%}
+
+<header class="docs-header">
+  <p class="docs-eyebrow">Design system · Layer 1</p>
+  <h1>Tokens</h1>
+  <p class="docs-lede">Every colour, size and timing on the site comes from here. Values are taken from the current calicomelton.com, which takes its colours from the paintings.</p>
+</header>
+
+<nav class="docs-toc" aria-label="On this page">
+  <ul role="list">
+    <li><a href="#tiers">Tiers</a></li>
+    <li><a href="#colour">Colour</a></li>
+    <li><a href="#contrast">Contrast</a></li>
+    <li><a href="#type">Type</a></li>
+    <li><a href="#space">Space</a></li>
+    <li><a href="#size">Size</a></li>
+    <li><a href="#shape">Radius, border, shadow</a></li>
+    <li><a href="#motion">Motion</a></li>
+    <li><a href="#layers-z">Z-index</a></li>
+    <li><a href="#breakpoints">Breakpoints</a></li>
+    <li><a href="#ratios">Image ratios</a></li>
+    <li><a href="#component">Component tokens</a></li>
+  </ul>
+</nav>
+
+<section class="docs-section" aria-labelledby="tiers">
+  <h2 id="tiers">Tiers</h2>
+  <dl class="docs-tiers">
+    <div><dt>Primitive</dt><dd>Raw values, like <code>color.maroon.600</code> or <code>space.4</code>. Components never use these directly.</dd></div>
+    <div><dt>Semantic</dt><dd>What a value is for, like <code>color.text.muted</code> or <code>space.stack.md</code>. Most component CSS uses these.</dd></div>
+    <div><dt>Component</dt><dd>A knob for a single component, like <code>button.radius</code>. Added only when a component needs one.</dd></div>
+  </dl>
+  <p>Source: <code>tokens/{primitive,semantic,component}/*.json</code>. Output: <code>src/styles/tokens.css</code>, {{ designTokens.length }} custom properties.</p>
+</section>
+
+<section class="docs-section" aria-labelledby="colour">
+  <h2 id="colour">Colour</h2>
+  <p>A calm cream page lets the paintings lead. Pink is for bands like the Studio Letter. Blue, pink and maroon are accents for small moments, never large fills.</p>
+  <p><strong>Dark mode</strong> gives some semantic colours a second value, in <code>tokens/themes/dark.json</code> (split chips below: light | dark). It follows the visitor's device until they press the switch in the header, which then wins. Components don't change: they use the same <code>--ds-color-*</code> variables, which <code>tokens-dark.css</code> redefines. To change a dark colour, edit that file; to add one, give it a primitive first, then add the pair to the contrast check.</p>
+
+  <h3>Semantic</h3>
+  {%- for group in ["surface", "text", "border", "action", "status", "accent", "focus", "scrim"] %}
+  <h4 class="docs-subhead">{{ group }}</h4>
+  {{ swatches(designTokens | tokensAt("color." ~ group, "semantic"), "color." ~ group) }}
+  {%- endfor %}
+
+  <h3>Primitive</h3>
+  {{ swatches(designTokens | tokensAt("color", "primitive"), "color") }}
+</section>
+
+<section class="docs-section" aria-labelledby="contrast">
+  <h2 id="contrast">Contrast</h2>
+  <p>Every colour pairing the system allows, checked against WCAG 2.2 AA in light and dark mode on each build (<code>npm run contrast</code>). Text needs 4.5:1. Control edges and focus rings need 3:1. A pairing that isn't listed here isn't allowed: add it to <code>scripts/contrast-pairs.js</code> first.</p>
+  <div class="docs-table-wrap">
+    <table class="docs-table docs-contrast">
+      <caption class="ds-visually-hidden">Colour contrast checks</caption>
+      <thead><tr><th scope="col">Foreground on background</th><th scope="col">Light</th><th scope="col">Dark</th><th scope="col">Needs</th></tr></thead>
+      <tbody>
+        {%- for c in contrast %}
+        <tr>
+          <th scope="row"><code>{{ c.fg }}</code> on <code>{{ c.bg }}</code></th>
+          {%- for mode in [c.light, c.dark] %}
+          <td><span class="docs-contrast__sample" style="--fg: {{ mode.fgValue }}; --bg: {{ mode.bgValue }}">Aa</span> {{ mode.ratio }}:1 {{ "Pass" if mode.pass else "Fail" }}</td>
+          {%- endfor %}
+          <td>{{ c.min }}:1</td>
+        </tr>
+        {%- endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="docs-section" aria-labelledby="type">
+  <h2 id="type">Type</h2>
+  <p>Lora for headings and the wordmark, Figtree for everything else. Sizes are fluid: they grow with the screen between a set minimum and maximum, and still scale with browser zoom.</p>
+
+  <h3>Roles</h3>
+  {%- set roles = [
+    { prefix: "type.display", label: "Display", sample: "Calico Melton" },
+    { prefix: "type.heading.xl", label: "Heading XL", sample: "New paintings" },
+    { prefix: "type.heading.lg", label: "Heading LG", sample: "Sign up for new work" },
+    { prefix: "type.heading.md", label: "Heading MD", sample: "You're on the list." },
+    { prefix: "type.heading.sm", label: "Heading SM", sample: "Edition of 25, giclée on cotton rag" },
+    { prefix: "type.body", label: "Body", sample: "New paintings, studio notes, and first access to prints. I'll send the next one straight to your inbox." },
+    { prefix: "type.label", label: "Label", sample: "Email address" },
+    { prefix: "type.small", label: "Small", sample: "Unsubscribe any time." },
+    { prefix: "type.eyebrow", label: "Eyebrow", sample: "The Studio Letter", upper: true }
+  ] %}
+  {%- set cssProp = { "family": "font-family", "size": "font-size", "weight": "font-weight", "line-height": "line-height", "tracking": "letter-spacing" } %}
+  <div class="docs-type-roles">
+    {%- for role in roles %}
+    {%- set parts = designTokens | tokensAt(role.prefix) %}
+    <div class="docs-type-role">
+      <p class="docs-type-role__sample{% if role.upper %} docs-type-role__sample--upper{% endif %}" style="
+        {%- for t in parts %}{% set key = t.path | tokenTail(role.prefix) %}{% if cssProp[key] %}{{ cssProp[key] }}: var({{ t.cssVar }}); {% endif %}{% endfor %}">{{ role.sample }}</p>
+      <p class="docs-type-role__meta"><strong>{{ role.label }}</strong>
+        {%- for t in parts %} <code>{{ t.cssVar }}</code>{% endfor %}</p>
+    </div>
+    {%- endfor %}
+  </div>
+
+  <h3>Size scale</h3>
+  <ul class="docs-scale" role="list">
+    {%- for t in designTokens | tokensAt("font.size") %}
+    <li><span class="docs-scale__label"><code>{{ t.cssVar }}</code><span class="docs-muted">{{ t.value }}</span></span>
+      <span class="docs-scale__sample" style="font-size: var({{ t.cssVar }})">Bristol painter</span></li>
+    {%- endfor %}
+  </ul>
+
+  <h3>Families, weights, line heights, tracking</h3>
+  {{ tokenTable(designTokens | tokensAtAny(["font.family", "font.weight", "font.line-height", "font.tracking"]), "Font primitives") }}
+</section>
+
+<section class="docs-section" aria-labelledby="space">
+  <h2 id="space">Space</h2>
+  <p>Steps 7 to 9 are fluid, so sections breathe more on big screens. <strong>Stack</strong> is vertical space between things, <strong>inset</strong> is padding inside, <strong>inline</strong> is horizontal space between things.</p>
+  <ul class="docs-space" role="list">
+    {%- for t in designTokens | tokensAt("space", "primitive") %}
+    <li><code>{{ t.cssVar }}</code><span class="docs-space__bar" style="inline-size: var({{ t.cssVar }})"></span><span class="docs-muted">{{ t.value }}</span></li>
+    {%- endfor %}
+  </ul>
+  <h3>Semantic</h3>
+  {{ tokenTable(designTokens | tokensAt("space", "semantic"), "Semantic space") }}
+</section>
+
+<section class="docs-section" aria-labelledby="size">
+  <h2 id="size">Size</h2>
+  {{ tokenTable(designTokens | tokensAt("layout"), "Layout sizes") }}
+  {{ tokenTable(designTokens | tokensAt("icon"), "Icon sizes") }}
+  {{ tokenTable(designTokens | tokensAt("target"), "Touch target") }}
+  <details class="docs-details"><summary>Primitives</summary>
+  {{ tokenTable(designTokens | tokensAt("size"), "Size primitives") }}
+  </details>
+</section>
+
+<section class="docs-section" aria-labelledby="shape">
+  <h2 id="shape">Radius, border, shadow</h2>
+  <ul class="docs-shapes" role="list">
+    {%- for t in designTokens | tokensAt("shape") %}
+    <li><span class="docs-shapes__box" style="border-radius: var({{ t.cssVar }})"></span><code>{{ t.cssVar }}</code><span class="docs-alias">→ {{ t.alias }}</span></li>
+    {%- endfor %}
+    {%- for t in designTokens | tokensAt("elevation") %}
+    <li><span class="docs-shapes__box docs-shapes__box--raised" style="box-shadow: var({{ t.cssVar }})"></span><code>{{ t.cssVar }}</code><span class="docs-alias">→ {{ t.alias }}</span></li>
+    {%- endfor %}
+  </ul>
+  {{ tokenTable(designTokens | tokensAt("line"), "Line widths") }}
+  <details class="docs-details"><summary>Primitives</summary>
+  {{ tokenTable(designTokens | tokensAt("radius"), "Radius primitives") }}
+  {{ tokenTable(designTokens | tokensAt("border"), "Border primitives") }}
+  {{ tokenTable(designTokens | tokensAt("shadow"), "Shadow primitives") }}
+  </details>
+</section>
+
+<section class="docs-section" aria-labelledby="motion">
+  <h2 id="motion">Motion</h2>
+  <p>Quick and quiet. <strong>UI</strong> timing is for hovers and presses, <strong>panel</strong> timing is for the cart drawer and menus. All motion is switched off when someone asks their device for reduced motion.</p>
+  <div class="docs-motion">
+    {%- for kind in ["ui", "panel"] %}
+    <button type="button" class="docs-motion__demo" style="--d: var(--ds-transition-{{ kind }}-duration); --e: var(--ds-transition-{{ kind }}-easing)">
+      <span class="docs-motion__dot"></span><span>{{ kind | capitalize }}: hover or focus me</span>
+    </button>
+    {%- endfor %}
+  </div>
+  {{ tokenTable(designTokens | tokensAt("transition"), "Semantic motion") }}
+  <details class="docs-details"><summary>Primitives</summary>
+  {{ tokenTable(designTokens | tokensAt("motion"), "Motion primitives") }}
+  </details>
+</section>
+
+<section class="docs-section" aria-labelledby="layers-z">
+  <h2 id="layers-z">Z-index</h2>
+  {{ tokenTable(designTokens | tokensAt("layer"), "Z-index layers") }}
+</section>
+
+<section class="docs-section" aria-labelledby="breakpoints">
+  <h2 id="breakpoints">Breakpoints</h2>
+  <p>Components should prefer container queries, so they adapt to the space they're given rather than the screen. CSS can't read custom properties inside <code>@media</code> or <code>@container</code>, so queries repeat these rem values. Stylelint allows rem in query conditions only.</p>
+  {{ tokenTable(designTokens | tokensAt("breakpoint"), "Breakpoints") }}
+</section>
+
+<section class="docs-section" aria-labelledby="ratios">
+  <h2 id="ratios">Image ratios</h2>
+  <ul class="docs-ratios" role="list">
+    {%- for t in designTokens | tokensAt("aspect") %}
+    <li><span class="docs-ratios__frame" style="aspect-ratio: var({{ t.cssVar }})"></span><code>{{ t.cssVar }}</code><span class="docs-muted">{{ t.value }}{% if t.description %} · {{ t.description }}{% endif %}</span></li>
+    {%- endfor %}
+  </ul>
+</section>
+
+<section class="docs-section" aria-labelledby="component">
+  <h2 id="component">Component tokens</h2>
+  <p>Only where one component needs its own control.</p>
+  {{ tokenTable(designTokens | tokensAtAny(["button", "product-card", "cart-drawer"]), "Component tokens") }}
+</section>

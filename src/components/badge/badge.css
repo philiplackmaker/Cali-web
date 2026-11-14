@@ -1,0 +1,32 @@
+/* Quiet, gallery-caption labels. Only Sold is filled, so it's the one that stands out. */
+.ds-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-stack-2xs) var(--ds-space-inline-sm);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ds-badge {
+  display: inline-block;
+  color: var(--ds-color-text-muted);
+  font-size: var(--ds-type-caption-size);
+  font-weight: var(--ds-type-caption-weight);
+  letter-spacing: var(--ds-type-caption-tracking);
+  line-height: var(--ds-type-small-line-height);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.ds-badges li + li .ds-badge:not(.ds-badge--sold)::before {
+  content: '·';
+  margin-inline-end: var(--ds-space-inline-sm);
+}
+
+.ds-badge--sold {
+  padding: var(--ds-space-stack-2xs) var(--ds-space-inline-xs);
+  border-radius: var(--ds-shape-badge);
+  background: var(--ds-color-status-sold);
+  color: var(--ds-color-status-sold-text);
+}

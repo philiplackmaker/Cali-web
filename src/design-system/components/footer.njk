@@ -1,0 +1,25 @@
+---
+title: Footer
+order: 16
+description: The Studio Letter, Instagram, email and secondary links.
+---
+{% from "docs.njk" import example, usage %}
+{% from "components/footer/footer.njk" import siteFooter %}
+<header class="docs-header">
+  <p class="docs-eyebrow">Component · Partial</p>
+  <h1>Footer</h1>
+  <p class="docs-lede">On the pink band: the Studio Letter signup, Instagram and email, then links to the quieter pages.</p>
+</header>
+
+<section class="docs-section" aria-labelledby="use">
+  <h2 id="use">Use it</h2>
+  {% set code %}{% raw %}{% from "components/footer/footer.njk" import siteFooter %}
+{{ siteFooter() }}{% endraw %}{% endset %}
+  {{ usage(code) }}
+</section>
+
+<section class="docs-section" aria-labelledby="live">
+  <h2 id="live">Live</h2>
+  {% set ex %}{{ siteFooter() }}{% endset %}
+  {{ example("Footer", ex, { wide: true, noCode: true }) }}
+</section>

@@ -1,0 +1,28 @@
+---
+title: Photo grid
+order: 13
+description: "Studio photos with captions."
+---
+{% from "docs.njk" import example, usage %}
+{% from "patterns/section/section.njk" import section %}
+{% from "patterns/photo-grid/photo-grid.njk" import photoGrid %}
+<header class="docs-header">
+  <p class="docs-eyebrow">Pattern</p>
+  <h1>Photo grid</h1>
+  <p class="docs-lede">Studio photos with captions.</p>
+</header>
+
+<section class="docs-section" aria-labelledby="use">
+  <h2 id="use">Use it</h2>
+  {% set code %}{% raw %}{% from "patterns/photo-grid/photo-grid.njk" import photoGrid %}
+{{ photoGrid({ id: "studio", heading: "The studio", photos: shop.photos.studio }) }}{% endraw %}{% endset %}
+  {{ usage(code) }}
+  <p><strong>Used on:</strong> About</p>
+  <p>The photos are the <code>studio</code> rows in the sheet’s Photos tab, ordered by their Order column.</p>
+</section>
+
+<section class="docs-section" aria-labelledby="example">
+  <h2 id="example">Example</h2>
+  {% set ex %}{{ photoGrid({ id: "ex-photos", heading: "The studio", photos: shop.photos.studio }) }}{% endset %}
+  {{ example("Photo grid", ex, { wide: true, noCode: true }) }}
+</section>

@@ -1,0 +1,54 @@
+---
+title: Form field
+order: 7
+description: Labelled inputs and text areas with hint, error and disabled states.
+---
+{% from "docs.njk" import example, usage, props %}
+{% from "components/form-field/form-field.njk" import formField %}
+<header class="docs-header">
+  <p class="docs-eyebrow">Component · Partial</p>
+  <h1>Form field</h1>
+  <p class="docs-lede">A label, an optional hint, the control, and a slot for an error message. They're wired together with <code>aria-describedby</code>, so screen readers read the hint and the error with the field.</p>
+</header>
+
+<section class="docs-section" aria-labelledby="use">
+  <h2 id="use">Use it</h2>
+  {% set code %}{% raw %}{% from "components/form-field/form-field.njk" import formField %}
+{{ formField({ id: "name", label: "Your name", autocomplete: "name", required: true }) }}
+{{ formField({ id: "message", label: "What are you after?", multiline: true, hint: "Size, colours, a deadline. Anything helps." }) }}{% endraw %}{% endset %}
+  {{ usage(code) }}
+  {{ props([
+    ["id", "string", "Required. Also used as the name unless you pass name."],
+    ["label", "string", "Always required, even when hidden. Use hideLabel only when the purpose is obvious from what's around it."],
+    ["type", "string", "Input type. Defaults to text."],
+    ["hint", "string", "Help shown under the label."],
+    ["error", "string", "Shows the error and sets aria-invalid."],
+    ["multiline / rows", "boolean / number", "A textarea instead of an input."],
+    ["required / optional", "boolean", "Mark the rare optional field with “(optional)” instead of starring the required ones."],
+    ["autocomplete, placeholder, value, disabled", "", "Passed through."]
+  ]) }}
+</section>
+
+<section class="docs-section" aria-labelledby="states">
+  <h2 id="states">States</h2>
+  <div class="docs-examples">
+    {% set ex %}<div class="docs-stack">{{ formField({ id: "ex-name", label: "Your name", autocomplete: "name" }) }}</div>{% endset %}
+    {{ example("Default", ex) }}
+    {% set ex %}<div class="docs-stack">{{ formField({ id: "ex-size", label: "Rough size", hint: "In centimetres, or describe the wall it's for.", optional: true }) }}</div>{% endset %}
+    {{ example("Hint and optional", ex) }}
+    {% set ex %}<div class="docs-stack">{{ formField({ id: "ex-email", label: "Email address", type: "email", value: "cali@", error: "That doesn’t look like a valid email address." }) }}</div>{% endset %}
+    {{ example("Error", ex) }}
+    {% set ex %}<div class="docs-stack">{{ formField({ id: "ex-msg", label: "What are you after?", multiline: true, rows: 4 }) }}</div>{% endset %}
+    {{ example("Text area", ex) }}
+    {% set ex %}<div class="docs-stack">{{ formField({ id: "ex-dis", label: "Order number", value: "#1042", disabled: true }) }}</div>{% endset %}
+    {{ example("Disabled", ex) }}
+  </div>
+</section>
+
+<section class="docs-section" aria-labelledby="copy">
+  <h2 id="copy">Error copy</h2>
+  <ul class="docs-list">
+    <li>Say what to do, in Cali's voice: “Enter your email address to sign up.”, not “Email is required”.</li>
+    <li>When a form fails to send: “Something went wrong. Please try again.”</li>
+  </ul>
+</section>

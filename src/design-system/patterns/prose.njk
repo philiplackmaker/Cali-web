@@ -1,0 +1,28 @@
+---
+title: Prose
+order: 14
+description: "Long-form copy with a comfortable line length."
+---
+{% from "docs.njk" import example, usage %}
+{% from "patterns/section/section.njk" import section %}
+{% from "patterns/prose/prose.njk" import prose %}
+<header class="docs-header">
+  <p class="docs-eyebrow">Pattern</p>
+  <h1>Prose</h1>
+  <p class="docs-lede">Long-form copy with a comfortable line length.</p>
+</header>
+
+<section class="docs-section" aria-labelledby="use">
+  <h2 id="use">Use it</h2>
+  {% set code %}{% raw %}{% from "patterns/prose/prose.njk" import prose %}
+{% call prose() %}<h2>…</h2><p>…</p>{% endcall %}{% endraw %}{% endset %}
+  {{ usage(code) }}
+  <p><strong>Used on:</strong> About, Contact, Shipping and FAQ</p>
+  <p>Plain HTML inside the call block. It’s the one place pages write their own markup, and the pattern styles it.</p>
+</section>
+
+<section class="docs-section" aria-labelledby="example">
+  <h2 id="example">Example</h2>
+  {% set ex %}{% call prose() %}<h2>Caring for your painting</h2><p>Hang it out of direct sunlight, away from radiators and damp.</p><ul><li>Dust gently with a soft, dry brush.</li><li>Never use water or cleaning sprays.</li></ul>{% endcall %}{% endset %}
+  {{ example("Prose", ex, { wide: true, noCode: true }) }}
+</section>

@@ -1,0 +1,84 @@
+.ds-email-signup {
+  display: grid;
+  gap: var(--ds-space-stack-md);
+  container-type: inline-size;
+}
+
+.ds-email-signup__intro {
+  display: grid;
+  gap: var(--ds-space-stack-xs);
+}
+
+.ds-email-signup__eyebrow {
+  font-size: var(--ds-type-eyebrow-size);
+  font-weight: var(--ds-type-eyebrow-weight);
+  letter-spacing: var(--ds-type-eyebrow-tracking);
+  text-transform: uppercase;
+}
+
+.ds-email-signup__heading {
+  font-size: var(--ds-type-heading-lg-size);
+}
+
+.ds-email-signup__sub {
+  max-inline-size: var(--ds-layout-measure);
+}
+
+.ds-email-signup--compact .ds-email-signup__heading {
+  font-size: var(--ds-type-heading-md-size);
+}
+
+.ds-email-signup__form {
+  display: grid;
+  gap: var(--ds-space-stack-xs);
+}
+
+.ds-email-signup__row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-inline-sm);
+}
+
+@container (width >= 26.25rem) {
+  .ds-email-signup__row {
+    flex-direction: row;
+  }
+
+  .ds-email-signup__row .ds-field__control {
+    flex: 1;
+    min-inline-size: 0;
+  }
+}
+
+.ds-email-signup__fine {
+  font-size: var(--ds-type-small-size);
+}
+
+.ds-email-signup__success {
+  display: none;
+  justify-items: start;
+  gap: var(--ds-space-stack-xs);
+}
+
+.ds-email-signup__success .ds-icon {
+  color: var(--ds-color-status-success);
+}
+
+.ds-email-signup__success-title {
+  font-family: var(--ds-type-heading-md-family);
+  font-size: var(--ds-type-heading-md-size);
+  font-weight: var(--ds-type-heading-md-weight);
+}
+
+.ds-email-signup[data-state='success'] .ds-email-signup__success {
+  display: grid;
+}
+
+.ds-email-signup[data-state='success'] .ds-email-signup__form {
+  display: none;
+}
+
+/* The pink band: red error text is too faint there, so errors use maroon. */
+.ds-email-signup--on-band .ds-field__error {
+  color: var(--ds-color-text-error-on-band);
+}

@@ -1,0 +1,65 @@
+.ds-quantity {
+  display: grid;
+  gap: var(--ds-space-stack-xs);
+  justify-items: start;
+}
+
+.ds-quantity__label {
+  font-size: var(--ds-type-label-size);
+  font-weight: var(--ds-type-label-weight);
+}
+
+.ds-quantity__control {
+  display: inline-flex;
+  align-items: stretch;
+  border: var(--ds-line-control) solid var(--ds-color-border-strong);
+  border-radius: var(--ds-shape-control);
+  background: var(--ds-color-surface-raised);
+}
+
+.ds-quantity__control:has(:focus-visible) {
+  outline: var(--ds-line-focus) solid var(--ds-color-focus-ring);
+  outline-offset: var(--ds-line-focus-offset);
+}
+
+.ds-quantity__step {
+  display: grid;
+  place-items: center;
+  inline-size: var(--ds-target-min);
+  min-block-size: var(--ds-target-min);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ds-color-text-strong);
+}
+
+.ds-quantity__step:disabled {
+  cursor: not-allowed;
+  opacity: var(--ds-state-disabled-opacity);
+}
+
+.ds-quantity__step:focus-visible,
+.ds-quantity__input:focus-visible {
+  outline: none;
+}
+
+/* Steppers only appear once the element's JS has loaded. */
+quantity-input:not(:defined) .ds-quantity__step {
+  display: none;
+}
+
+.ds-quantity__input {
+  inline-size: var(--ds-target-min);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ds-color-text-strong);
+  font-weight: var(--ds-type-label-weight);
+  text-align: center;
+  appearance: textfield;
+}
+
+.ds-quantity__input::-webkit-inner-spin-button,
+.ds-quantity__input::-webkit-outer-spin-button {
+  appearance: none;
+}

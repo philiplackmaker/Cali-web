@@ -1,0 +1,22 @@
+{#-
+  Button. Renders <a> when given href, otherwise <button>.
+  {% from "components/button/button.njk" import button %}
+  {{ button({ label: "Add to basket", variant: "primary" | "secondary" | "quiet",
+              type: "submit", href, icon, iconEnd, full: true, disabled: true,
+              loading: true, loadingLabel: "Adding…", class, attrs: { "data-x": "y" } }) }}
+-#}
+{%- from "components/icon/icon.njk" import icon -%}
+{%- macro button(opts) -%}
+{%- set cls = "ds-button ds-button--" ~ (opts.variant or "primary") ~ (" ds-button--full" if opts.full else "") ~ (" " ~ opts.class if opts.class else "") -%}
+{%- set inner -%}
+{%- if opts.loading %}<span class="ds-button__spinner" aria-hidden="true"></span>{% endif -%}
+{%- if opts.icon %}{{ icon(opts.icon) }}{% endif -%}
+<span class="ds-button__label">{{ opts.loadingLabel if (opts.loading and opts.loadingLabel) else opts.label }}</span>
+{%- if opts.iconEnd %}{{ icon(opts.iconEnd) }}{% endif -%}
+{%- endset -%}
+{%- if opts.href and not opts.disabled -%}
+<a class="{{ cls }}" href="{{ opts.href }}"{% for k, v in opts.attrs %} {{ k }}="{{ v }}"{% endfor %}>{{ inner | safe }}</a>
+{%- else -%}
+<button class="{{ cls }}" type="{{ opts.type or 'button' }}"{% if opts.disabled %} disabled{% endif %}{% if opts.loading %} aria-busy="true" aria-disabled="true"{% endif %}{% for k, v in opts.attrs %} {{ k }}="{{ v }}"{% endfor %}>{{ inner | safe }}</button>
+{%- endif -%}
+{%- endmacro -%}

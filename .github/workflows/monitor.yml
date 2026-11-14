@@ -1,0 +1,25 @@
+name: Monitor the live shop
+# Every 30 minutes: is calicomelton.com up, and can it take payments? (scripts/monitor.js)
+# A failed run means something is wrong; GitHub emails the repo owner about failed runs
+# (github.com → Settings → Notifications → Actions: "Only notify for failed workflows").
+#
+# Switched off until launch: set the repository variable MONITOR_URL (github.com → the repo
+# → Settings → Secrets and variables → Actions → Variables) to https://calicomelton.com.
+# Scheduled workflows only run from the default branch (main), so this starts after the merge.
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+
+jobs:
+  monitor:
+    name: Site, shop and checkout are working
+    if: vars.MONITOR_URL != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+      - run: node scripts/monitor.js "${{ vars.MONITOR_URL }}"

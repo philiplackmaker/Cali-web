@@ -1,0 +1,42 @@
+.ds-add-to-cart__form {
+  display: grid;
+  gap: var(--ds-space-stack-md);
+}
+
+.ds-add-to-cart__sold {
+  font-family: var(--ds-type-heading-md-family);
+  font-size: var(--ds-type-heading-sm-size);
+  font-style: italic;
+}
+
+.ds-add-to-cart__message {
+  font-size: var(--ds-type-small-size);
+}
+
+.ds-add-to-cart__message:empty {
+  display: none;
+}
+
+.ds-add-to-cart__message--error {
+  color: var(--ds-color-text-error);
+  font-weight: var(--ds-type-label-weight);
+}
+
+.ds-add-to-cart__viewing {
+  justify-self: center;
+  font-size: var(--ds-type-label-size);
+}
+
+.ds-add-to-cart__nojs {
+  display: grid;
+  gap: var(--ds-space-stack-xs);
+  font-size: var(--ds-type-label-size);
+}
+
+.ds-add-to-cart__nojs ul {
+  display: grid;
+  gap: var(--ds-space-stack-2xs);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}

@@ -1,0 +1,25 @@
+{
+  "title": "Market Vase",
+  "type": "Original",
+  "published": true,
+  "sold": false,
+  "added": "2026-11-14T15:54",
+  "description": "A hand-painted study inspired by market finds of terracotta vases, on a checkerboard base.",
+  "medium": "Acrylic on paper",
+  "options": [
+    {
+      "size": "A3",
+      "price": 60,
+      "sold": false
+    }
+  ],
+  "priceOnRequest": false,
+  "postage": 8,
+  "ukOnly": true,
+  "images": [
+    {
+      "image": "/content/uploads/market-vase.jpg",
+      "alt": "Market Vase by Calico Melton: a red vase painted with white squiggles, between heart-shaped green leaves, on a purple and blue checkerboard base, in a light wooden frame."
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+---
+permalink: /studio-letter/
+title: The Studio Letter
+description: Sign up for Calico Melton's Studio Letter. New paintings, studio notes, and first access to prints.
+footerSignup: false
+preloadSizes: "(width >= 53.75rem) 50vw, 100vw"
+---
+{%- from "patterns/section/section.njk" import section -%}
+{%- from "patterns/signup-band/signup-band.njk" import signupBand -%}
+{% call section({ variant: "band" }) %}
+  {{ signupBand({ id: "letter", feature: shop.photos.homeHero.image, headingLevel: 1, priority: true }) }}
+{% endcall %}

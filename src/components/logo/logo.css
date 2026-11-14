@@ -1,0 +1,30 @@
+.ds-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-inline-sm);
+  color: var(--ds-color-text-default);
+  text-decoration: none;
+  min-block-size: var(--ds-target-min);
+}
+
+.ds-logo__mark {
+  inline-size: auto;
+  block-size: var(--ds-icon-logo);
+  color: var(--ds-color-brand-mark);
+}
+
+.ds-logo__centre {
+  fill: var(--ds-color-brand-mark-centre);
+}
+
+.ds-logo__name {
+  font-family: var(--ds-type-heading-md-family);
+  font-size: var(--ds-type-heading-md-size);
+  font-weight: var(--ds-type-heading-md-weight);
+  line-height: var(--ds-type-display-line-height);
+  white-space: nowrap;
+}
+
+.ds-logo:hover {
+  color: var(--ds-color-text-default);
+}

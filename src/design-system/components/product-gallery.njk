@@ -1,0 +1,35 @@
+---
+title: Product gallery
+order: 14
+description: Main image, thumbnails and a full-screen viewer.
+---
+{% from "docs.njk" import example, usage %}
+{% from "components/product-gallery/product-gallery.njk" import productGallery %}
+<header class="docs-header">
+  <p class="docs-eyebrow">Component · &lt;product-gallery&gt;</p>
+  <h1>Product gallery</h1>
+  <p class="docs-lede">The painting, big. Thumbnails switch between photos. “View larger” opens it full screen on a dark ground. Without JS, the thumbnails link to the full-size files.</p>
+</header>
+
+<section class="docs-section" aria-labelledby="use">
+  <h2 id="use">Use it</h2>
+  {% set code %}{% raw %}{% from "components/product-gallery/product-gallery.njk" import productGallery %}
+<div data-product>{{ productGallery(product) }} …</div>{% endraw %}{% endset %}
+  {{ usage(code) }}
+  <p>It listens for <code>variant:change</code> inside the same <code>data-product</code> element and shows the variant's image.</p>
+</section>
+
+<section class="docs-section" aria-labelledby="live">
+  <h2 id="live">Live</h2>
+  {% set ex %}<div class="docs-stack" data-product>{{ productGallery(mock.byHandle["sun-hat-with-tulip"]) }}</div>{% endset %}
+  {{ example("Two photos: the painting and a detail", ex) }}
+</section>
+
+<section class="docs-section" aria-labelledby="a11y">
+  <h2 id="a11y">Accessibility</h2>
+  <ul class="docs-list">
+    <li>Thumbnails are links named “Image 1 of 2: …”, and the current one has <code>aria-current</code>.</li>
+    <li>The viewer is a modal dialog: Esc closes it, ← and → move between images, and the image count is announced.</li>
+    <li>The first image is the page's LCP image, so it loads eagerly with high priority. The others are lazy.</li>
+  </ul>
+</section>

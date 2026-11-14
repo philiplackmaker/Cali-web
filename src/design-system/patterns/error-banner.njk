@@ -1,0 +1,29 @@
+---
+title: Error banner
+order: 12
+description: "A page-level message when the shop’s catalogue can’t be loaded."
+---
+{% from "docs.njk" import example, usage %}
+{% from "patterns/section/section.njk" import section %}
+{% from "patterns/error-banner/error-banner.njk" import errorBanner %}
+<header class="docs-header">
+  <p class="docs-eyebrow">Pattern</p>
+  <h1>Error banner</h1>
+  <p class="docs-lede">A page-level message when the shop’s catalogue can’t be loaded.</p>
+</header>
+
+<section class="docs-section" aria-labelledby="use">
+  <h2 id="use">Use it</h2>
+  {% set code %}{% raw %}{% from "patterns/error-banner/error-banner.njk" import errorBanner %}
+{{ errorBanner() }}   ← hidden until the cart store reports an error
+{{ errorBanner({ message: "…" }) }}{% endraw %}{% endset %}
+  {{ usage(code) }}
+  <p><strong>Used on:</strong> Product pages, /cart/</p>
+  <p><code>&lt;error-banner&gt;</code> listens to the cart store. It shows the store’s message on an error and hides again after the next successful change. It uses <code>role="alert"</code>, so it’s read out straight away.</p>
+</section>
+
+<section class="docs-section" aria-labelledby="example">
+  <h2 id="example">Example</h2>
+  {% set ex %}{{ errorBanner({ message: "I can’t reach the shop just now. Please try again in a minute." }) }}{% endset %}
+  {{ example("Error banner", ex, { wide: true, noCode: true }) }}
+</section>

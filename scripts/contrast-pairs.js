@@ -1,0 +1,41 @@
+// Every foreground/background pairing the design system allows, checked by check-contrast.js.
+// min 4.5 = body text, 3 = large text and non-text UI (WCAG 2.2 AA 1.4.3 / 1.4.11).
+// Add a pair here before using a new combination in a component.
+export default [
+  // Body text
+  ['color.text.default', 'color.surface.page', 4.5],
+  ['color.text.default', 'color.surface.raised', 4.5],
+  ['color.text.default', 'color.surface.band', 4.5],
+  ['color.text.default', 'color.surface.band-deep', 4.5],
+  ['color.text.strong', 'color.surface.page', 4.5],
+  ['color.text.strong', 'color.surface.band', 4.5],
+  ['color.text.muted', 'color.surface.page', 4.5],
+  ['color.text.muted', 'color.surface.raised', 4.5],
+  ['color.text.error', 'color.surface.page', 4.5],
+  ['color.text.error', 'color.surface.raised', 4.5],
+  ['color.text.error-on-band', 'color.surface.band', 4.5],
+  ['color.text.link', 'color.surface.page', 4.5],
+  ['color.text.link-hover', 'color.surface.page', 4.5],
+  ['color.text.link-hover', 'color.surface.band', 4.5],
+  ['color.text.inverse', 'color.surface.inverse', 4.5],
+  ['color.action.primary-text', 'color.action.primary', 4.5],
+  ['color.action.secondary', 'color.surface.page', 4.5],
+  ['color.action.quiet', 'color.surface.page', 4.5],
+  ['color.action.quiet', 'color.surface.band', 4.5],
+  ['color.status.sold-text', 'color.status.sold', 4.5],
+  // Non-text UI: control edges, focus rings, icons
+  ['color.border.strong', 'color.surface.page', 3],
+  ['color.border.strong', 'color.surface.raised', 3],
+  ['color.border.error', 'color.surface.raised', 3],
+  ['color.focus.ring', 'color.surface.page', 3],
+  ['color.focus.ring', 'color.surface.band', 3],
+  ['color.focus.ring', 'color.surface.band-deep', 3],
+  // ring-on-dark is for the full-screen viewer, which is dark in both modes.
+  ['color.focus.ring-on-dark', 'color.surface.artwork', 3],
+  ['color.status.success', 'color.surface.band', 3],
+  ['color.action.primary', 'color.surface.band', 3],
+  ['color.brand.mark', 'color.surface.page', 3],
+  ['color.text.default', 'color.surface.wall', 4.5],
+  ['color.text.muted', 'color.surface.wall', 4.5],
+  ['color.text.error', 'color.surface.wall', 4.5],
+];

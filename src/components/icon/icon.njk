@@ -1,0 +1,4 @@
+{#- Icon. Usage: {% from "components/icon/icon.njk" import icon %} {{ icon("bag") }} or {{ icon("bag", { label: "Basket" }) }} -#}
+{%- macro icon(name, opts = {}) -%}
+<svg class="ds-icon{% if opts.size %} ds-icon--{{ opts.size }}{% endif %}"{% if opts.label %} role="img" aria-label="{{ opts.label }}"{% else %} aria-hidden="true"{% endif %} focusable="false"><use href="#ds-icon-{{ name }}"></use></svg>
+{%- endmacro -%}

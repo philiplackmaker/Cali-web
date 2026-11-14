@@ -1,0 +1,32 @@
+{
+  "title": "Tall Vase",
+  "type": "Print",
+  "published": true,
+  "added": "2026-11-09T11:57",
+  "description": "Giclee, museum quality print on 300gsm, beautiful prestige paper",
+  "made": "Prints are scanned from original hand painted work with no digital retouching. Each print is then professionally printed on a beautiful prestige paper.",
+  "medium": "Giclée print",
+  "options": [
+    {
+      "size": "20 × 25 cm",
+      "price": 30,
+      "sold": false
+    },
+    {
+      "size": "40 × 50 cm",
+      "price": 60,
+      "sold": false
+    }
+  ],
+  "priceOnRequest": false,
+  "images": [
+    {
+      "image": "/content/uploads/tall-vase.jpg",
+      "alt": "Tall Vase by Calico Melton: a white vase with red squiggles, overflowing with orange, red and yellow flowers and dark green leaves, on a pink ground."
+    },
+    {
+      "image": "/content/uploads/tall-vase-alt.jpg",
+      "alt": "Tall Vase framed on a windowsill, beside a candle and a basket."
+    }
+  ]
+}

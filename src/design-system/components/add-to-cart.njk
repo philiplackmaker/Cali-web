@@ -1,0 +1,77 @@
+---
+title: Add to cart
+order: 12
+description: The product form, with sold, sold-out, loading, in-basket and unavailable states.
+---
+{% from "docs.njk" import example, usage %}
+{% from "components/add-to-cart/add-to-cart.njk" import addToCart %}
+{% from "components/variant-picker/variant-picker.njk" import variantPicker %}
+{% from "components/quantity-input/quantity-input.njk" import quantityInput %}
+{% from "components/price/price.njk" import price %}
+{% set print = mock.byHandle["sun-hat-with-tulip-print"] %}
+{% set orig = mock.byHandle["pink-check"] %}
+<header class="docs-header">
+  <p class="docs-eyebrow">Component · &lt;add-to-cart&gt;</p>
+  <h1>Add to cart</h1>
+  <p class="docs-lede">The product form. It adds the chosen variant to the basket and opens the drawer, so checkout is two clicks from a product page. It also handles everything that can go wrong.</p>
+</header>
+
+<section class="docs-section" aria-labelledby="use">
+  <h2 id="use">Use it</h2>
+  {% set code %}{% raw %}{% from "components/add-to-cart/add-to-cart.njk" import addToCart %}
+{% call addToCart(product) %}
+  {% if not (product | isOriginal) %}
+    {{ variantPicker(product) }}
+    {{ quantityInput({ id: "qty" }) }}
+  {% endif %}
+{% endcall %}{% endraw %}{% endset %}
+  {{ usage(code) }}
+</section>
+
+<section class="docs-section" aria-labelledby="live">
+  <h2 id="live">Live, with the mock shop</h2>
+  <p>These add to a pretend basket stored in your browser. Turn on “Shop unreachable” to see what happens when the catalogue can't be loaded.</p>
+  <div class="docs-toolbar">
+    <button class="ds-button ds-button--secondary" type="button" data-demo-offline aria-pressed="false">Shop unreachable</button>
+    <button class="ds-button ds-button--secondary" type="button" data-demo-reset>Empty basket and reset</button>
+    <button class="ds-button ds-button--secondary" type="button" data-cart-open>Open basket</button>
+  </div>
+  <div class="docs-examples">
+    {% set ex %}<div class="docs-stack" data-product>
+  {{ price(print.variants.nodes[0], { size: "lg" }) }}
+  {% call addToCart(print) %}{{ variantPicker(print) }}{{ quantityInput({ id: "ex-atc-qty" }) }}{% endcall %}
+</div>{% endset %}
+    {{ example("A print", ex) }}
+    {% set ex %}<div class="docs-stack" data-product>
+  {{ price(orig, { size: "lg" }) }}
+  {{ addToCart(orig) }}
+</div>{% endset %}
+    {{ example("An original: add it, and the button changes to “In your basket”. Originals also offer a viewing in Bristol", ex) }}
+  </div>
+</section>
+
+<section class="docs-section" aria-labelledby="states">
+  <h2 id="states">Every state</h2>
+  <div class="docs-examples">
+    {% set ex %}<div class="docs-stack">{{ addToCart(orig, { state: "loading" }) }}</div>{% endset %}
+    {{ example("Loading", ex, { noCode: true }) }}
+    {% set ex %}<div class="docs-stack">{{ addToCart(orig, { state: "in-basket" }) }}</div>{% endset %}
+    {{ example("Original already in the basket", ex, { noCode: true }) }}
+    {% set ex %}<div class="docs-stack">{{ addToCart(mock.byHandle["afternoon-montpelier"]) }}</div>{% endset %}
+    {{ example("Sold original: the page stays up, with “This painting has found a home.” and an enquiry link", ex) }}
+    {% set ex %}<div class="docs-stack">{{ addToCart(mock.byHandle["large-interior-redland"]) }}</div>{% endset %}
+    {{ example("Price on request: an enquiry, plus a viewing", ex) }}
+    {% set ex %}<div class="docs-stack">{{ addToCart(mock.byHandle["blue-jug-print"]) }}</div>{% endset %}
+    {{ example("Sold-out print", ex, { noCode: true }) }}
+    {% set ex %}<div class="docs-stack">{{ addToCart(orig, { state: "unavailable" }) }}</div>{% endset %}
+    {{ example("Shop unreachable", ex, { noCode: true }) }}
+  </div>
+</section>
+
+<section class="docs-section" aria-labelledby="a11y">
+  <h2 id="a11y">Accessibility</h2>
+  <ul class="docs-list">
+    <li>Messages go in a <code>role="status"</code> region and are read out without moving focus.</li>
+    <li>After adding, the drawer opens and takes focus. Closing it puts focus back on the button.</li>
+  </ul>
+</section>

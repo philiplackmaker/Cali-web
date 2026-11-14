@@ -1,0 +1,179 @@
+{
+  "type": {
+    "display": {
+      "family": {
+        "$type": "fontFamily",
+        "$value": "{font.family.serif}"
+      },
+      "size": {
+        "$type": "dimension",
+        "$value": "{font.size.800}"
+      },
+      "weight": {
+        "$type": "fontWeight",
+        "$value": "{font.weight.medium}"
+      },
+      "line-height": {
+        "$type": "number",
+        "$value": "{font.line-height.tight}"
+      },
+      "tracking": {
+        "$type": "dimension",
+        "$value": "{font.tracking.tight}"
+      }
+    },
+    "heading": {
+      "xl": {
+        "family": {
+          "$type": "fontFamily",
+          "$value": "{font.family.serif}"
+        },
+        "size": {
+          "$type": "dimension",
+          "$value": "{font.size.700}"
+        },
+        "weight": {
+          "$type": "fontWeight",
+          "$value": "{font.weight.medium}"
+        },
+        "line-height": {
+          "$type": "number",
+          "$value": "{font.line-height.snug}"
+        }
+      },
+      "lg": {
+        "family": {
+          "$type": "fontFamily",
+          "$value": "{font.family.serif}"
+        },
+        "size": {
+          "$type": "dimension",
+          "$value": "{font.size.600}"
+        },
+        "weight": {
+          "$type": "fontWeight",
+          "$value": "{font.weight.medium}"
+        },
+        "line-height": {
+          "$type": "number",
+          "$value": "{font.line-height.snug}"
+        }
+      },
+      "md": {
+        "family": {
+          "$type": "fontFamily",
+          "$value": "{font.family.serif}"
+        },
+        "size": {
+          "$type": "dimension",
+          "$value": "{font.size.500}"
+        },
+        "weight": {
+          "$type": "fontWeight",
+          "$value": "{font.weight.medium}"
+        },
+        "line-height": {
+          "$type": "number",
+          "$value": "{font.line-height.snug}"
+        }
+      },
+      "sm": {
+        "family": {
+          "$type": "fontFamily",
+          "$value": "{font.family.sans}"
+        },
+        "size": {
+          "$type": "dimension",
+          "$value": "{font.size.400}"
+        },
+        "weight": {
+          "$type": "fontWeight",
+          "$value": "{font.weight.medium}"
+        },
+        "line-height": {
+          "$type": "number",
+          "$value": "{font.line-height.normal}"
+        }
+      }
+    },
+    "body": {
+      "family": {
+        "$type": "fontFamily",
+        "$value": "{font.family.sans}"
+      },
+      "size": {
+        "$type": "dimension",
+        "$value": "{font.size.300}"
+      },
+      "size-lg": {
+        "$type": "dimension",
+        "$value": "{font.size.400}"
+      },
+      "weight": {
+        "$type": "fontWeight",
+        "$value": "{font.weight.regular}"
+      },
+      "weight-strong": {
+        "$type": "fontWeight",
+        "$value": "{font.weight.semibold}"
+      },
+      "line-height": {
+        "$type": "number",
+        "$value": "{font.line-height.relaxed}"
+      }
+    },
+    "small": {
+      "size": {
+        "$type": "dimension",
+        "$value": "{font.size.100}"
+      },
+      "line-height": {
+        "$type": "number",
+        "$value": "{font.line-height.normal}"
+      }
+    },
+    "label": {
+      "size": {
+        "$type": "dimension",
+        "$value": "{font.size.200}"
+      },
+      "weight": {
+        "$type": "fontWeight",
+        "$value": "{font.weight.semibold}"
+      },
+      "line-height": {
+        "$type": "number",
+        "$value": "{font.line-height.snug}"
+      }
+    },
+    "eyebrow": {
+      "size": {
+        "$type": "dimension",
+        "$value": "{font.size.075}"
+      },
+      "weight": {
+        "$type": "fontWeight",
+        "$value": "{font.weight.semibold}"
+      },
+      "tracking": {
+        "$type": "dimension",
+        "$value": "{font.tracking.wider}"
+      }
+    },
+    "caption": {
+      "size": {
+        "$type": "dimension",
+        "$value": "{font.size.050}"
+      },
+      "weight": {
+        "$type": "fontWeight",
+        "$value": "{font.weight.semibold}"
+      },
+      "tracking": {
+        "$type": "dimension",
+        "$value": "{font.tracking.wider}"
+      },
+      "$description": "Quiet small-caps labels, like gallery wall captions"
+    }
+  }
+}

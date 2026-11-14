@@ -1,0 +1,14 @@
+.ds-icon-sprite {
+  display: none;
+}
+
+.ds-icon {
+  inline-size: var(--ds-icon-sm);
+  block-size: var(--ds-icon-sm);
+  flex: none;
+}
+
+.ds-icon--md {
+  inline-size: var(--ds-icon-md);
+  block-size: var(--ds-icon-md);
+}

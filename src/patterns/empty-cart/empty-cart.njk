@@ -1,0 +1,19 @@
+{#-
+  Empty basket. The base layout passes this into the cart drawer, and /cart/ uses it too.
+  {% from "patterns/empty-cart/empty-cart.njk" import emptyCart %} {{ emptyCart() }}
+  Pass { originals: false } while there are no originals, so it doesn't link to an empty page.
+-#}
+{%- from "components/button/button.njk" import button -%}
+{%- from "components/link/link.njk" import link -%}
+{%- macro emptyCart(opts = {}) -%}
+<div class="ds-empty-cart">
+  <p class="ds-empty-cart__title">Your basket is empty.</p>
+  <p>When something catches your eye, it'll wait for you here.</p>
+  <div class="ds-empty-cart__actions">
+    {%- if opts.originals !== false %}
+    {{ link({ href: "/shop/originals/", label: "See the originals", variant: "arrow" }) }}
+    {%- endif %}
+    {{ link({ href: "/shop/prints/", label: "See the prints", variant: "arrow" }) }}
+  </div>
+</div>
+{%- endmacro -%}

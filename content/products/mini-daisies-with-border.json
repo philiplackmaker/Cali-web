@@ -1,0 +1,25 @@
+{
+  "title": "Mini Daisies with Border",
+  "type": "Original",
+  "published": true,
+  "sold": false,
+  "added": "2026-11-14T15:53",
+  "description": "This mini original has a big impact. The textures and florals combine with a hand-painted border, creating an intricate piece that's perfect for gifting, or for adding to a little shelf arrangement.",
+  "medium": "Acrylic on paper",
+  "options": [
+    {
+      "size": "A5",
+      "price": 37,
+      "sold": false
+    }
+  ],
+  "priceOnRequest": false,
+  "postage": 3,
+  "ukOnly": true,
+  "images": [
+    {
+      "image": "/content/uploads/mini-daises-with-border.jpg",
+      "alt": "Mini Daisies by Calico Melton: white daisies in a pink vase on a dark green ground with a red and white painted border, in a green frame, beside a candle."
+    }
+  ]
+}

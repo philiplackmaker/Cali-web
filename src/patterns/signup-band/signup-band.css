@@ -1,0 +1,55 @@
+.ds-signup-band {
+  display: grid;
+  justify-items: center;
+}
+
+.ds-signup-band__panel {
+  display: grid;
+  justify-items: center;
+  gap: var(--ds-space-stack-md);
+  inline-size: min(100%, var(--ds-layout-content));
+  text-align: center;
+}
+
+.ds-signup-band__panel .ds-email-signup__intro,
+.ds-signup-band__panel .ds-email-signup__success {
+  justify-items: center;
+}
+
+.ds-signup-band__panel .ds-email-signup__sub {
+  margin-inline: auto;
+}
+
+.ds-signup-band__mark {
+  inline-size: auto;
+  block-size: var(--ds-icon-mark);
+  color: var(--ds-color-brand-mark);
+}
+
+.ds-signup-band__mark .ds-logo__centre {
+  fill: var(--ds-color-surface-page);
+}
+
+.ds-signup-band--feature {
+  gap: var(--ds-space-stack-lg);
+  align-items: center;
+}
+
+@media (width >= 53.75rem) {
+  .ds-signup-band--feature {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+
+.ds-signup-band__art .ds-artwork-image {
+  background: transparent;
+}
+
+.ds-signup-band__art .ds-artwork-image__img {
+  box-shadow: var(--ds-elevation-overlay);
+}
+
+/* The signup sizes itself with container queries, so give it the panel's full width. */
+.ds-signup-band__panel .ds-email-signup {
+  inline-size: 100%;
+}

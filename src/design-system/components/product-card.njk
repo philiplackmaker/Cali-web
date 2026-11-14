@@ -1,0 +1,41 @@
+---
+title: Product card
+order: 9
+description: Painting, title, medium or size, price and badges.
+---
+{% from "docs.njk" import example, usage %}
+{% from "components/product-card/product-card.njk" import productCard %}
+<header class="docs-header">
+  <p class="docs-eyebrow">Component · Partial</p>
+  <h1>Product card</h1>
+  <p class="docs-lede">One painting in a grid, shown whole on the wall colour with a centred label underneath. Grids use <code>--ds-layout-card-min</code> (17rem), so there are two or three paintings across, never a crowded four. The whole card is a single link: one tab stop, one big click target, with the title as its name.</p>
+</header>
+
+<section class="docs-section" aria-labelledby="use">
+  <h2 id="use">Use it</h2>
+  {% set code %}{% raw %}{% from "components/product-card/product-card.njk" import productCard %}
+{{ productCard(product, { headingLevel: 3, priority: loop.index <= 2 }) }}{% endraw %}{% endset %}
+  {{ usage(code) }}
+</section>
+
+<section class="docs-section" aria-labelledby="variants">
+  <h2 id="variants">Variants and states</h2>
+  {% set ex %}<div class="docs-grid">
+{{ productCard(mock.byHandle["sun-hat-with-tulip"]) }}
+{{ productCard(mock.byHandle["sun-hat-with-tulip-print"]) }}
+{{ productCard(mock.byHandle["pink-check-print"]) }}
+{{ productCard(mock.byHandle["large-interior-redland"]) }}
+{{ productCard(mock.byHandle["afternoon-montpelier"]) }}
+{{ productCard(mock.byHandle["blue-jug-print"]) }}
+</div>{% endset %}
+  {{ example("Original · print (from) · print on sale · price on request · sold original · sold-out print", ex) }}
+</section>
+
+<section class="docs-section" aria-labelledby="a11y">
+  <h2 id="a11y">Accessibility</h2>
+  <ul class="docs-list">
+    <li>The image has empty alt text because the title next to it names the work. The product page carries the full description.</li>
+    <li>The link's ::after covers the card, so a click anywhere on it opens the product. The focus ring is drawn around the whole card.</li>
+    <li>Sold works show the Sold badge and drop the price.</li>
+  </ul>
+</section>

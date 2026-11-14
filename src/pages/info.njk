@@ -1,0 +1,23 @@
+---
+permalink: /info/
+eleventyComputed:
+  title: "{{ pages.info.title }}"
+  description: "{{ pages.info.description }}"
+---
+{%- from "patterns/section/section.njk" import section -%}
+{%- from "patterns/page-intro/page-intro.njk" import pageIntro -%}
+{%- from "patterns/prose/prose.njk" import prose -%}
+{% call section({ variant: "narrow tight" }) %}
+  {{ pageIntro({ eyebrow: "Good to know", title: pages.info.title, lede: pages.info.lede }) }}
+  {% call prose() %}
+    <h2 id="shipping">Shipping</h2>
+    <p>Delivery is chosen in your basket:</p>
+    <ul>
+      {%- for d in site.delivery %}
+      <li>{{ d.label }}: {{ { amount: d.amount, currencyCode: "GBP" } | money }}. {{ d.description }}.</li>
+      {%- endfor %}
+    </ul>
+    {{ pages.info.shipping | md | safe }}
+    {{ pages.info.body | md | safe }}
+  {% endcall %}
+{% endcall %}

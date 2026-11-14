@@ -1,0 +1,12 @@
+_site/
+node_modules/
+legacy/
+package-lock.json
+src/styles/tokens.css
+src/_data/designTokens.json
+*.njk
+_site-e2e/
+.lighthouseci/
+test-results/
+playwright-report/
+.cache/

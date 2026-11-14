@@ -1,0 +1,20 @@
+{#-
+  Artist intro: a photo of Cali and a few lines in her voice.
+  {% from "patterns/artist-intro/artist-intro.njk" import artistIntro %}
+  priority: true when the photo is the first thing on the page (About), so it loads first.
+  {{ artistIntro({ id: "about-cali", image: shop.photos.aboutPortrait.image, video: shop.photos.aboutPortrait.video, heading: "…", text: "…", link: { href: "/about/", label: "More about me" } }) }}
+-#}
+{%- from "components/artwork-image/artwork-image.njk" import artworkImage -%}
+{%- from "components/link/link.njk" import link -%}
+{%- from "components/video-clip/video-clip.njk" import videoClip -%}
+{%- macro artistIntro(opts) -%}
+<div class="ds-artist-intro">
+  <div class="ds-artist-intro__photo">{% if opts.video %}{{ videoClip(opts.video, opts.image) }}{% else %}{{ artworkImage(opts.image, { sizes: "(width >= 53.75rem) 30vw, 100vw", priority: opts.priority }) }}{% endif %}</div>
+  <div class="ds-artist-intro__text">
+    <h2 class="ds-artist-intro__heading" id="{{ opts.id }}">{{ opts.heading }}</h2>
+    {%- if opts.textHtml %}{{ opts.textHtml | safe }}{% endif %}
+    {%- for para in opts.text %}<p>{{ para }}</p>{% endfor %}
+    {%- if opts.link %}{{ link({ href: opts.link.href, label: opts.link.label, variant: "arrow" }) }}{% endif %}
+  </div>
+</div>
+{%- endmacro -%}

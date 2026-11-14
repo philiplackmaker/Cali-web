@@ -1,0 +1,13 @@
+.ds-collector-note {
+  display: grid;
+  gap: var(--ds-space-stack-xs);
+  padding: var(--ds-space-inset-md);
+  border-radius: var(--ds-shape-control);
+  background: var(--ds-color-surface-raised);
+  font-size: var(--ds-type-small-size);
+  line-height: var(--ds-type-small-line-height);
+}
+
+.ds-collector-note strong {
+  font-weight: var(--ds-type-label-weight);
+}

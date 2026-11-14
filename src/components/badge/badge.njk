@@ -1,0 +1,17 @@
+{#-
+  Badge. {% from "components/badge/badge.njk" import badge, badges %}
+  {{ badge({ kind: "original" | "print" | "edition" | "sold", edition: 50 }) }}
+  {{ badges(product | productBadges) }}
+-#}
+{%- macro badge(opts) -%}
+{%- set text = { original: "Original", print: "Print", sold: "Sold", edition: "Edition of " ~ opts.edition } -%}
+<span class="ds-badge ds-badge--{{ opts.kind }}">{{ text[opts.kind] }}</span>
+{%- endmacro -%}
+
+{%- macro badges(list) -%}
+{%- if list.length -%}
+<ul class="ds-badges" role="list">
+  {%- for b in list %}<li>{{ badge(b) }}</li>{% endfor -%}
+</ul>
+{%- endif -%}
+{%- endmacro -%}

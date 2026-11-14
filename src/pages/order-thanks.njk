@@ -1,0 +1,17 @@
+---
+permalink: /order-thanks/
+title: Thank you for your order
+description: Your order from Calico Melton is confirmed.
+noindex: true
+eleventyExcludeFromSitemap: true
+scripts: ["/assets/js/scripts/order-complete.js"]
+---
+{#- Stripe sends buyers here after paying (success_url in scripts/checkout.js). -#}
+{%- from "patterns/section/section.njk" import section -%}
+{%- from "patterns/page-intro/page-intro.njk" import pageIntro -%}
+{%- from "components/link/link.njk" import link -%}
+{% call section({ variant: "narrow tight" }) %}
+  {% call pageIntro({ eyebrow: "Order confirmed", title: "Thank you", lede: "Your order is in, and Stripe has emailed you a receipt. I’ll let you know when it’s on its way." }) %}
+    {{ link({ href: "/shop/", label: "Back to the shop", variant: "arrow" }) }}
+  {% endcall %}
+{% endcall %}

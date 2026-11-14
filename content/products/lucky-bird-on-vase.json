@@ -1,0 +1,25 @@
+{
+  "title": "Lucky Bird on Vase",
+  "type": "Original",
+  "published": true,
+  "sold": false,
+  "added": "2026-11-14T15:55",
+  "description": "A hand-painted bird on a vase, inspired by vintage market terracotta vases, with my signature tulips.",
+  "medium": "Acrylic on canvas",
+  "options": [
+    {
+      "size": "50 × 60 cm",
+      "price": 200,
+      "sold": false
+    }
+  ],
+  "priceOnRequest": false,
+  "postage": 8,
+  "ukOnly": true,
+  "images": [
+    {
+      "image": "/content/uploads/lucky-bird-on-vase.jpg",
+      "alt": "Lucky Bird on Vase by Calico Melton: a white dove on a round brown vase, with red tulips hanging above, on a green base against a dark ground."
+    }
+  ]
+}

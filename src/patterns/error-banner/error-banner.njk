@@ -1,0 +1,13 @@
+{#-
+  Error banner: a page-level message. Hidden until <error-banner> hears the cart store fail
+  (or render it with a message to show it straight away).
+  {% from "patterns/error-banner/error-banner.njk" import errorBanner %}
+  {{ errorBanner() }}  {{ errorBanner({ message: "…" }) }}
+-#}
+{%- from "components/icon/icon.njk" import icon -%}
+{%- macro errorBanner(opts = {}) -%}
+<error-banner class="ds-error-banner"{% if not opts.message %} hidden{% endif %} role="alert">
+  {{ icon("alert", { size: "md" }) }}
+  <p class="ds-error-banner__message" data-error-message>{{ opts.message }}</p>
+</error-banner>
+{%- endmacro -%}

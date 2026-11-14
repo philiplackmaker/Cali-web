@@ -1,0 +1,47 @@
+---
+title: Artwork image
+order: 4
+description: Responsive painting images with no layout shift.
+---
+{% from "docs.njk" import example, usage, props %}
+{% from "components/artwork-image/artwork-image.njk" import artworkImage %}
+{% set p = mock.byHandle["sun-hat-with-tulip"] %}
+<header class="docs-header">
+  <p class="docs-eyebrow">Component · Partial</p>
+  <h1>Artwork image</h1>
+  <p class="docs-lede">Every painting on the site goes through this. It builds a <code>srcset</code> from the widths made at build time, sets width and height so nothing jumps while loading, and loads lazily unless it's the hero.</p>
+</header>
+
+<section class="docs-section" aria-labelledby="use">
+  <h2 id="use">Use it</h2>
+  {% set code %}{% raw %}{% from "components/artwork-image/artwork-image.njk" import artworkImage %}
+{{ artworkImage(product.featuredImage, { priority: true, sizes: "(width >= 53.75rem) 50vw, 100vw" }) }}
+{{ artworkImage(product.featuredImage, { framed: true, alt: "" }) }}{% endraw %}{% endset %}
+  {{ usage(code) }}
+  {{ props([
+    ["image", "Image", "{ url, width, height, altText }. A {width} in the url is filled in for each size."],
+    ["sizes", "string", "How wide the image shows at each breakpoint. Defaults to 100vw. Get this right: it decides which file the browser downloads."],
+    ["priority", "boolean", "For the one image at the top of the page (the LCP image): loads eagerly with fetchpriority=high. Everything else is lazy."],
+    ["framed", "boolean", "Shows the whole painting inside a fixed-ratio frame on the wall colour. Paintings are never cropped."],
+    ["alt", "string", "Overrides the image's altText. Pass \"\" when the title next to it already says what it is."]
+  ]) }}
+</section>
+
+<section class="docs-section" aria-labelledby="variants">
+  <h2 id="variants">Variants</h2>
+  <div class="docs-examples">
+    {% set ex %}<div class="docs-stack">{{ artworkImage(p.featuredImage, { sizes: "(width >= 53.75rem) 40rem, 100vw" }) }}</div>{% endset %}
+    {{ example("Natural ratio (product page, hero)", ex) }}
+    {% set ex %}<div class="docs-grid">{{ artworkImage(p.featuredImage, { framed: true, alt: "", sizes: "13rem" }) }}{{ artworkImage(p.images.nodes[1], { framed: true, alt: "", sizes: "13rem" }) }}</div>{% endset %}
+    {{ example("Framed (cards): portrait and square paintings in the same frame", ex) }}
+  </div>
+</section>
+
+<section class="docs-section" aria-labelledby="a11y">
+  <h2 id="a11y">Accessibility and performance</h2>
+  <ul class="docs-list">
+    <li>Alt text comes from the admin (“What the photo shows”). Ask Cali to describe the painting, not repeat its title, e.g. “A figure in a blue sun hat holding a single tulip.”</li>
+    <li>Width and height are always set, so CLS stays at 0.</li>
+    <li>Sizes stop at the source image's width: the build never upscales.</li>
+  </ul>
+</section>

@@ -1,0 +1,32 @@
+{#- Docs helpers. {% from "docs.njk" import example, usage, props %} -#}
+
+{#- Shows rendered markup and the same markup as copyable code. -#}
+{%- macro example(title, html, opts = {}) -%}
+<figure class="docs-example{% if opts.band %} docs-example--band{% endif %}{% if opts.wide %} docs-example--wide{% endif %}">
+  <figcaption class="docs-example__title">{{ title }}{% if opts.note %} <span class="docs-muted">· {{ opts.note }}</span>{% endif %}</figcaption>
+  <div class="docs-example__stage">{{ html | safe }}</div>
+  {%- if not opts.noCode %}
+  <details class="docs-example__code"><summary>HTML</summary><pre class="docs-code" tabindex="0"><code>{{ html | asCode | safe }}</code></pre></details>
+  {%- endif %}
+</figure>
+{%- endmacro -%}
+
+{#- The Nunjucks call to paste into a template. -#}
+{%- macro usage(code) -%}
+<pre class="docs-code" tabindex="0"><code>{{ code | asCode | safe }}</code></pre>
+{%- endmacro -%}
+
+{#- Options table: rows of [name, type, description]. -#}
+{%- macro props(rows) -%}
+<div class="docs-table-wrap">
+  <table class="docs-table">
+    <caption class="ds-visually-hidden">Options</caption>
+    <thead><tr><th scope="col">Option</th><th scope="col">Type</th><th scope="col">What it does</th></tr></thead>
+    <tbody>
+      {%- for r in rows %}
+      <tr><th scope="row"><code>{{ r[0] }}</code></th><td><code>{{ r[1] }}</code></td><td>{{ r[2] }}</td></tr>
+      {%- endfor %}
+    </tbody>
+  </table>
+</div>
+{%- endmacro -%}

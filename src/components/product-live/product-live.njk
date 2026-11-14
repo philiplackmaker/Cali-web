@@ -1,0 +1,7 @@
+{#-
+  Live availability for a product page. Put it inside the element with data-product.
+  {% from "components/product-live/product-live.njk" import productLive %} {{ productLive(product) }}
+-#}
+{%- macro productLive(product) -%}
+<product-live data-handle="{{ product.handle }}" hidden></product-live>
+{%- endmacro -%}

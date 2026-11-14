@@ -1,0 +1,147 @@
+{
+  "color": {
+    "$type": "color",
+    "surface": {
+      "page": {
+        "$value": "{color.cream.100}",
+        "$description": "Calm neutral page behind everything"
+      },
+      "raised": {
+        "$value": "{color.cream.50}",
+        "$description": "Inputs, cards that sit on the page"
+      },
+      "band": {
+        "$value": "{color.pink.300}",
+        "$description": "Studio Letter band and other feature bands"
+      },
+      "band-deep": {
+        "$value": "{color.pink.500}",
+        "$description": "Deeper band, footer"
+      },
+      "artwork": {
+        "$value": "{color.brown.950}",
+        "$description": "Behind paintings while they load"
+      },
+      "inverse": {
+        "$value": "{color.brown.900}"
+      },
+      "wall": {
+        "$value": "{color.cream.50}",
+        "$description": "Behind paintings shown whole in a frame (cards, gallery), so no painting is cropped"
+      }
+    },
+    "text": {
+      "default": {
+        "$value": "{color.brown.800}"
+      },
+      "strong": {
+        "$value": "{color.brown.900}"
+      },
+      "muted": {
+        "$value": "{color.alpha.umber-68}",
+        "$description": "Secondary copy. Page and raised surfaces only: too faint on the pink band."
+      },
+      "inverse": {
+        "$value": "{color.cream.100}"
+      },
+      "on-artwork": {
+        "$value": "{color.white}",
+        "$description": "Text over a painting, always with the scrim"
+      },
+      "error": {
+        "$value": "{color.red.700}"
+      },
+      "error-on-band": {
+        "$value": "{color.maroon.600}",
+        "$description": "Errors on the pink band. Red only reaches 4.19:1 there."
+      },
+      "link": {
+        "$value": "{color.brown.800}"
+      },
+      "link-hover": {
+        "$value": "{color.maroon.600}"
+      }
+    },
+    "border": {
+      "subtle": {
+        "$value": "{color.alpha.umber-22}",
+        "$description": "Hairlines and dividers (decorative, not a control edge)"
+      },
+      "strong": {
+        "$value": "{color.brown.900}",
+        "$description": "Control edges: secondary buttons, radios"
+      },
+      "error": {
+        "$value": "{color.red.700}"
+      }
+    },
+    "action": {
+      "primary": {
+        "$value": "{color.brown.900}"
+      },
+      "primary-text": {
+        "$value": "{color.cream.100}"
+      },
+      "secondary": {
+        "$value": "{color.brown.900}",
+        "$description": "Outline and text colour of secondary buttons"
+      },
+      "quiet": {
+        "$value": "{color.maroon.600}",
+        "$description": "Text-style actions, like 'Sign up again'"
+      }
+    },
+    "status": {
+      "sold": {
+        "$value": "{color.maroon.600}"
+      },
+      "sold-text": {
+        "$value": "{color.cream.100}"
+      },
+      "success": {
+        "$value": "{color.maroon.600}"
+      },
+      "error": {
+        "$value": "{color.red.700}"
+      }
+    },
+    "accent": {
+      "blue": {
+        "$value": "{color.blue.500}",
+        "$description": "Small decorative moments only. Never text."
+      },
+      "pink": {
+        "$value": "{color.pink.300}"
+      },
+      "maroon": {
+        "$value": "{color.maroon.600}"
+      }
+    },
+    "focus": {
+      "ring": {
+        "$value": "{color.brown.900}"
+      },
+      "ring-on-dark": {
+        "$value": "{color.cream.100}"
+      }
+    },
+    "scrim": {
+      "strong": {
+        "$value": "{color.alpha.night-60}"
+      },
+      "light": {
+        "$value": "{color.alpha.night-10}"
+      }
+    },
+    "brand": {
+      "mark": {
+        "$value": "{color.brown.700}",
+        "$description": "Flower mark stem and petals"
+      },
+      "mark-centre": {
+        "$value": "{color.pink.300}",
+        "$description": "Flower mark centre"
+      }
+    }
+  }
+}

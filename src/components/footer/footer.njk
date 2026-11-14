@@ -1,0 +1,34 @@
+{#-
+  Footer: the Studio Letter signup, Instagram and email, secondary links.
+  {% from "components/footer/footer.njk" import siteFooter %} {{ siteFooter() }}
+  Pass { signup: false } on pages that already have a Studio Letter band, so it isn't asked twice.
+-#}
+{%- from "components/email-signup/email-signup.njk" import emailSignup -%}
+{%- from "components/logo/logo.njk" import flowerMark -%}
+{%- from "components/icon/icon.njk" import icon -%}
+{%- macro siteFooter(opts = {}) -%}
+<footer class="ds-footer">
+  <div class="ds-footer__inner">
+    {%- if opts.signup !== false %}
+    <div class="ds-footer__signup">
+      {{ emailSignup({ id: "footer-signup", compact: true, onBand: true }) }}
+    </div>
+    {%- endif %}
+    <div class="ds-footer__aside">
+      <ul class="ds-footer__social" role="list">
+        <li><a class="ds-footer__social-link" href="{{ site.instagram }}" target="_blank" rel="noopener">{{ icon("instagram", { size: "md" }) }}<span>{{ site.instagramHandle }}<span class="ds-visually-hidden"> on Instagram (opens in a new tab)</span></span></a></li>
+        <li><a class="ds-footer__social-link" href="mailto:{{ site.email }}">{{ icon("mail", { size: "md" }) }}<span>Email me</span></a></li>
+      </ul>
+      <nav aria-label="More">
+        <ul class="ds-footer__links" role="list">
+          <li><a href="/shop/">Shop</a></li>
+          <li><a href="/info/">Shipping and FAQ</a></li>
+          <li><a href="/contact/">Commissions and contact</a></li>
+          <li><a href="/about/">About</a></li>
+        </ul>
+      </nav>
+    </div>
+    <p class="ds-footer__small">{{ flowerMark({ class: "ds-footer__mark" }) }} © {{ opts.year or 2026 }} Calico Melton · Painted in Bristol</p>
+  </div>
+</footer>
+{%- endmacro -%}

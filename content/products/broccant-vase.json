@@ -1,0 +1,25 @@
+{
+  "title": "Broccant Vase",
+  "type": "Original",
+  "published": true,
+  "sold": true,
+  "added": "2026-11-14T15:58",
+  "description": "A hand-painted study inspired by market finds of terracotta vases.",
+  "medium": "Acrylic on paper",
+  "options": [
+    {
+      "size": "A3",
+      "price": 90,
+      "sold": false
+    }
+  ],
+  "priceOnRequest": false,
+  "postage": 8,
+  "ukOnly": true,
+  "images": [
+    {
+      "image": "/content/uploads/broccant-vase.jpg",
+      "alt": "Broccant Vase by Calico Melton: a deep red bottle vase beside a plant with three heart-shaped green leaves, on a blue table against a lilac ground, in a light wooden frame."
+    }
+  ]
+}

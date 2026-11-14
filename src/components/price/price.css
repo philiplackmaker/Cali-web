@@ -1,0 +1,30 @@
+.ds-price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 var(--ds-space-inline-xs);
+  color: var(--ds-color-text-default);
+  font-weight: var(--ds-type-body-weight);
+  font-variant-numeric: lining-nums;
+}
+
+.ds-price--lg {
+  font-family: var(--ds-type-heading-md-family);
+  font-size: var(--ds-type-heading-md-size);
+}
+
+.ds-price__from {
+  font-weight: var(--ds-type-body-weight);
+}
+
+.ds-price__compare {
+  color: var(--ds-color-text-muted);
+  font-weight: var(--ds-type-body-weight);
+}
+
+/* Sales stay quiet: the old price is simply struck through beside the new one. */
+.ds-price--on-request {
+  color: var(--ds-color-text-muted);
+  font-weight: var(--ds-type-body-weight);
+  font-style: italic;
+}

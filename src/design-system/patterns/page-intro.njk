@@ -1,0 +1,28 @@
+---
+title: Page intro
+order: 2
+description: "The eyebrow, h1 and short lede at the top of simple pages."
+---
+{% from "docs.njk" import example, usage %}
+{% from "patterns/section/section.njk" import section %}
+{% from "patterns/page-intro/page-intro.njk" import pageIntro %}
+<header class="docs-header">
+  <p class="docs-eyebrow">Pattern</p>
+  <h1>Page intro</h1>
+  <p class="docs-lede">The eyebrow, h1 and short lede at the top of simple pages.</p>
+</header>
+
+<section class="docs-section" aria-labelledby="use">
+  <h2 id="use">Use it</h2>
+  {% set code %}{% raw %}{% from "patterns/page-intro/page-intro.njk" import pageIntro %}
+{{ pageIntro({ eyebrow: "The shop", title: "All work", lede: "…" }) }}{% endraw %}{% endset %}
+  {{ usage(code) }}
+  <p><strong>Used on:</strong> Shop, About, Contact, Shipping and FAQ, 404</p>
+  <p>One h1 per page. Keep the lede to one or two short sentences in Cali’s voice.</p>
+</section>
+
+<section class="docs-section" aria-labelledby="example">
+  <h2 id="example">Example</h2>
+  {% set ex %}{{ pageIntro({ eyebrow: "Good to know", title: "Shipping and FAQ", lede: "How your painting gets to you, and how to look after it once it’s there." }) }}{% endset %}
+  {{ example("Page intro", ex, { wide: true, noCode: true }) }}
+</section>

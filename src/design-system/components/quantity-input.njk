@@ -1,0 +1,45 @@
+---
+title: Quantity
+order: 11
+description: A number input with step buttons, for prints.
+---
+{% from "docs.njk" import example, usage, props %}
+{% from "components/quantity-input/quantity-input.njk" import quantityInput %}
+<header class="docs-header">
+  <p class="docs-eyebrow">Component · &lt;quantity-input&gt;</p>
+  <h1>Quantity</h1>
+  <p class="docs-lede">For prints only. Originals are always one, so don't show this for them. Without JS it's a plain number input. JS adds − and +, which are clamped to min and max.</p>
+</header>
+
+<section class="docs-section" aria-labelledby="use">
+  <h2 id="use">Use it</h2>
+  {% set code %}{% raw %}{% from "components/quantity-input/quantity-input.njk" import quantityInput %}
+{% if not (product | isOriginal) %}{{ quantityInput({ id: "qty", max: 10 }) }}{% endif %}{% endraw %}{% endset %}
+  {{ usage(code) }}
+  {{ props([
+    ["id / name", "string", "Defaults to quantity."],
+    ["value, min, max", "number", "Defaults 1, 1, 10."],
+    ["label / hideLabel", "string / boolean", "Defaults to “Quantity”. Hide it only where the context makes it obvious, like a cart line."],
+    ["disabled", "boolean", ""]
+  ]) }}
+</section>
+
+<section class="docs-section" aria-labelledby="states">
+  <h2 id="states">States</h2>
+  <div class="docs-examples">
+    {% set ex %}{{ quantityInput({ id: "ex-q1" }) }}{% endset %}
+    {{ example("Default (at the minimum, so − is off)", ex) }}
+    {% set ex %}{{ quantityInput({ id: "ex-q2", value: 3, max: 3 }) }}{% endset %}
+    {{ example("At the maximum", ex) }}
+    {% set ex %}{{ quantityInput({ id: "ex-q3", disabled: true }) }}{% endset %}
+    {{ example("Disabled", ex) }}
+  </div>
+</section>
+
+<section class="docs-section" aria-labelledby="a11y">
+  <h2 id="a11y">Accessibility</h2>
+  <ul class="docs-list">
+    <li>Keyboard users type in the input or use the arrow keys. The − and + buttons are for pointers and touch, so they're left out of the tab order, which saves two tab stops on every cart line.</li>
+    <li>The buttons have labels like “Decrease quantity of Tulip”.</li>
+  </ul>
+</section>

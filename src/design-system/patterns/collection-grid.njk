@@ -1,0 +1,28 @@
+---
+title: Collection grid
+order: 8
+description: "The shop: filter links, then the paintings."
+---
+{% from "docs.njk" import example, usage %}
+{% from "patterns/section/section.njk" import section %}
+{% from "patterns/collection-grid/collection-grid.njk" import collectionGrid %}
+<header class="docs-header">
+  <p class="docs-eyebrow">Pattern</p>
+  <h1>Collection grid</h1>
+  <p class="docs-lede">The shop: filter links, then the paintings.</p>
+</header>
+
+<section class="docs-section" aria-labelledby="use">
+  <h2 id="use">Use it</h2>
+  {% set code %}{% raw %}{% from "patterns/collection-grid/collection-grid.njk" import collectionGrid %}
+{{ collectionGrid({ collections: shop.collections, current: collection }) }}{% endraw %}{% endset %}
+  {{ usage(code) }}
+  <p><strong>Used on:</strong> /shop/, /shop/originals/, /shop/prints/</p>
+  <p>The filter is ordinary links to real pages, so it works without JS and each view has its own URL and title. Has an empty state in Cali’s voice.</p>
+</section>
+
+<section class="docs-section" aria-labelledby="example">
+  <h2 id="example">Example</h2>
+  {% set ex %}{{ collectionGrid({ collections: shop.collections, current: shop.collections[2] }) }}{% endset %}
+  {{ example("Collection grid", ex, { wide: true, noCode: true }) }}
+</section>

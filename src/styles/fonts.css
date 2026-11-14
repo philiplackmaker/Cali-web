@@ -1,0 +1,60 @@
+/*
+  Self-hosted fonts (from @fontsource, copied to /assets/fonts/ by Eleventy).
+  Family names here must match tokens/primitive/type.json. This is the one CSS
+  file Stylelint lets name fonts directly, because @font-face can't use var().
+*/
+@font-face {
+  font-family: Lora;
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/assets/fonts/lora-latin-500-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: Lora;
+  font-style: italic;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/assets/fonts/lora-latin-500-italic.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: Lora;
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/assets/fonts/lora-latin-700-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: Figtree;
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/assets/fonts/figtree-latin-400-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: Figtree;
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/assets/fonts/figtree-latin-400-italic.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: Figtree;
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/assets/fonts/figtree-latin-500-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: Figtree;
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/assets/fonts/figtree-latin-600-normal.woff2') format('woff2');
+}

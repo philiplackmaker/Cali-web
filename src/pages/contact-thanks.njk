@@ -1,0 +1,15 @@
+---
+permalink: /contact/thanks/
+title: Thank you
+description: Your message to Calico Melton has been sent.
+noindex: true
+eleventyExcludeFromSitemap: true
+---
+{%- from "patterns/section/section.njk" import section -%}
+{%- from "patterns/page-intro/page-intro.njk" import pageIntro -%}
+{%- from "components/link/link.njk" import link -%}
+{% call section({ variant: "narrow tight" }) %}
+  {% call pageIntro({ eyebrow: "Message sent", title: "Thank you", lede: "I'll reply within a few days. In the meantime, have a wander round the shop." }) %}
+    {{ link({ href: "/shop/", label: "Back to the shop", variant: "arrow" }) }}
+  {% endcall %}
+{% endcall %}

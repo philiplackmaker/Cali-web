@@ -1,0 +1,19 @@
+{#-
+  Collector note: ways to spread the cost of an original. Shows only what site.payments
+  turns on, and renders nothing if neither is on.
+  {% from "components/collector-note/collector-note.njk" import collectorNote %}
+  {{ collectorNote(product) }}  (the docs force options on with { payments: { instalments: true } })
+-#}
+{%- macro collectorNote(product, opts = {}) -%}
+{%- set payments = opts.payments or site.payments -%}
+{%- if payments.instalments or payments.ownArt -%}
+<div class="ds-collector-note">
+  {%- if payments.ownArt %}
+  <p><strong>Interest-free with Own Art.</strong> Spread the cost over 10 months, with nothing extra to pay. <!-- TODO copy: confirm Own Art terms --></p>
+  {%- endif %}
+  {%- if payments.instalments %}
+  <p><strong>Pay in instalments</strong> at checkout, if you'd rather spread the cost.</p>
+  {%- endif %}
+</div>
+{%- endif -%}
+{%- endmacro -%}

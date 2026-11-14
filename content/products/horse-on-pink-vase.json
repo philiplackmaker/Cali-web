@@ -1,0 +1,25 @@
+{
+  "title": "Horse on Pink Vase",
+  "type": "Original",
+  "published": true,
+  "sold": false,
+  "added": "2026-11-14T15:56",
+  "description": "A hand-painted horse on a pink vase.",
+  "medium": "Acrylic on paper",
+  "options": [
+    {
+      "size": "A4",
+      "price": 75,
+      "sold": false
+    }
+  ],
+  "priceOnRequest": false,
+  "postage": 8,
+  "ukOnly": true,
+  "images": [
+    {
+      "image": "/content/uploads/horse-on-pink-vase.jpg",
+      "alt": "Horse on Pink Vase by Calico Melton: a black horse with a blue saddle cloth painted on a round pink vase, on a green base, in a light wooden frame."
+    }
+  ]
+}

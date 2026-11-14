@@ -1,0 +1,20 @@
+{#-
+  Featured work: a heading, a few product cards, and a link to see everything.
+  {% from "patterns/featured-strip/featured-strip.njk" import featuredStrip %}
+  {{ featuredStrip({ id: "new-work", title: "New work", products: shop.latest, link: { href: "/shop/", label: "See all work" } }) }}
+-#}
+{%- from "components/product-card/product-card.njk" import productCard -%}
+{%- from "components/link/link.njk" import link -%}
+{%- macro featuredStrip(opts) -%}
+<div class="ds-featured">
+  <div class="ds-featured__head">
+    <h2 class="ds-featured__title" id="{{ opts.id }}">{{ opts.title }}</h2>
+    {%- if opts.link %}{{ link({ href: opts.link.href, label: opts.link.label, variant: "arrow" }) }}{% endif %}
+  </div>
+  <ul class="ds-card-grid" role="list">
+    {%- for product in opts.products %}
+    <li>{{ productCard(product, { headingLevel: 3 }) }}</li>
+    {%- endfor %}
+  </ul>
+</div>
+{%- endmacro -%}

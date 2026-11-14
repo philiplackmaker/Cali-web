@@ -1,0 +1,28 @@
+---
+title: Featured work
+order: 4
+description: "A heading, a few paintings, and a link to see the rest."
+---
+{% from "docs.njk" import example, usage %}
+{% from "patterns/section/section.njk" import section %}
+{% from "patterns/featured-strip/featured-strip.njk" import featuredStrip %}
+<header class="docs-header">
+  <p class="docs-eyebrow">Pattern</p>
+  <h1>Featured work</h1>
+  <p class="docs-lede">A heading, a few paintings, and a link to see the rest.</p>
+</header>
+
+<section class="docs-section" aria-labelledby="use">
+  <h2 id="use">Use it</h2>
+  {% set code %}{% raw %}{% from "patterns/featured-strip/featured-strip.njk" import featuredStrip %}
+{{ featuredStrip({ id: "new-work", title: "New work", products: shop.latest, link: { href: "/shop/", label: "See all work" } }) }}{% endraw %}{% endset %}
+  {{ usage(code) }}
+  <p><strong>Used on:</strong> Home (latest 6), product pages (“More from the studio”), 404</p>
+  <p>Also defines <code>.ds-card-grid</code>, the shared grid for product cards. It’s never more than three across, so paintings stay large.</p>
+</section>
+
+<section class="docs-section" aria-labelledby="example">
+  <h2 id="example">Example</h2>
+  {% set ex %}{{ featuredStrip({ id: "ex-new", title: "New work", products: shop.latest | take(3), link: { href: "/shop/", label: "See all work" } }) }}{% endset %}
+  {{ example("Featured work", ex, { wide: true, noCode: true }) }}
+</section>
