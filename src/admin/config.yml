@@ -246,6 +246,11 @@ collections:
               editor_components: [],
             }
           - { label: Link to the About page, name: introLink, widget: string }
+          - label: Title for Google
+            name: googleTitle
+            widget: string
+            required: false
+            hint: 'The page title in search results and browser tabs. Under about 60 characters, e.g. "Calico Melton · Bristol artist, original art and prints".'
           - {
               label: Description for Google,
               name: description,

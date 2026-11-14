@@ -5,7 +5,7 @@ pagination:
   alias: collection
 permalink: "{{ collection.url }}"
 eleventyComputed:
-  title: "{{ 'Shop' if collection.handle == 'all' else collection.title }}"
+  title: "{{ ({ all: 'Shop original art and prints', originals: 'Original paintings and artwork', prints: 'Giclée art prints' })[collection.handle] or collection.title }}"
   description: "{{ collection.intro }}"
 ---
 {%- from "patterns/section/section.njk" import section -%}

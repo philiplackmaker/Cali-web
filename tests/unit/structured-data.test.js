@@ -35,6 +35,18 @@ test('price on request has no offer', () => {
   assert.equal(productJsonLd(mock.byHandle['large-interior-redland'], s).offers, undefined);
 });
 
-test('the artist links to Instagram', () => {
-  assert.deepEqual(artistJsonLd(s).sameAs, ['https://www.instagram.com/calicomelton/']);
+test('the artist links to Instagram, and publishes the site', () => {
+  const [artist, website] = artistJsonLd(s)['@graph'];
+  assert.deepEqual(artist.sameAs, ['https://www.instagram.com/calicomelton/']);
+  assert.equal(website['@type'], 'WebSite');
+  assert.equal(website.publisher['@id'], artist['@id']);
+});
+
+test('offers carry UK postage and the returns policy (needed for Google Shopping)', () => {
+  const ld = productJsonLd(mock.byHandle['pink-check'], s);
+  assert.equal(ld.offers.shippingDetails.shippingRate.value, '8.00'); // its own postage
+  assert.equal(ld.offers.shippingDetails.shippingDestination.addressCountry, 'GB');
+  assert.equal(ld.offers.hasMerchantReturnPolicy.merchantReturnDays, 14);
+  const print = productJsonLd(mock.byHandle['small-tulip-print'], s);
+  assert.equal(print.offers.shippingDetails.shippingRate.value, '4.00'); // Settings → UK
 });

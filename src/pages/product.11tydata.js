@@ -4,7 +4,9 @@ import { isOriginal, isSold, productSummary } from '../scripts/lib/product.js';
 
 export default {
   eleventyComputed: {
-    title: (data) => data.product.title,
+    // "Blue Tulips, art print · Calico Melton": what people search for, after the name.
+    title: (data) =>
+      `${data.product.title}, ${isOriginal(data.product) ? 'original artwork' : 'art print'}`,
     description: (data) => {
       const p = data.product;
       const kind = isOriginal(p) ? 'Original painting' : 'Giclée print';

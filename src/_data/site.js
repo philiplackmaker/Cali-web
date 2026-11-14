@@ -51,6 +51,17 @@ export default {
     description: d.description,
     countries: COUNTRIES[d.id] ?? ['GB'],
   })),
+  // Returns, for Google's product data (Shopping and rich results need a returns policy).
+  // TODO: Cali to confirm, and keep it matching Shipping and FAQ → Returns.
+  returnsDays: 14,
+
+  // Google Search Console: the code from its "HTML tag" verification, set on Netlify as
+  // GOOGLE_SITE_VERIFICATION. Production only.
+  googleVerification:
+    !process.env.CONTEXT || process.env.CONTEXT === 'production'
+      ? (process.env.GOOGLE_SITE_VERIFICATION ?? null)
+      : null,
+
   // The delivery line on product pages.
   printsDelivery: settings.printsDelivery,
   originalsDelivery: settings.originalsDelivery,

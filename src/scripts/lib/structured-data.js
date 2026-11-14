@@ -1,6 +1,7 @@
 // schema.org JSON-LD for search engines: Product + Offer(s) with availability, and the artist.
 import { imageUrl, widthsFor } from './image.js';
 import { isPriceOnRequest } from './product.js';
+import { postageFor } from './delivery.js';
 
 const availability = (forSale) =>
   forSale ? 'https://schema.org/InStock' : 'https://schema.org/SoldOut';
@@ -11,15 +12,57 @@ const absolute = (url, siteUrl) => (url.startsWith('http') ? url : `${siteUrl}${
 export function artistJsonLd(site) {
   return {
     '@context': 'https://schema.org',
-    '@type': 'Person',
-    '@id': `${site.url}/#artist`,
-    name: site.name,
-    jobTitle: 'Painter',
-    url: site.url,
-    email: `mailto:${site.email}`,
-    address: { '@type': 'PostalAddress', addressLocality: 'Bristol', addressCountry: 'GB' },
-    sameAs: [site.instagram],
+    '@graph': [
+      {
+        '@type': 'Person',
+        '@id': `${site.url}/#artist`,
+        name: site.name,
+        jobTitle: 'Artist',
+        description: site.description,
+        url: site.url,
+        email: `mailto:${site.email}`,
+        address: { '@type': 'PostalAddress', addressLocality: 'Bristol', addressCountry: 'GB' },
+        knowsAbout: ['Painting', 'Art prints', 'Original artwork'],
+        sameAs: [site.instagram],
+      },
+      {
+        // The site, published by the artist: helps Google show her name and shop together.
+        '@type': 'WebSite',
+        '@id': `${site.url}/#website`,
+        name: site.name,
+        url: site.url,
+        inLanguage: site.lang,
+        publisher: { '@id': `${site.url}/#artist` },
+      },
+    ],
   };
+}
+
+/** Postage for one piece to the UK, and the returns policy: Google needs both for Shopping. */
+function shippingAndReturns(product, site) {
+  const uk = site.delivery?.find((d) => d.id === 'uk');
+  const extras = {
+    hasMerchantReturnPolicy: {
+      '@type': 'MerchantReturnPolicy',
+      applicableCountry: 'GB',
+      returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+      merchantReturnDays: site.returnsDays ?? 14,
+      returnMethod: 'https://schema.org/ReturnByMail',
+      returnFees: 'https://schema.org/ReturnFeesCustomerResponsibility',
+    },
+  };
+  if (uk) {
+    extras.shippingDetails = {
+      '@type': 'OfferShippingDetails',
+      shippingRate: {
+        '@type': 'MonetaryAmount',
+        value: postageFor(uk, [product]).toFixed(2),
+        currency: 'GBP',
+      },
+      shippingDestination: { '@type': 'DefinedRegion', addressCountry: 'GB' },
+    };
+  }
+  return extras;
 }
 
 export function productJsonLd(product, site) {
@@ -33,6 +76,7 @@ export function productJsonLd(product, site) {
     availability: availability(v.availableForSale),
     itemCondition: 'https://schema.org/NewCondition',
     seller: { '@id': `${site.url}/#artist` },
+    ...shippingAndReturns(product, site),
   });
 
   const data = {

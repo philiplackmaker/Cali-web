@@ -93,5 +93,16 @@ Do this when steps 1–3 are done, ideally on a quiet morning. Lower the TTLs a 
       puts the shop live (Netlify's production branch is already `main`).
 - [ ] **Monitoring:** set the repository variable `MONITOR_URL` to `https://calicomelton.com`, run the
       "Monitor the live shop" workflow once by hand, and check it's green (README → Monitoring).
-- [ ] Google Search Console: add the domain and submit `https://calicomelton.com/sitemap.xml`.
+- [ ] **Google Search Console** (search.google.com/search-console): add the property
+      `https://calicomelton.com` → **HTML tag** verification → copy the `content="…"` code →
+      set it on Netlify as `GOOGLE_SITE_VERIFICATION` (Production) → redeploy → **Verify**.
+      Then Sitemaps → submit `https://calicomelton.com/sitemap.xml`. (Bing Webmaster Tools can
+      import from Search Console in one click.)
+- [ ] **Google Merchant Center** (merchants.google.com, free): create an account for Calico
+      Melton, verify the site (it can reuse Search Console), add **Free listings**, then
+      Products → Feeds → Add → **Scheduled fetch** of `https://calicomelton.com/google-products.xml`,
+      daily. Shipping: UK, as in Settings → Delivery. Returns: 14 days (Settings in Merchant Center).
+      Prints and originals can then appear free in Google Shopping and Images.
+- [ ] **Visitor stats:** Cloudflare → Web Analytics → add calicomelton.com → token →
+      `CLOUDFLARE_ANALYTICS_TOKEN` on Netlify (README → Monitoring).
 - [ ] Run Lighthouse against the live product page.

@@ -182,6 +182,14 @@ In the admin, **Prints and paintings → New print or painting**:
 
 **Enquiries** from /contact/ arrive as Netlify Forms submissions (form name `enquiry`). In Netlify, go to Site configuration → Forms → Notifications and set them to email Cali.
 
+## Search (Google)
+
+- **Titles and descriptions:** every page has one. Product pages read "Blue Tulips, art print · Calico Melton"; page descriptions and the home page title are editable in the admin (Pages → each page → Description for Google / Title for Google).
+- **Structured data (JSON-LD):** the artist and the site on the home page; each product with its offers, UK postage and the returns policy (`src/scripts/lib/structured-data.js`, returns days in `site.returnsDays`).
+- **Google Shopping feed:** `/google-products.xml` (`src/pages/google-products.11ty.js`), one item per size, for Google Merchant Center free listings.
+- **Sitemap and robots:** `/sitemap.xml`, `/robots.txt`. Previews are `noindex`.
+- **Search Console:** set `GOOGLE_SITE_VERIFICATION` on Netlify (production) to add the verification tag. Setup steps are in LAUNCH.md.
+
 ## Netlify credits (free plan)
 
 Netlify's free plan gives 300 credits a month, and **pauses the site if they run out**. What uses them:
