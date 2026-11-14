@@ -44,12 +44,13 @@
           <fieldset class="ds-cart-drawer__delivery">
             <legend class="ds-cart-drawer__delivery-legend">Delivery to</legend>
             {%- for d in site.delivery %}
-            <label class="ds-cart-drawer__delivery-option">
-              <input type="radio" name="delivery" value="{{ d.id }}"{% if loop.first %} checked{% endif %}>
-              <span class="ds-cart-drawer__delivery-label">{{ d.label }}, {{ { amount: d.amount, currencyCode: "GBP" } | money }}</span>
+            <label class="ds-cart-drawer__delivery-option" data-delivery-option>
+              <input type="radio" name="delivery" value="{{ d.id }}" data-amount="{{ d.amount }}"{% if loop.first %} checked{% endif %}>
+              <span class="ds-cart-drawer__delivery-label">{{ d.label }}, <span data-delivery-price>{{ { amount: d.amount, currencyCode: "GBP" } | money }}</span></span>
               <span class="ds-cart-drawer__note">{{ d.description }}</span>
             </label>
             {%- endfor %}
+            <p class="ds-cart-drawer__note" data-delivery-note hidden>Originals are posted within the UK only. One parcel, so you pay the highest postage in your basket.</p>
           </fieldset>
           <div data-cart-checkout-lines hidden></div>
           {{ button({ label: "Checkout", type: "submit", full: true, iconEnd: "arrow-right", attrs: { "data-cart-checkout-button": "" } }) }}

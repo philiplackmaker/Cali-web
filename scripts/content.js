@@ -91,6 +91,14 @@ export function productFromEntry(handle, entry, images, { warn = console.warn } 
     year: entry.year ? { value: String(entry.year) } : null,
     editionSize: entry.edition ? { value: String(entry.edition) } : null,
     framing: entry.framing ? { value: entry.framing } : null,
+    // Postage for this piece (originals), and whether it only goes to UK addresses.
+    shipping: {
+      postage:
+        Number.isFinite(Number(entry.postage)) && entry.postage !== '' && entry.postage != null
+          ? Number(entry.postage)
+          : null,
+      ukOnly: Boolean(entry.ukOnly),
+    },
   };
 }
 

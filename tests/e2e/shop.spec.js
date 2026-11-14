@@ -114,3 +114,13 @@ test('the home page shows studio photos and the three latest Instagram posts, ea
   await img.scrollIntoViewIfNeeded();
   await expect.poll(() => img.evaluate((el) => el.complete && el.naturalWidth > 0)).toBe(true);
 });
+
+test('an original in the basket: UK delivery only, at the highest postage', async ({ page }) => {
+  await page.goto('/shop/pink-check/');
+  await page.getByRole('button', { name: 'Add to basket' }).click();
+  const basket = drawer(page);
+  await expect(basket).toBeVisible();
+  await expect(basket.getByRole('radio', { name: /Rest of the world/ })).toBeHidden();
+  await expect(basket.getByRole('radio', { name: /UK, £8/ })).toBeChecked();
+  await expect(basket.getByText('Originals are posted within the UK only.')).toBeVisible();
+});

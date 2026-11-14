@@ -3,6 +3,7 @@
 // cart store; every change is announced in an aria-live region.
 import { getCartStore } from '../../scripts/commerce.js';
 import { formatMoney } from '../../scripts/lib/money.js';
+import { postageFor, ukOnly } from '../../scripts/lib/delivery.js';
 import { imageUrl, srcset, widthsFor } from '../../scripts/lib/image.js';
 import '../quantity-input/quantity-input.js';
 
@@ -70,6 +71,7 @@ class CartDrawer extends HTMLElement {
     this.subtotal = this.querySelector('[data-cart-subtotal]');
     this.checkout = this.querySelector('[data-cart-checkout]');
     this.checkoutLines = this.querySelector('[data-cart-checkout-lines]');
+    this.deliveryNote = this.querySelector('[data-delivery-note]');
     this.notice = this.querySelector('[data-cart-notice]');
     this.announcer = this.querySelector('[data-cart-announcer]');
 
@@ -144,6 +146,25 @@ class CartDrawer extends HTMLElement {
     this.announceTimer = setTimeout(() => (this.announcer.textContent = message), 100);
   }
 
+  /** Postage for this basket: the highest of its items'; UK only if any item is. */
+  renderDelivery(cart) {
+    const products = cart.lines.map((l) => l.merchandise.product);
+    const onlyUk = ukOnly(products);
+    this.deliveryNote.hidden = !onlyUk;
+    for (const label of this.querySelectorAll('[data-delivery-option]')) {
+      const input = label.querySelector('input');
+      const option = { id: input.value, amount: Number(input.dataset.amount) };
+      const blocked = onlyUk && option.id !== 'uk';
+      label.hidden = blocked;
+      input.disabled = blocked;
+      if (blocked && input.checked) this.querySelector('input[value="uk"]').checked = true;
+      label.querySelector('[data-delivery-price]').textContent = formatMoney({
+        amount: postageFor(option, products),
+        currencyCode: 'GBP',
+      });
+    }
+  }
+
   render({ cart, message, warning, keepNotice = false } = {}) {
     const hasLines = Boolean(cart?.lines.length);
     renderLines(this.list, this.template, cart);
@@ -152,6 +173,7 @@ class CartDrawer extends HTMLElement {
     if (hasLines) {
       this.subtotal.textContent = formatMoney(cart.cost.subtotalAmount);
       this.checkout.action = cart.checkoutUrl;
+      this.renderDelivery(cart);
       this.checkoutLines.replaceChildren(
         ...cart.lines.flatMap((line) => [
           Object.assign(document.createElement('input'), {

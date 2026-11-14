@@ -3,6 +3,7 @@
 // stock come from the site's own built catalogue, so nobody can change a price in the page.
 // Talks to Stripe's REST API with fetch: no SDK needed.
 import { imageUrl, widthsFor } from '../src/scripts/lib/image.js';
+import { availableOptions, postageFor } from '../src/scripts/lib/delivery.js';
 
 const STRIPE_API = 'https://api.stripe.com/v1';
 const MAX_QUANTITY = 20;
@@ -174,7 +175,16 @@ export async function soldOriginals(resolved, { key, fetch: fetchImpl }) {
 export async function createCheckout({ form, catalog, deliveryOptions, origin, key, fetch }) {
   const { lines, delivery: deliveryId } = parseCheckoutForm(form);
   const resolved = resolveLines(lines, catalog);
-  const delivery = deliveryOptions.find((d) => d.id === deliveryId) ?? deliveryOptions[0];
+  // Postage: one parcel, so the highest of the items' postage; UK only if any item is.
+  const products = resolved.map((l) => l.merchandise.product);
+  const options = availableOptions(deliveryOptions, products);
+  const chosen = deliveryOptions.find((d) => d.id === deliveryId) ?? options[0];
+  if (!options.includes(chosen)) {
+    throw new CheckoutError(
+      'Originals are posted within the UK only. Please choose UK delivery, or send me a message about posting abroad.',
+    );
+  }
+  const delivery = { ...chosen, amount: postageFor(chosen, products) };
   const sold = await soldOriginals(resolved, { key, fetch });
   if (sold.length) {
     const line = resolved.find((l) => sold.includes(l.merchandise.product.handle));

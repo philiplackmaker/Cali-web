@@ -1,0 +1,25 @@
+{
+  "title": "Lucky Horse Vase",
+  "type": "Original",
+  "published": true,
+  "sold": false,
+  "added": "2026-11-14T15:59",
+  "description": "A large hand-painted canvas. Layers of textured acrylic give depth and scale to this highly impactful original. It would be perfect in a playroom, or above a fireplace.",
+  "medium": "Acrylic on canvas",
+  "options": [
+    {
+      "size": "90 × 122 cm",
+      "price": 300,
+      "sold": false
+    }
+  ],
+  "priceOnRequest": false,
+  "postage": 15,
+  "ukOnly": true,
+  "images": [
+    {
+      "image": "/content/uploads/lucky-horse-vase.jpg",
+      "alt": "Lucky Horse Vase by Calico Melton: a large pink canvas of a dark brown vase with a white horse on it and red tulips on green stems, on a green base, propped on a wooden bench."
+    }
+  ]
+}

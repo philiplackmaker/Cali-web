@@ -1,14 +1,22 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import { loadShop } from '../../scripts/shop.js';
 
 test('the build reads Cali’s products from content/ (what /admin/ edits)', async () => {
   delete process.env.SHOP_FIXTURE;
   const shop = await loadShop({ outputDir: '_site' });
   assert.equal(shop.source, 'content');
-  assert.equal(shop.products.length, 8);
-  assert.equal(shop.hasOriginals, false);
+  // Everything published in the admin (with a photo) is in the shop.
+  const entries = readdirSync('content/products')
+    .filter((f) => f.endsWith('.json'))
+    .map((f) => JSON.parse(readFileSync(`content/products/${f}`, 'utf8')))
+    .filter((e) => e.published !== false && e.images?.length);
+  assert.equal(shop.products.length, entries.length);
+  assert.equal(
+    shop.hasOriginals,
+    entries.some((e) => e.type === 'Original'),
+  );
   assert.deepEqual(
     shop.collections.map((c) => c.url),
     ['/shop/', '/shop/originals/', '/shop/prints/'],

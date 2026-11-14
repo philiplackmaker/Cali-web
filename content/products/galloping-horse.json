@@ -1,0 +1,25 @@
+{
+  "title": "Galloping Horse with Hand-Painted Border",
+  "type": "Original",
+  "published": true,
+  "sold": false,
+  "added": "2026-11-14T15:57",
+  "description": "Hand painted in acrylic. Layers of texture bring life and fun to this original, and the decorative hand-painted border means you can hang it straight on your wall, or combine it with a frame for a fun layered look.",
+  "medium": "Acrylic on canvas",
+  "options": [
+    {
+      "size": "A4",
+      "price": 90,
+      "sold": false
+    }
+  ],
+  "priceOnRequest": false,
+  "postage": 8,
+  "ukOnly": true,
+  "images": [
+    {
+      "image": "/content/uploads/galloping-horse-with-hand-painted-border.jpg",
+      "alt": "Galloping Horse by Calico Melton: a brown horse with a patterned saddle cloth on a pale pink ground, inside a hand-painted blue and yellow border."
+    }
+  ]
+}

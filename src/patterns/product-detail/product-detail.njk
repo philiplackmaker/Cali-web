@@ -54,6 +54,8 @@
     {%- endif %}
     {{ productDetails(product) }}
     <p class="ds-product__shipping">
+      {%- set ship = product.shipping or {} %}
+      {%- if ship.postage is number %}Postage {{ { amount: ship.postage, currencyCode: "GBP" } | money }}{% if ship.ukOnly %}, UK only{% endif %}. {% elif ship.ukOnly %}UK delivery only. {% endif %}
       {{ site.originalsDelivery if original else site.printsDelivery }}
       <a href="/info/#shipping">Shipping and returns</a>.
     </p>

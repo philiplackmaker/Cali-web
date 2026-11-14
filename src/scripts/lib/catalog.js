@@ -7,7 +7,13 @@ export function variantIndex(products) {
     for (const v of p.variants.nodes) {
       merchandise[v.id] = {
         ...v,
-        product: { id: p.id, title: p.title, handle: p.handle, tags: p.tags },
+        product: {
+          id: p.id,
+          title: p.title,
+          handle: p.handle,
+          tags: p.tags,
+          shipping: p.shipping ?? { postage: null, ukOnly: false },
+        },
       };
     }
   }

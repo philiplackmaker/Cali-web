@@ -93,6 +93,19 @@ collections:
             widget: boolean
             default: false
             hint: For an original, switch this on once it's sold. (Checkout already stops a second sale.)
+      - label: Postage (£)
+        name: postage
+        widget: number
+        value_type: float
+        min: 0
+        required: false
+        hint: This piece's own postage. Leave empty for prints, which use Settings → Delivery. With several things in a basket, the buyer pays the single highest postage (one parcel).
+      - label: UK only
+        name: ukOnly
+        widget: boolean
+        default: false
+        required: false
+        hint: Only post this to UK addresses. A basket with it in can only choose UK delivery.
       - label: Price on request
         name: priceOnRequest
         widget: boolean

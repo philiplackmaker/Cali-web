@@ -39,7 +39,12 @@ const catalog = {
     quantityAvailable: 1,
     price: gbp('480.0'),
     image: IMAGE,
-    product: { title: 'Pink Check', handle: 'pink-check', tags: ['original'] },
+    product: {
+      title: 'Pink Check',
+      handle: 'pink-check',
+      tags: ['original'],
+      shipping: { postage: 15, ukOnly: true },
+    },
   },
   'big/original': {
     id: 'big/original',
@@ -184,4 +189,34 @@ test('an original already paid for (since the build) is refused', async () => {
     (e) => e instanceof CheckoutError && /Pink Check has just sold/.test(e.message),
   );
   assert.ok(!calls.some((c) => c.url.includes('/checkout/sessions')));
+});
+
+test('postage: the highest in the basket, and UK only with an original', async () => {
+  const { fetch, calls } = fakeStripe();
+  await createCheckout({
+    form: new URLSearchParams(
+      'id=swan/a4&quantity=1&id=pink-check/original&quantity=1&delivery=uk',
+    ),
+    catalog,
+    deliveryOptions: DELIVERY,
+    origin: 'https://calicomelton.com',
+    key: 'sk_test_123',
+    fetch,
+  });
+  // Swan uses UK £4, Pink Check has its own £15: one parcel at £15.
+  assert.match(
+    decodeURIComponent(calls.at(-1).init.body),
+    /shipping_options\[0\]\[shipping_rate_data\]\[fixed_amount\]\[amount\]=1500/,
+  );
+  await assert.rejects(
+    createCheckout({
+      form: new URLSearchParams('id=pink-check/original&quantity=1&delivery=world'),
+      catalog,
+      deliveryOptions: DELIVERY,
+      origin: 'https://calicomelton.com',
+      key: 'sk_test_123',
+      fetch,
+    }),
+    (e) => e instanceof CheckoutError && /UK only/.test(e.message),
+  );
 });

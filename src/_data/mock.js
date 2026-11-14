@@ -25,6 +25,7 @@ function original({
   alt,
   framing = null,
   onRequest = false,
+  shipping = { postage: null, ukOnly: false },
 }) {
   const images = [image(PAINTING, alt), image(DETAIL, `Detail of ${title}: brushwork close up.`)];
   const variant = {
@@ -56,6 +57,7 @@ function original({
     year: { value: String(year) },
     editionSize: null,
     framing: framing ? { value: framing } : null,
+    shipping,
   };
 }
 
@@ -149,6 +151,7 @@ const products = [
     id: 102,
     handle: 'pink-check',
     title: 'Pink Check',
+    shipping: { postage: 8, ukOnly: true },
     price: 480,
     medium: 'Oil on board',
     dimensions: '30 × 40 cm',

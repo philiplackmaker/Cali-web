@@ -11,7 +11,9 @@
 @media (width >= 53.75rem) {
   .ds-hero {
     grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
-    align-items: end;
+
+    /* The name and line sit level with the middle of the picture or video. */
+    align-items: center;
     gap: var(--ds-space-stack-xl);
   }
 }
@@ -42,7 +44,6 @@
   display: grid;
   justify-items: start;
   gap: var(--ds-space-stack-md);
-  padding-block-end: var(--ds-space-stack-lg);
 }
 
 .ds-hero__eyebrow {
