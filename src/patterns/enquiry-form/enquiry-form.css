@@ -1,0 +1,16 @@
+.ds-enquiry__form {
+  display: grid;
+  justify-items: start;
+  gap: var(--ds-space-stack-md);
+  max-inline-size: var(--ds-layout-content);
+  margin-inline: auto;
+}
+
+.ds-enquiry__form .ds-field {
+  inline-size: 100%;
+}
+
+.ds-enquiry__note {
+  color: var(--ds-color-text-muted);
+  font-size: var(--ds-type-small-size);
+}

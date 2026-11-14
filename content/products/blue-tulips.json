@@ -1,0 +1,40 @@
+{
+  "title": "Blue Tulips",
+  "type": "Print",
+  "published": true,
+  "added": "2026-11-09T12:00",
+  "description": "Giclee, museum quality print on 300gsm, beautiful prestige paper",
+  "made": "Prints are scanned from original hand painted work with no digital retouching. Each print is then professionally printed on a beautiful prestige paper.",
+  "medium": "Giclée print",
+  "options": [
+    {
+      "size": "20 × 25 cm",
+      "price": 30,
+      "sold": false
+    },
+    {
+      "size": "40 × 50 cm",
+      "price": 60,
+      "sold": false
+    }
+  ],
+  "priceOnRequest": false,
+  "images": [
+    {
+      "image": "/content/uploads/blue-tulips.jpg",
+      "alt": "Blue Tulips by Calico Melton: a dark green stem curling up from a small red pot, hung with deep blue tulip heads, on a pale pink ground above a brown table."
+    },
+    {
+      "image": "/content/uploads/blue-tulips-alt.jpg",
+      "alt": "Blue Tulips framed on a wooden sideboard, beside books and a pink lamp."
+    },
+    {
+      "image": "/content/uploads/blue-tulips-sun.jpg",
+      "alt": "Blue Tulips in a black frame, leaning on a sunlit wooden ledge beside a bare canvas stretcher."
+    },
+    {
+      "image": "/content/uploads/blue-tulips-smiley.jpg",
+      "alt": "Blue Tulips in a black frame on a wooden floor, next to a yellow smiley-face lamp and a monstera leaf."
+    }
+  ]
+}

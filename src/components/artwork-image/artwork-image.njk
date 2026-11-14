@@ -1,0 +1,17 @@
+{#-
+  Artwork image: responsive srcset from the build's image widths, real width and height (no layout shift),
+  lazy below the fold. Paintings are never cropped: "framed" shows the whole painting inside
+  a fixed-ratio frame.
+  {% from "components/artwork-image/artwork-image.njk" import artworkImage %}
+  {{ artworkImage(image, { sizes: "(width >= 53.75rem) 50vw, 100vw", priority: true, framed: true, alt: "…" }) }}
+-#}
+{%- macro artworkImage(image, opts = {}) -%}
+{%- set img -%}
+<img class="ds-artwork-image__img" src="{{ image.url | imageUrl(image | largestWidth) }}" srcset="{{ image | srcset }}" sizes="{{ opts.sizes or '100vw' }}" width="{{ image.width }}" height="{{ image.height }}" alt="{{ opts.alt if opts.alt is defined else image.altText }}"{% if opts.priority %} fetchpriority="high"{% else %} loading="lazy"{% endif %} decoding="async">
+{%- endset -%}
+{%- if opts.framed -%}
+<div class="ds-artwork-image ds-artwork-image--framed">{{ img | safe }}</div>
+{%- else -%}
+<div class="ds-artwork-image">{{ img | safe }}</div>
+{%- endif -%}
+{%- endmacro -%}

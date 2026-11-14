@@ -1,0 +1,28 @@
+---
+title: Hero
+order: 3
+description: "One painting, large, with the name and a line of introduction."
+---
+{% from "docs.njk" import example, usage %}
+{% from "patterns/section/section.njk" import section %}
+{% from "patterns/hero/hero.njk" import hero %}
+<header class="docs-header">
+  <p class="docs-eyebrow">Pattern</p>
+  <h1>Hero</h1>
+  <p class="docs-lede">One painting, large, with the name and a line of introduction.</p>
+</header>
+
+<section class="docs-section" aria-labelledby="use">
+  <h2 id="use">Use it</h2>
+  {% set code %}{% raw %}{% from "patterns/hero/hero.njk" import hero %}
+{{ hero({ image: shop.photos.homeHero.image, eyebrow: "…", title: "Calico Melton", line: "…", primary: { href, label }, secondary: { href, label } }) }}{% endraw %}{% endset %}
+  {{ usage(code) }}
+  <p><strong>Used on:</strong> Home</p>
+  <p>The hero painting is the page’s LCP image. Also set <code>preloadImage</code> to it in the page’s data, so the browser fetches it before anything else. The photo comes from the <code>home hero</code> row in the sheet’s Photos tab, or else the first painting.</p>
+</section>
+
+<section class="docs-section" aria-labelledby="example">
+  <h2 id="example">Example</h2>
+  {% set ex %}{{ hero({ image: shop.photos.homeHero.image, eyebrow: "Paintings from Bristol", title: "Calico Melton", line: "I paint people, flowers and quiet rooms.", primary: { href: "/shop/originals/", label: "See the originals" }, secondary: { href: "/shop/prints/", label: "Prints" } }) }}{% endset %}
+  {{ example("Hero", ex, { wide: true, noCode: true }) }}
+</section>

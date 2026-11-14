@@ -1,0 +1,18 @@
+{
+  "delivery": [
+    {
+      "id": "uk",
+      "label": "UK",
+      "price": 4,
+      "description": "Royal Mail tracked, 2 to 5 working days"
+    },
+    {
+      "id": "world",
+      "label": "Rest of the world",
+      "price": 12,
+      "description": "Tracked international, 5 to 15 working days"
+    }
+  ],
+  "printsDelivery": "Prints are made to order and ship within 7 working days, rolled in a sturdy tube. Placeholder: confirm times.",
+  "originalsDelivery": "Originals ship from Bristol within 5 working days, insured and tracked. Placeholder: confirm times and costs."
+}

@@ -1,0 +1,48 @@
+{#-
+  Header: flower mark and name, nav, light/dark switch, basket link with count.
+  On small screens the nav folds into a <details> menu, so it works without JS.
+  {% from "components/header/header.njk" import siteHeader %}
+  {{ siteHeader({ currentUrl: page.url }) }}
+-#}
+{%- from "components/logo/logo.njk" import logo -%}
+{%- from "components/icon/icon.njk" import icon -%}
+{%- set NAV = [
+  { href: "/shop/", label: "Shop" },
+  { href: "/about/", label: "About" },
+  { href: "/studio-letter/", label: "Studio Letter" },
+  { href: "/contact/", label: "Commissions" }
+] -%}
+{%- macro navList(currentUrl, modifier) -%}
+<ul class="ds-nav__list ds-nav__list--{{ modifier }}" role="list">
+  {%- for item in NAV %}
+  <li><a class="ds-nav__link" href="{{ item.href }}"{% if currentUrl and currentUrl.startsWith(item.href) %} aria-current="page"{% endif %}>{{ item.label }}</a></li>
+  {%- endfor %}
+</ul>
+{%- endmacro -%}
+{%- macro siteHeader(opts = {}) -%}
+<header class="ds-header">
+  <div class="ds-header__inner">
+    {{ logo({ href: "/", current: opts.currentUrl == "/" }) }}
+    <nav class="ds-nav" aria-label="Main">
+      {{ navList(opts.currentUrl, "inline") }}
+      <details class="ds-nav__menu">
+        <summary class="ds-nav__toggle">{{ icon("menu", { size: "md" }) }}<span class="ds-nav__toggle-label">Menu</span></summary>
+        {{ navList(opts.currentUrl, "stacked") }}
+      </details>
+    </nav>
+    {#- Light/dark switch (theme-toggle.js). Hidden without JS: the device's setting still applies. #}
+    <theme-toggle class="ds-theme-toggle" hidden>
+      <button class="ds-theme-toggle__button" type="button" aria-pressed="false">
+        <span class="ds-theme-toggle__icon ds-theme-toggle__icon--dark">{{ icon("moon", { size: "md" }) }}</span>
+        <span class="ds-theme-toggle__icon ds-theme-toggle__icon--light">{{ icon("sun", { size: "md" }) }}</span>
+        <span class="ds-visually-hidden">Dark mode</span>
+      </button>
+    </theme-toggle>
+    <a class="ds-header__cart" href="/cart/" data-cart-open>
+      {{ icon("bag", { size: "md" }) }}
+      <span class="ds-header__cart-label">Basket</span>
+      <cart-count class="ds-header__count" hidden></cart-count>
+    </a>
+  </div>
+</header>
+{%- endmacro -%}

@@ -1,0 +1,167 @@
+.ds-header {
+  position: relative;
+  z-index: var(--ds-layer-header);
+  background: var(--ds-color-surface-page);
+  border-block-end: var(--ds-line-hairline) solid var(--ds-color-border-subtle);
+}
+
+.ds-header__inner {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-inline-md);
+  max-inline-size: var(--ds-layout-page);
+  margin-inline: auto;
+  padding: var(--ds-space-stack-xs) var(--ds-space-gutter);
+}
+
+.ds-header .ds-logo {
+  margin-inline-end: auto;
+}
+
+.ds-nav__list {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ds-nav__link {
+  display: flex;
+  align-items: center;
+  min-block-size: var(--ds-target-min);
+  padding-inline: var(--ds-space-inline-sm);
+  color: var(--ds-color-text-default);
+  font-weight: var(--ds-type-label-weight);
+  text-decoration: none;
+}
+
+.ds-nav__link:hover,
+.ds-nav__link[aria-current='page'] {
+  text-decoration: underline;
+  text-decoration-thickness: var(--ds-line-focus);
+  text-underline-offset: var(--ds-line-underline-offset);
+}
+
+.ds-nav__toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-inline-xs);
+  min-block-size: var(--ds-target-min);
+  padding-inline: var(--ds-space-inline-sm);
+  font-weight: var(--ds-type-label-weight);
+  list-style: none;
+  cursor: pointer;
+}
+
+.ds-nav__toggle::-webkit-details-marker {
+  display: none;
+}
+
+/* Phones: logo, menu, light/dark switch and basket share one row, so the menu shows just its
+   icon (like the basket). The label stays for screen readers. */
+@media (width < 26.25rem) {
+  .ds-header__inner {
+    gap: var(--ds-space-inline-xs);
+  }
+
+  .ds-nav__toggle-label {
+    position: absolute;
+    inline-size: 1px; /* stylelint-disable-line unit-disallowed-list -- visually-hidden pattern */
+    block-size: 1px; /* stylelint-disable-line unit-disallowed-list -- visually-hidden pattern */
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
+.ds-nav__menu[open] .ds-nav__list--stacked {
+  position: absolute;
+  inset-inline: 0;
+  inset-block-start: 100%;
+  flex-direction: column;
+  padding: var(--ds-space-stack-xs) var(--ds-space-gutter) var(--ds-space-stack-md);
+  background: var(--ds-color-surface-page);
+  border-block-end: var(--ds-line-hairline) solid var(--ds-color-border-subtle);
+  box-shadow: var(--ds-elevation-card);
+}
+
+/* Narrow: menu button. Wide: inline links. */
+.ds-nav__list--inline {
+  display: none;
+}
+
+@media (width >= 53.75rem) {
+  .ds-nav__list--inline {
+    display: flex;
+  }
+
+  .ds-nav__menu {
+    display: none;
+  }
+}
+
+.ds-header__cart {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-inline-xs);
+  min-block-size: var(--ds-target-min);
+  min-inline-size: var(--ds-target-min);
+  padding-inline: var(--ds-space-inline-xs);
+  color: var(--ds-color-text-default);
+  font-weight: var(--ds-type-label-weight);
+  text-decoration: none;
+}
+
+.ds-header__cart-label {
+  display: none;
+}
+
+@media (width >= 26.25rem) {
+  .ds-header__cart-label {
+    display: inline;
+  }
+}
+
+.ds-header__count {
+  display: inline-grid;
+  place-items: center;
+  min-inline-size: var(--ds-icon-sm);
+  padding-inline: var(--ds-space-stack-2xs);
+  border-radius: var(--ds-shape-badge);
+  background: var(--ds-color-action-primary);
+  color: var(--ds-color-action-primary-text);
+  font-size: var(--ds-type-eyebrow-size);
+  font-weight: var(--ds-type-eyebrow-weight);
+  line-height: var(--ds-type-small-line-height);
+}
+
+.ds-header__count[hidden] {
+  display: none;
+}
+
+/* Light/dark switch: a moon in light mode, a sun in dark mode. Pressed = dark. */
+.ds-theme-toggle[hidden] {
+  display: none;
+}
+
+.ds-theme-toggle__button {
+  display: grid;
+  place-items: center;
+  min-inline-size: var(--ds-target-min);
+  min-block-size: var(--ds-target-min);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ds-color-text-default);
+  cursor: pointer;
+}
+
+.ds-theme-toggle__icon {
+  display: contents;
+}
+
+.ds-theme-toggle__button[aria-pressed='true'] .ds-theme-toggle__icon--dark,
+.ds-theme-toggle__button[aria-pressed='false'] .ds-theme-toggle__icon--light {
+  display: none;
+}

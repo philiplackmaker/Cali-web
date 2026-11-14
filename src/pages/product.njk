@@ -1,0 +1,19 @@
+---
+pagination:
+  data: shop.products
+  size: 1
+  alias: product
+permalink: "/shop/{{ product.handle }}/"
+ogType: product
+preloadSizes: "(width >= 53.75rem) 55vw, 100vw"
+---
+{%- from "patterns/product-detail/product-detail.njk" import productDetail -%}
+{%- from "patterns/section/section.njk" import section -%}
+{%- from "patterns/featured-strip/featured-strip.njk" import featuredStrip -%}
+{{ productDetail(product) }}
+{%- set more = shop.latest | without(product) | take(3) %}
+{%- if more.length %}
+{% call section({ labelledby: "more-work" }) %}
+  {{ featuredStrip({ id: "more-work", title: "More from the studio", products: more, link: { href: "/shop/", label: "See all work" } }) }}
+{% endcall %}
+{%- endif %}

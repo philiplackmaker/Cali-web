@@ -1,0 +1,28 @@
+{#-
+  Variant picker: one radio group per option (Size, Paper). Prints only.
+  Lives inside the <add-to-cart> form and updates its hidden "id" input, the product's
+  price, image and availability. Must sit inside an element with data-product.
+  {% from "components/variant-picker/variant-picker.njk" import variantPicker %}
+  {{ variantPicker(product, { selected: variant }) }}
+-#}
+{%- macro variantPicker(product, opts = {}) -%}
+{%- set selected = opts.selected or product.variants.nodes[0] -%}
+{#- Radio names must be unique per page, in case two products share a page. -#}
+{%- set idPrefix = "option-" ~ (opts.id or product.handle) -%}
+<variant-picker class="ds-variant-picker">
+  {%- for option in product | optionStates(selected) %}
+  <fieldset class="ds-variant-picker__option">
+    <legend class="ds-variant-picker__legend">{{ option.name }}</legend>
+    <div class="ds-variant-picker__values">
+      {%- for value in option.values %}
+      <label class="ds-variant-picker__value{% if not value.available %} ds-variant-picker__value--unavailable{% endif %}">
+        <input type="radio" name="{{ idPrefix }}-{{ option.name | lower }}" value="{{ value.name }}" data-option="{{ option.name }}"{% if value.checked %} checked{% endif %}>
+        <span>{{ value.name }}{% if not value.available %}<span class="ds-visually-hidden"> (sold out)</span>{% endif %}</span>
+      </label>
+      {%- endfor %}
+    </div>
+  </fieldset>
+  {%- endfor %}
+  <script type="application/json" data-variants>{{ product.variants.nodes | jsonScript | safe }}</script>
+</variant-picker>
+{%- endmacro -%}

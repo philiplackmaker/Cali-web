@@ -1,0 +1,17 @@
+---
+pagination:
+  data: shop.collections
+  size: 1
+  alias: collection
+permalink: "{{ collection.url }}"
+eleventyComputed:
+  title: "{{ 'Shop' if collection.handle == 'all' else collection.title }}"
+  description: "{{ collection.intro }}"
+---
+{%- from "patterns/section/section.njk" import section -%}
+{%- from "patterns/page-intro/page-intro.njk" import pageIntro -%}
+{%- from "patterns/collection-grid/collection-grid.njk" import collectionGrid -%}
+{% call section({ variant: "tight" }) %}
+  {{ pageIntro({ eyebrow: "The shop", title: collection.title, lede: collection.intro }) }}
+  {{ collectionGrid({ collections: shop.collections, current: collection }) }}
+{% endcall %}

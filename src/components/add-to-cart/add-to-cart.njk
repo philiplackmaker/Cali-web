@@ -1,0 +1,67 @@
+{#-
+  Add to cart: the product form. Put the variant picker and quantity inside with a call block.
+  States: available, sold (original: "Sold" + enquiry link), sold out (print variant),
+  loading, in your basket (originals), unavailable (the shop can't be reached), and
+  price on request (tag "price-on-request": an enquiry instead of a button).
+  Originals that are for sale also offer "Arrange a viewing in Bristol".
+  {% from "components/add-to-cart/add-to-cart.njk" import addToCart %}
+  {% call addToCart(product) %}{{ variantPicker(product) }}{% endcall %}
+  Options: { state: "loading" | "unavailable" | "in-basket" } to render a state for docs.
+  Without JavaScript, buy buttons post straight to Stripe checkout (/api/checkout).
+-#}
+{%- from "components/button/button.njk" import button -%}
+{%- from "components/link/link.njk" import link -%}
+{%- macro addToCart(product, opts = {}) -%}
+{%- set variant = opts.variant or product.variants.nodes[0] -%}
+{%- set original = product | isOriginal -%}
+{%- set sold = product | isSold -%}
+{%- set onRequest = product | isPriceOnRequest -%}
+<add-to-cart class="ds-add-to-cart"{% if original %} data-original{% endif %}>
+  <form class="ds-add-to-cart__form" action="/cart/" method="get">
+    <input type="hidden" name="id" value="{{ variant.id }}">
+    {%- if caller %}{{ caller() }}{% endif %}
+    {%- if original and sold %}
+    <p class="ds-add-to-cart__sold">This painting has found a home.</p>
+    {{ link({ href: "/contact/?about=" ~ product.handle, label: "Enquire about similar work", variant: "arrow" }) }}
+    {%- elif onRequest %}
+    {{ button({ label: "Enquire about this painting", href: "/contact/?about=" ~ product.handle, full: true }) }}
+    {%- else %}
+    {%- set unavailable = not variant.availableForSale -%}
+    {{ button({
+      label: ("Sold out" if unavailable else ("In your basket" if opts.state == "in-basket" else "Add to basket")),
+      type: "submit", full: true,
+      disabled: unavailable or opts.state == "unavailable" or opts.state == "in-basket",
+      loading: opts.state == "loading", loadingLabel: "Adding…",
+      attrs: { "data-add-to-cart-button": "" }
+    }) }}
+    {%- endif %}
+    <p class="ds-add-to-cart__message{% if opts.state == 'unavailable' %} ds-add-to-cart__message--error{% endif %}" role="status" data-add-to-cart-message>
+      {%- if opts.state == "unavailable" %}I can't reach the shop just now. Please try again in a minute.{% endif -%}
+      {%- if opts.state == "in-basket" %}<a href="/cart/" data-cart-open>View your basket</a>{% endif -%}
+    </p>
+    {%- if not sold and not onRequest %}
+    <noscript>
+      <div class="ds-add-to-cart__nojs">
+        <p>Buy straight away at Stripe’s secure checkout:</p>
+        <p>
+          <label for="nojs-delivery-{{ product.handle }}">Delivery to</label>
+          <select id="nojs-delivery-{{ product.handle }}" name="delivery">
+            {%- for d in site.delivery %}
+            <option value="{{ d.id }}">{{ d.label }}, {{ { amount: d.amount, currencyCode: "GBP" } | money }}</option>
+            {%- endfor %}
+          </select>
+        </p>
+        <ul role="list">
+          {%- for v in product.variants.nodes %}{% if v.availableForSale %}
+          <li><button type="submit" formaction="/api/checkout" formmethod="post" name="buy" value="{{ v.id }}">{{ "Buy now" if original else ("Buy " ~ v.title) }}, {{ v.price | money }}</button></li>
+          {%- endif %}{% endfor %}
+        </ul>
+      </div>
+    </noscript>
+    {%- endif %}
+    {%- if original and not sold %}
+    <p class="ds-add-to-cart__viewing">{{ link({ href: "/contact/?viewing=" ~ product.handle, label: "Arrange a viewing in Bristol", variant: "arrow" }) }}</p>
+    {%- endif %}
+  </form>
+</add-to-cart>
+{%- endmacro -%}

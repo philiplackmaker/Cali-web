@@ -1,0 +1,72 @@
+<!doctype html>
+{%- set commerce = commerceMode or "stripe" -%}
+<html lang="{{ site.lang }}" data-commerce="{{ commerce }}" data-catalogue="{{ shop.source }}">
+<head>
+  <meta charset="utf-8">
+  {#- A visitor's light/dark choice (theme-toggle.js), applied before anything paints. #}
+  <script>try { var t = localStorage.getItem('ds-theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; } catch (e) {}</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {%- set pageTitle = (title ~ " · " ~ site.name) if title else site.name %}
+  <title>{{ pageTitle }}</title>
+  <meta name="description" content="{{ description or site.description }}">
+  <link rel="canonical" href="{{ site.url }}{{ page.url }}">
+  {%- if noindex or not site.indexable %}
+  <meta name="robots" content="noindex, nofollow">
+  {%- endif %}
+  <meta property="og:title" content="{{ title or site.name }}">
+  <meta property="og:description" content="{{ description or site.description }}">
+  {%- set og = ogImage or '/assets/images/calico-painting.jpg' %}
+  <meta property="og:image" content="{{ og if og.startsWith('http') else site.url ~ og }}">
+  <meta property="og:type" content="{{ ogType or 'website' }}">
+  <meta property="og:url" content="{{ site.url }}{{ page.url }}">
+  <meta property="og:locale" content="{{ site.locale }}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="{{ designTokens | tokenValue('color.surface.page') }}">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="{{ designTokensDark | tokenValue('color.surface.page') }}">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="/favicon-32.png">
+  <link rel="apple-touch-icon" href="/favicon-180.png">
+  {#- Preloaded so they arrive before first paint: a late swap shifts the layout (CLS). #}
+  <link rel="preload" href="/assets/fonts/figtree-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/lora-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin>
+  {%- if preloadImage %}
+  {#- The page's LCP image: start fetching it before the CSS is parsed. #}
+  <link rel="preload" as="image" href="{{ preloadImage.url | imageUrl(preloadImage | largestWidth) }}" imagesrcset="{{ preloadImage | srcset }}" imagesizes="{{ preloadSizes or '100vw' }}" fetchpriority="high">
+  {%- endif %}
+  {%- if stylesheets %}
+  <link rel="stylesheet" href="/assets/css/site.css">
+  {%- else %}
+  <style>{% siteCss %}</style>
+  {%- endif %}
+  {%- for sheet in stylesheets %}
+  <link rel="stylesheet" href="{{ sheet }}">
+  {%- endfor %}
+  {%- if jsonLd %}
+  <script type="application/ld+json">{{ jsonLd | jsonScript | safe }}</script>
+  {%- endif %}
+</head>
+<body>
+  {%- from "components/cart-drawer/cart-drawer.njk" import cartDrawer %}
+  {%- from "patterns/empty-cart/empty-cart.njk" import emptyCart %}
+  <a class="ds-skip-link ds-visually-hidden" href="#main">Skip to content</a>
+  {% include "components/icon/sprite.njk" %}
+  {{ content | safe }}
+  {%- if not noDrawer %}
+  {%- set emptyHtml %}{{ emptyCart({ originals: shop.hasOriginals }) }}{% endset %}
+  {{ cartDrawer({ empty: emptyHtml }) }}
+  {%- endif %}
+  <script type="module" src="/assets/js/scripts/main.js"></script>
+  {%- if site.analyticsToken and commerce != "mock" %}
+  {#- Cloudflare Web Analytics: page views, no cookies. #}
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "{{ site.analyticsToken }}"}'></script>
+  {%- endif %}
+  {%- if page.url == "/" %}
+  {#- Netlify's login emails (invite, password reset) link to the home page: hand them to /admin/. #}
+  <script>if (/(invite|recovery|confirmation|email_change)_token=/.test(location.hash)) location.replace('/admin/' + location.hash);</script>
+  {%- endif %}
+  {%- for script in scripts %}
+  <script type="module" src="{{ script }}"></script>
+  {%- endfor %}
+</body>
+</html>

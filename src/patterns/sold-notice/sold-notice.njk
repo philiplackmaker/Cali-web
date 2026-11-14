@@ -1,0 +1,15 @@
+{#-
+  Sold notice: on a sold original's page, which stays live. It points to similar work,
+  commissions and the Studio Letter instead.
+  {% from "patterns/sold-notice/sold-notice.njk" import soldNotice %} {{ soldNotice(product) }}
+-#}
+{%- from "components/button/button.njk" import button -%}
+{%- from "components/link/link.njk" import link -%}
+{%- macro soldNotice(product) -%}
+<div class="ds-sold-notice">
+  <p class="ds-sold-notice__title">This painting has found a home.</p>
+  <p>I'm always working on new pieces like it. If you'd like something similar, tell me what drew you to this one.</p>
+  {{ button({ label: "Enquire about similar work", href: "/contact/?about=" ~ product.handle, full: true }) }}
+  {{ link({ href: "/shop/originals/", label: "See the originals available now", variant: "arrow" }) }}
+</div>
+{%- endmacro -%}

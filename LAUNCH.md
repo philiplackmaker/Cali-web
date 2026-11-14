@@ -1,0 +1,97 @@
+# Launch checklist
+
+Work through this in order. The order matters for the DNS step: today
+**www.calicomelton.com is served by GitHub Pages** from this repo's `main` branch (GoDaddy DNS,
+`www` CNAME → `philiplackmaker.github.io`). The bare domain should point at GitHub Pages too (four
+`A` records, `185.199.108–111.153`). Until 9 November it pointed at GoDaddy's parking page. Merging
+`shop-foundations` into `main` early would take the current Studio Letter page down, because
+`index.html` has moved to `legacy/`.
+
+## 1. Content (Cali)
+
+`npm run check:launch` must pass. It fails while any public page still has placeholder copy. Most of it is in the admin now: anything that still says "Placeholder" needs writing.
+
+| Where                                     | What's needed                                                           |
+| ----------------------------------------- | ----------------------------------------------------------------------- |
+| /admin/ → Pages → Home page               | The line under her name, and the "Hello, I'm Cali" text                 |
+| /admin/ → Pages → About                   | Opening line, "In the studio", How I work, Exhibitions                  |
+| /admin/ → Pages → Commissions and contact | How commissions work: timings, deposit, guide prices                    |
+| /admin/ → Pages → Shipping and FAQ        | Packing and posting, framing, care, returns, privacy                    |
+| `scripts/shop.js`                         | Intros for All work, Originals and Prints                               |
+| /admin/ → Settings → Delivery             | Real delivery prices and times, and the delivery lines on product pages |
+| `src/_data/site.js` → `originalPromises`  | Confirm: signed, certificate of authenticity, insured delivery          |
+| `src/_data/site.js` → `payments`          | Leave off unless instalments or Own Art are really set up               |
+| /admin/ → Prints and paintings            | Check each piece: photo descriptions, sizes, prices                     |
+| /admin/ → Site photos                     | The photo of Cali, and a few studio photos                              |
+| Logo                                      | Check the SVG flower trace, or supply the original vector               |
+
+## 2. Stripe (PIP)
+
+Follow **Connect Stripe** in the README. Also:
+
+- [ ] Stripe account verified for payouts; receipts and order notifications switched on.
+- [ ] A full test order with the **test** key: basket → Checkout → Stripe → `/order-thanks/`,
+      and the basket is empty afterwards. Try both delivery options.
+- [ ] The no-JS "Buy" buttons on a product page reach Stripe.
+- [ ] Swap `STRIPE_SECRET_KEY` to the **live** key, redeploy, place one real order, refund it.
+
+## 3. Netlify (PIP)
+
+**The site:** `calicomelton` on Netlify (free plan, created 14 November 2026).
+Production (`main`): https://calicomelton.netlify.app. Preview of the new shop
+(`shop-foundations`): https://shop-foundations--calicomelton.netlify.app.
+
+**Free plan:** 300 credits a month. Each **production deploy costs 15** (about 20 a month), and
+traffic about 20 per GB. If they run out, Netlify pauses the site until the next month. Deploy
+previews and branch deploys are free. So: the live site deploys only from `main`, development
+happens on a free branch deploy, and the Instagram check only rebuilds when there's a new post
+(README → Netlify credits).
+
+- [ ] Create the site from the GitHub repo (Add new project → Import from GitHub →
+      `philiplackmaker/Cali-web`). **Production branch: `main`.** Until launch that's the old
+      one-page site, so the first deploy just puts it on a `….netlify.app` address. Build command
+      and publish folder come from `netlify.toml` (on `shop-foundations`).
+- [ ] Site configuration → Build & deploy → Branches and deploy contexts → Branch deploys:
+      **Let me add individual branches** → `shop-foundations`. Its preview lives at
+      `https://shop-foundations--<site-name>.netlify.app`, updates on every push, and costs no credits.
+- [ ] Team settings → Billing → usage notifications on, so you hear before credits run low.
+- [ ] Environment variables: `STRIPE_SECRET_KEY`, `NETLIFY_BUILD_HOOK_URL`, `CLOUDFLARE_ANALYTICS_TOKEN`
+      (README → Monitoring), and `INSTAGRAM_ACCESS_TOKEN` for the latest Instagram posts (README → Instagram; needs @calicomelton
+      to be a free Creator account).
+- [ ] Build hook created (used by the daily Instagram check, which only rebuilds for new posts).
+- [ ] **The admin:** enable Identity (invite only) and Git Gateway, invite Cali (README → The admin).
+      She signs in at `/admin/`, changes a price, publishes, and sees it live a few minutes later.
+- [ ] Notifications → email on **Deploy failed**.
+- [ ] Forms → enable form detection, then set a notification to email Cali for `enquiry`.
+- [ ] On the `shop-foundations--….netlify.app` preview: browse, add to basket, reach checkout, send a test enquiry.
+      Deploy previews show `noindex` and a `Disallow: /` robots.txt automatically.
+- [ ] CI is green: lint, unit tests, site checks, Playwright (5 browsers, axe), Lighthouse.
+
+## 4. DNS (PIP, at GoDaddy)
+
+Do this when steps 1–3 are done, ideally on a quiet morning. Lower the TTLs a day before if you can.
+
+- [ ] In Netlify → Domain management, add `calicomelton.com` and `www.calicomelton.com`.
+- [ ] At GoDaddy: make sure parking and forwarding are off for the domain, and delete the bare domain's
+      current `A` records: GitHub Pages' `185.199.108.153` to `185.199.111.153` (or, if the interim fix
+      was never made, GoDaddy's parking servers `15.197.148.33` and `3.33.130.190`).
+- [ ] Add an `A` record for `@` → `75.2.60.5` (Netlify's load balancer).
+- [ ] Change the `www` CNAME from `philiplackmaker.github.io` → `<your-site>.netlify.app`.
+- [ ] Wait for Netlify to issue the HTTPS certificate (usually minutes). Then choose which is primary
+      (`www` or the bare domain); Netlify redirects the other.
+- [ ] Check `https://calicomelton.com` and `https://www.calicomelton.com` both load the new site.
+
+## 5. After the switch
+
+- [ ] **Studio Letter:** sign up on the live site with a real address, and check it arrives in the
+      Google Sheet. (The tests only check that the form posts to the Apps Script; they can't see the sheet.)
+- [ ] In GitHub → Settings → Pages, turn Pages off (or remove the custom domain), so it doesn't
+      fight Netlify for the domain. `main` has a `CNAME` file (added on github.com on 8 November)
+      that points Pages at calicomelton.com: delete it at the same time.
+- [ ] Change `branch:` in `src/admin/config.yml` to `main` (or the admin keeps saving to the old
+      branch), then merge `shop-foundations` into `main`. That merge is the production deploy that
+      puts the shop live (Netlify's production branch is already `main`).
+- [ ] **Monitoring:** set the repository variable `MONITOR_URL` to `https://calicomelton.com`, run the
+      "Monitor the live shop" workflow once by hand, and check it's green (README → Monitoring).
+- [ ] Google Search Console: add the domain and submit `https://calicomelton.com/sitemap.xml`.
+- [ ] Run Lighthouse against the live product page.

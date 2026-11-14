@@ -1,0 +1,18 @@
+{#-
+  Quantity, for prints. Originals are always 1, so don't render this for them.
+  Without JS it's a plain number input; JS adds the − and + buttons.
+  {% from "components/quantity-input/quantity-input.njk" import quantityInput %}
+  {{ quantityInput({ id: "qty", name: "quantity", value: 1, min: 1, max: 10, label: "Quantity", hideLabel: true }) }}
+-#}
+{%- from "components/icon/icon.njk" import icon -%}
+{%- macro quantityInput(opts = {}) -%}
+{%- set id = opts.id or "quantity" -%}
+<quantity-input class="ds-quantity">
+  <label class="ds-quantity__label{% if opts.hideLabel %} ds-visually-hidden{% endif %}" for="{{ id }}">{{ opts.label or "Quantity" }}</label>
+  <div class="ds-quantity__control">
+    <button class="ds-quantity__step" type="button" data-step="-1" aria-label="Decrease {{ (opts.label or 'quantity') | lower }}" tabindex="-1">{{ icon("minus") }}</button>
+    <input class="ds-quantity__input" id="{{ id }}" name="{{ opts.name or 'quantity' }}" type="number" inputmode="numeric" value="{{ opts.value or 1 }}" min="{{ opts.min if opts.min is defined else 1 }}" max="{{ opts.max or 10 }}"{% if opts.disabled %} disabled{% endif %}>
+    <button class="ds-quantity__step" type="button" data-step="1" aria-label="Increase {{ (opts.label or 'quantity') | lower }}" tabindex="-1">{{ icon("plus") }}</button>
+  </div>
+</quantity-input>
+{%- endmacro -%}

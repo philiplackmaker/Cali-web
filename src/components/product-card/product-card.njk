@@ -1,0 +1,24 @@
+{#-
+  Product card: framed image, title, medium or size, price, badges. The whole card is one link.
+  {% from "components/product-card/product-card.njk" import productCard %}
+  {{ productCard(product, { headingLevel: 3, priority: false }) }}
+-#}
+{%- from "components/artwork-image/artwork-image.njk" import artworkImage -%}
+{%- from "components/price/price.njk" import price -%}
+{%- from "components/badge/badge.njk" import badges -%}
+{%- macro productCard(product, opts = {}) -%}
+{%- set h = "h" ~ (opts.headingLevel or 3) -%}
+<article class="ds-product-card{% if product | isSold %} ds-product-card--sold{% endif %}">
+  {%- if product.featuredImage %}
+  {{ artworkImage(product.featuredImage, { framed: true, alt: "", priority: opts.priority, sizes: "(width >= 64rem) 33vw, (width >= 40rem) 50vw, 100vw" }) }}
+  {%- endif %}
+  <div class="ds-product-card__body">
+    <{{ h }} class="ds-product-card__title"><a class="ds-product-card__link" href="/shop/{{ product.handle }}/">{{ product.title }}</a></{{ h }}>
+    <p class="ds-product-card__meta">{{ product | productSummary }}</p>
+    {%- if not (product | isSold) %}
+    {{ price(product, { onRequest: product | isPriceOnRequest }) }}
+    {%- endif %}
+    {{ badges(product | productBadges) }}
+  </div>
+</article>
+{%- endmacro -%}

@@ -1,0 +1,62 @@
+{#-
+  Product detail: gallery beside the wall label, price, buying, details and delivery.
+  Handles every case: original, print, sold, price on request.
+  {% from "patterns/product-detail/product-detail.njk" import productDetail %}
+  {{ productDetail(product) }}
+-#}
+{%- from "components/product-gallery/product-gallery.njk" import productGallery -%}
+{%- from "components/badge/badge.njk" import badges -%}
+{%- from "components/price/price.njk" import price -%}
+{%- from "components/add-to-cart/add-to-cart.njk" import addToCart -%}
+{%- from "components/variant-picker/variant-picker.njk" import variantPicker -%}
+{%- from "components/quantity-input/quantity-input.njk" import quantityInput -%}
+{%- from "components/product-details/product-details.njk" import productDetails -%}
+{%- from "components/collector-note/collector-note.njk" import collectorNote -%}
+{%- from "components/link/link.njk" import link -%}
+{%- from "components/video-clip/video-clip.njk" import videoClip -%}
+{%- from "patterns/sold-notice/sold-notice.njk" import soldNotice -%}
+{%- from "patterns/error-banner/error-banner.njk" import errorBanner -%}
+{%- from "components/product-live/product-live.njk" import productLive -%}
+{%- macro productDetail(product, opts = {}) -%}
+{%- set original = product | isOriginal -%}
+{%- set sold = product | isSold -%}
+{%- set onRequest = product | isPriceOnRequest -%}
+<article class="ds-product" data-product>
+  <div class="ds-product__back">{{ link({ href: "/shop/originals/" if original else "/shop/prints/", label: "Originals" if original else "Prints", variant: "back" }) }}</div>
+  <div class="ds-product__gallery">{{ productGallery(product) }}</div>
+  <div class="ds-product__info">
+    {{ badges(product | productBadges) }}
+    <h1 class="ds-product__title">{{ product.title }}</h1>
+    <p class="ds-product__summary">{{ product | productSummary }}</p>
+    {%- if original and sold %}
+    {{ soldNotice(product) }}
+    {%- else %}
+    <div class="ds-product__buy" data-buy>
+      {{ price(product.variants.nodes[0] if original else product, { size: "lg", onRequest: onRequest }) }}
+      {{ errorBanner() }}
+      {% call addToCart(product) %}
+        {%- if not original %}
+        {{ variantPicker(product) }}
+        {{ quantityInput({ id: product.handle ~ "-qty", max: 10 }) }}
+        {%- endif %}
+      {% endcall %}
+      {%- if original and not onRequest %}{{ collectorNote(product) }}{% endif %}
+    </div>
+    {%- if original %}<template data-sold-template>{{ soldNotice(product) }}</template>{% endif %}
+    {{ productLive(product) }}
+    {%- endif %}
+    <div class="ds-product__description">{{ product.descriptionHtml | safe }}</div>
+    {%- if product.clip %}
+    <figure class="ds-product__clip">
+      {{ videoClip(product.clip, product.featuredImage) }}
+      <figcaption class="ds-product__clip-caption">In the studio</figcaption>
+    </figure>
+    {%- endif %}
+    {{ productDetails(product) }}
+    <p class="ds-product__shipping">
+      {{ site.originalsDelivery if original else site.printsDelivery }}
+      <a href="/info/#shipping">Shipping and returns</a>.
+    </p>
+  </div>
+</article>
+{%- endmacro -%}

@@ -1,0 +1,50 @@
+---
+title: Link
+order: 2
+description: Text links, quiet links, arrow links and back links.
+---
+{% from "docs.njk" import example, usage, props %}
+{% from "components/link/link.njk" import link %}
+<header class="docs-header">
+  <p class="docs-eyebrow">Component · Partial</p>
+  <h1>Link</h1>
+  <p class="docs-lede">For going somewhere. Plain <code>&lt;a&gt;</code> tags in body copy already get these styles from the base layer, so you only need the macro for the arrow, back and quiet variants.</p>
+</header>
+
+<section class="docs-section" aria-labelledby="use">
+  <h2 id="use">Use it</h2>
+  {% set code %}{% raw %}{% from "components/link/link.njk" import link %}
+{{ link({ href: "/shop/prints/", label: "See all prints", variant: "arrow" }) }}{% endraw %}{% endset %}
+  {{ usage(code) }}
+  {{ props([
+    ["href", "string", "Where it goes."],
+    ["label", "string", "Link text. It should make sense out of context."],
+    ["variant", "\"default\" | \"quiet\" | \"arrow\" | \"back\"", "Arrow for “see more”, back for returning to a list."],
+    ["external", "boolean", "Opens in a new tab and says so to screen readers."],
+    ["current", "boolean", "Marks the current page with aria-current."]
+  ]) }}
+</section>
+
+<section class="docs-section" aria-labelledby="variants">
+  <h2 id="variants">Variants</h2>
+  <div class="docs-examples">
+    {% set ex %}{{ link({ href: "/info/", label: "Shipping and returns" }) }}
+{{ link({ href: "/about/", label: "About me", variant: "quiet" }) }}{% endset %}
+    {{ example("Default and quiet", ex) }}
+    {% set ex %}{{ link({ href: "/shop/prints/", label: "See all prints", variant: "arrow" }) }}
+{{ link({ href: "/shop/", label: "Back to the shop", variant: "back" }) }}{% endset %}
+    {{ example("Arrow and back", ex) }}
+    {% set ex %}{{ link({ href: site.instagram, label: "@calicomelton", external: true }) }}{% endset %}
+    {{ example("External", ex) }}
+    {% set ex %}<p>New paintings, studio notes, and <a href="/shop/prints/">first access to prints</a>.</p>{% endset %}
+    {{ example("In running text (base styles, no macro)", ex) }}
+  </div>
+</section>
+
+<section class="docs-section" aria-labelledby="a11y">
+  <h2 id="a11y">Accessibility</h2>
+  <ul class="docs-list">
+    <li>Links in text are always underlined, so colour isn't the only clue.</li>
+    <li>Only open a new tab for links off the site. External links include hidden text: “(opens in a new tab)”.</li>
+  </ul>
+</section>

@@ -1,0 +1,36 @@
+---
+title: Badge
+order: 6
+description: Original, Print, Edition of N and Sold labels.
+---
+{% from "docs.njk" import example, usage, props %}
+{% from "components/badge/badge.njk" import badge, badges %}
+<header class="docs-header">
+  <p class="docs-eyebrow">Component · Partial</p>
+  <h1>Badge</h1>
+  <p class="docs-lede">Small-caps labels in the style of a gallery wall caption, separated by middle dots. Only Sold is filled, so it's the one that stands out.</p>
+</header>
+
+<section class="docs-section" aria-labelledby="use">
+  <h2 id="use">Use it</h2>
+  {% set code %}{% raw %}{% from "components/badge/badge.njk" import badge, badges %}
+{{ badge({ kind: "edition", edition: 50 }) }}
+{{ badges(product | productBadges) }}   {# works out the right set from tags and metafields #}{% endraw %}{% endset %}
+  {{ usage(code) }}
+  {{ props([
+    ["kind", "\"original\" | \"print\" | \"edition\" | \"sold\"", "Which badge."],
+    ["edition", "number", "For edition badges: the edition size metafield."]
+  ]) }}
+</section>
+
+<section class="docs-section" aria-labelledby="variants">
+  <h2 id="variants">Variants</h2>
+  <div class="docs-examples">
+    {% set ex %}{{ badge({ kind: "original" }) }} {{ badge({ kind: "print" }) }} {{ badge({ kind: "edition", edition: 50 }) }} {{ badge({ kind: "sold" }) }}{% endset %}
+    {{ example("All kinds", ex) }}
+    {% set ex %}{{ badges(mock.byHandle["sun-hat-with-tulip-print"] | productBadges) }}{% endset %}
+    {{ example("From a product (a print)", ex) }}
+    {% set ex %}{{ badges(mock.byHandle["afternoon-montpelier"] | productBadges) }}{% endset %}
+    {{ example("From a product (a sold original)", ex) }}
+  </div>
+</section>

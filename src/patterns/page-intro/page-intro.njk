@@ -1,0 +1,13 @@
+{#-
+  Page intro: eyebrow, the page's h1, and a short lede.
+  {% from "patterns/page-intro/page-intro.njk" import pageIntro %}
+  {{ pageIntro({ eyebrow: "The shop", title: "All work", lede: "…" }) }}
+-#}
+{%- macro pageIntro(opts) -%}
+<header class="ds-page-intro{% if opts.align == 'start' %} ds-page-intro--start{% endif %}">
+  {%- if opts.eyebrow %}<p class="ds-page-intro__eyebrow">{{ opts.eyebrow }}</p>{% endif %}
+  <h1 class="ds-page-intro__title">{{ opts.title }}</h1>
+  {%- if opts.lede %}<p class="ds-page-intro__lede">{{ opts.lede }}</p>{% endif %}
+  {%- if caller %}{{ caller() }}{% endif %}
+</header>
+{%- endmacro -%}

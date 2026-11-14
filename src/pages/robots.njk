@@ -1,0 +1,19 @@
+---
+permalink: /robots.txt
+layout: false
+eleventyExcludeFromCollections: true
+---
+{%- if site.indexable %}
+User-agent: *
+Disallow: /design-system/
+Disallow: /cart/
+Disallow: /admin/
+Disallow: /api/
+Disallow: /content/
+
+Sitemap: {{ site.url }}/sitemap.xml
+{%- else %}
+# Preview deploy: not for search engines.
+User-agent: *
+Disallow: /
+{%- endif %}

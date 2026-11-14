@@ -1,0 +1,330 @@
+# Decap CMS: the admin Cali uses at /admin/ to add prints and change photos.
+# Every Publish commits to the repo, and Netlify rebuilds the site (a few minutes).
+# Login is Netlify Identity + Git Gateway (README → "The admin").
+backend:
+  name: git-gateway
+  # The branch Netlify publishes. Change to main when shop-foundations is merged (LAUNCH.md).
+  branch: shop-foundations
+  commit_messages:
+    create: 'Add “{{slug}}” ({{author-name}})'
+    update: 'Update “{{slug}}” ({{author-name}})'
+    delete: 'Remove “{{slug}}” ({{author-name}})'
+    uploadMedia: 'Upload “{{path}}” ({{author-name}})'
+    deleteMedia: 'Delete “{{path}}” ({{author-name}})'
+
+# On localhost, `npx decap-server` lets the admin edit these files directly, no login.
+local_backend: true
+
+site_url: https://calicomelton.com
+display_url: https://calicomelton.com
+logo_url: /favicon-180.png
+
+# Photos and clips Cali uploads. The build makes web-sized copies of photos; upload the best
+# version you have (a JPEG around 2,400 pixels wide and under 10 MB is ideal). Clips are
+# served as uploaded, so keep them short (an MP4 under 15 MB).
+media_folder: content/uploads
+public_folder: /content/uploads
+
+collections:
+  - name: products
+    label: Prints and paintings
+    label_singular: print or painting
+    description: Everything in the shop. Newest first on the site; the home page shows the six newest. Each Publish updates the live site and uses part of the free monthly hosting allowance, so make all your changes, then publish.
+    folder: content/products
+    format: json
+    extension: json
+    create: true
+    delete: true
+    identifier_field: title
+    # The site itself is the preview: Publish, then look at it a few minutes later.
+    editor: { preview: false }
+    slug: '{{slug}}'
+    summary: '{{title}} · {{type}}'
+    sortable_fields: [added, title]
+    view_filters:
+      - { label: Prints, field: type, pattern: Print }
+      - { label: Originals, field: type, pattern: Original }
+    fields:
+      - { label: Title, name: title, widget: string }
+      - label: Show it in the shop
+        name: published
+        widget: boolean
+        default: true
+        hint: Switch off to hide it without deleting it.
+      - label: Print or original
+        name: type
+        widget: select
+        options: [Print, Original]
+        default: Print
+      - label: Added
+        name: added
+        widget: datetime
+        format: 'YYYY-MM-DDTHH:mm'
+        hint: Newer work shows first.
+      - label: Photos
+        name: images
+        widget: list
+        min: 1
+        summary: '{{fields.alt}}'
+        hint: First the painting straight on. Then, if you have them, a close-up or a photo of it framed in a room.
+        fields:
+          - { label: Photo, name: image, widget: image, choose_url: false }
+          - label: What the photo shows (for blind visitors)
+            name: alt
+            widget: string
+            hint: 'Describe the picture, e.g. "Three sunflowers in a blue and red checked bowl, on a pale pink ground."'
+      - label: Sizes and prices
+        name: options
+        widget: list
+        min: 1
+        summary: '{{fields.size}}: £{{fields.price}}'
+        hint: Prints, one row per size. Originals, one row with the painting's size.
+        fields:
+          - { label: Size, name: size, widget: string, hint: 'e.g. 20 × 25 cm, or A4' }
+          - { label: Price (£), name: price, widget: number, value_type: float, min: 0 }
+          - label: Sold
+            name: sold
+            widget: boolean
+            default: false
+            hint: For an original, switch this on once it's sold. (Checkout already stops a second sale.)
+      - label: Price on request
+        name: priceOnRequest
+        widget: boolean
+        default: false
+        required: false
+        hint: Hides the price, and visitors enquire instead of buying.
+      - label: Description
+        name: description
+        widget: text
+        required: false
+        hint: A blank line starts a new paragraph.
+      - label: Studio clip
+        name: clip
+        widget: object
+        required: false
+        collapsed: true
+        hint: Optional. Shown under the description, as "In the studio".
+        fields:
+          - label: Clip
+            name: video
+            widget: file
+            required: false
+            choose_url: false
+            pattern: ['\.(mp4|m4v|webm)$', 'Please upload an MP4 video']
+            hint: 'A short, silent clip that loops, like a living photo: an MP4 under 15 MB, ideally 5 to 20 seconds. Phones record MP4; on an iPhone, set Camera → Formats → Most Compatible.'
+          - { label: What the clip shows, name: alt, widget: string, required: false }
+      - { label: How it was made, name: made, widget: text, required: false }
+      - {
+          label: Medium,
+          name: medium,
+          widget: string,
+          required: false,
+          hint: 'e.g. Giclée print, or Oil on canvas',
+        }
+      - { label: Year, name: year, widget: string, required: false }
+      - {
+          label: Framing,
+          name: framing,
+          widget: string,
+          required: false,
+          hint: 'e.g. Oak tray frame, ready to hang',
+        }
+      - {
+          label: Edition size,
+          name: edition,
+          widget: string,
+          required: false,
+          hint: "Prints only, if it's a limited edition.",
+        }
+
+  - name: site
+    label: Site photos
+    editor: { preview: false }
+    files:
+      - name: photos
+        label: Home, About and studio photos
+        file: content/photos.json
+        fields:
+          - label: Home page painting
+            name: homeHero
+            widget: object
+            required: false
+            hint: The big picture at the top of the home page. Empty means the newest painting.
+            fields:
+              - { label: Photo, name: image, widget: image, required: false, choose_url: false }
+              - { label: What the photo shows, name: alt, widget: string, required: false }
+          - label: Photo of you (About and home page)
+            name: aboutPortrait
+            widget: object
+            required: false
+            fields:
+              - { label: Photo, name: image, widget: image, required: false, choose_url: false }
+              - label: Clip (optional)
+                name: video
+                widget: file
+                required: false
+                choose_url: false
+                pattern: ['\.(mp4|m4v|webm)$', 'Please upload an MP4 video']
+                hint: 'A short, silent clip that loops, like a living photo: an MP4 under 15 MB, ideally 5 to 20 seconds. Phones record MP4; on an iPhone, set Camera → Formats → Most Compatible. The photo shows until it plays.'
+              - { label: What the photo shows, name: alt, widget: string, required: false }
+          - label: Studio photos
+            name: studio
+            widget: list
+            required: false
+            summary: '{{fields.caption}}'
+            hint: Shown on the home page when there are no Instagram posts. Three works best.
+            fields:
+              - { label: Photo, name: image, widget: image, choose_url: false }
+              - label: Clip (optional)
+                name: video
+                widget: file
+                required: false
+                choose_url: false
+                pattern: ['\.(mp4|m4v|webm)$', 'Please upload an MP4 video']
+                hint: 'A short, silent clip that loops, like a living photo: an MP4 under 15 MB, ideally 5 to 20 seconds. Phones record MP4; on an iPhone, set Camera → Formats → Most Compatible. The photo shows until it plays.'
+              - { label: What the photo shows, name: alt, widget: string }
+              - { label: Caption, name: caption, widget: string, required: false }
+
+  # Page wording. Long boxes are formatted text: headings, bold, links and lists.
+  # Anything that still says "Placeholder" stops the launch check, so replace it all.
+  - name: pages
+    label: Pages
+    editor: { preview: false }
+    files:
+      - name: home
+        label: Home page
+        file: content/pages/home.json
+        fields:
+          - { label: Small line above your name, name: heroEyebrow, widget: string }
+          - {
+              label: Line under your name,
+              name: heroLine,
+              widget: text,
+              hint: One or two sentences.,
+            }
+          - { label: Intro heading, name: introHeading, widget: string }
+          - {
+              label: Intro text,
+              name: introText,
+              widget: markdown,
+              modes: [rich_text],
+              buttons: [bold, italic, link, heading-two, bulleted-list, numbered-list],
+              editor_components: [],
+            }
+          - { label: Link to the About page, name: introLink, widget: string }
+          - {
+              label: Description for Google,
+              name: description,
+              widget: text,
+              hint: 'One sentence, under about 155 characters. Shown in search results.',
+            }
+      - name: about
+        label: About
+        file: content/pages/about.json
+        fields:
+          - { label: Page heading, name: title, widget: string }
+          - { label: Opening line, name: lede, widget: text }
+          - { label: Heading beside your photo, name: studioHeading, widget: string }
+          - {
+              label: Text beside your photo,
+              name: studioText,
+              widget: markdown,
+              modes: [rich_text],
+              buttons: [bold, italic, link, heading-two, bulleted-list, numbered-list],
+              editor_components: [],
+            }
+          - {
+              label: The rest of the page,
+              name: body,
+              widget: markdown,
+              modes: [rich_text],
+              buttons: [bold, italic, link, heading-two, bulleted-list, numbered-list],
+              editor_components: [],
+              hint: 'Use Heading 2 for each section, e.g. How I work, Exhibitions.',
+            }
+          - {
+              label: Description for Google,
+              name: description,
+              widget: text,
+              hint: 'One sentence, under about 155 characters. Shown in search results.',
+            }
+      - name: info
+        label: Shipping and FAQ
+        file: content/pages/info.json
+        fields:
+          - { label: Page heading, name: title, widget: string }
+          - { label: Opening line, name: lede, widget: text }
+          - {
+              label: Shipping,
+              name: shipping,
+              widget: markdown,
+              modes: [rich_text],
+              buttons: [bold, italic, link, heading-two, bulleted-list, numbered-list],
+              editor_components: [],
+              hint: 'Shown under the delivery prices (those are in Settings). Say how prints are packed and posted.',
+            }
+          - {
+              label: The rest of the page,
+              name: body,
+              widget: markdown,
+              modes: [rich_text],
+              buttons: [bold, italic, link, heading-two, bulleted-list, numbered-list],
+              editor_components: [],
+              hint: 'Use Heading 2 for each question: Framing, Returns, and so on.',
+            }
+          - {
+              label: Description for Google,
+              name: description,
+              widget: text,
+              hint: 'One sentence, under about 155 characters. Shown in search results.',
+            }
+      - name: contact
+        label: Commissions and contact
+        file: content/pages/contact.json
+        fields:
+          - { label: Page heading, name: title, widget: string }
+          - { label: Opening line, name: lede, widget: text }
+          - {
+              label: Commissions,
+              name: commissions,
+              widget: markdown,
+              modes: [rich_text],
+              buttons: [bold, italic, link, heading-two, bulleted-list, numbered-list],
+              editor_components: [],
+              hint: 'How commissions work: timings, deposit, a guide to prices.',
+            }
+          - {
+              label: Description for Google,
+              name: description,
+              widget: text,
+              hint: 'One sentence, under about 155 characters. Shown in search results.',
+            }
+
+  - name: shop-settings
+    label: Settings
+    editor: { preview: false }
+    files:
+      - name: delivery
+        label: Delivery
+        file: content/settings.json
+        fields:
+          - label: Delivery prices
+            name: delivery
+            widget: list
+            allow_add: false
+            allow_remove: false
+            allow_reorder: false
+            summary: '{{fields.label}}: £{{fields.price}}'
+            hint: Buyers choose one of these in the basket. Stripe adds the price at checkout.
+            fields:
+              - { name: id, widget: hidden }
+              - { label: Name, name: label, widget: string }
+              - { label: Price (£), name: price, widget: number, value_type: float, min: 0 }
+              - {
+                  label: How and how long,
+                  name: description,
+                  widget: string,
+                  hint: 'e.g. Royal Mail tracked, 2 to 5 working days',
+                }
+          - { label: Delivery line on print pages, name: printsDelivery, widget: text }
+          - { label: Delivery line on original pages, name: originalsDelivery, widget: text }

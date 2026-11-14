@@ -1,0 +1,45 @@
+---
+permalink: /
+eleventyComputed:
+  description: "{{ pages.home.description }}"
+footerSignup: false
+preloadSizes: "(width >= 53.75rem) 55vw, 100vw"
+---
+{%- from "patterns/hero/hero.njk" import hero -%}
+{%- from "patterns/section/section.njk" import section -%}
+{%- from "patterns/featured-strip/featured-strip.njk" import featuredStrip -%}
+{%- from "patterns/artist-intro/artist-intro.njk" import artistIntro -%}
+{%- from "patterns/instagram-band/instagram-band.njk" import instagramBand -%}
+{%- from "patterns/signup-band/signup-band.njk" import signupBand -%}
+{%- set hasOriginals = shop.hasOriginals -%}
+{{ hero({
+  image: shop.photos.homeHero.image,
+  eyebrow: pages.home.heroEyebrow,
+  title: "Calico Melton",
+  line: pages.home.heroLine,
+  primary: { href: "/shop/originals/", label: "See the originals" } if hasOriginals else { href: "/shop/prints/", label: "See the prints" },
+  secondary: { href: "/shop/prints/", label: "Prints" } if hasOriginals else { href: "/about/", label: "About me" }
+}) }}
+
+{% call section({ labelledby: "new-work" }) %}
+  {{ featuredStrip({ id: "new-work", title: "New work", products: shop.latest, link: { href: "/shop/", label: "See all work" } }) }}
+{% endcall %}
+
+{% call section({ labelledby: "about-cali" }) %}
+  {{ artistIntro({
+    id: "about-cali",
+    image: shop.photos.aboutPortrait.image,
+    video: shop.photos.aboutPortrait.video,
+    heading: pages.home.introHeading,
+    textHtml: pages.home.introText | md,
+    link: { href: "/about/", label: pages.home.introLink }
+  }) }}
+{% endcall %}
+
+{% call section({ labelledby: "instagram" }) %}
+  {{ instagramBand({ id: "instagram", posts: instagram.posts, photos: shop.photos.studio }) }}
+{% endcall %}
+
+{% call section({ variant: "band" }) %}
+  {{ signupBand({ id: "home-signup" }) }}
+{% endcall %}

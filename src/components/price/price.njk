@@ -1,0 +1,18 @@
+{#-
+  Price. Pass a variant ({ price, compareAtPrice }) or a product ({ priceRange, compareAtPriceRange }).
+  {% from "components/price/price.njk" import price %}
+  {{ price(variant) }}  {{ price(product, { size: "lg" }) }}  {{ price(product, { onRequest: true }) }}
+  Same markup as priceInnerHtml() in src/scripts/lib/money.js, which updates it in the browser.
+-#}
+{%- macro price(input, opts = {}) -%}
+{%- if opts.onRequest -%}
+<p class="ds-price ds-price--on-request{% if opts.size %} ds-price--{{ opts.size }}{% endif %}">Price on request</p>
+{%- else -%}
+{%- set view = input | describePrice -%}
+<p class="ds-price{% if opts.size %} ds-price--{{ opts.size }}{% endif %}{% if view.onSale %} ds-price--sale{% endif %}" data-price>
+  {%- if view.from %}<span class="ds-price__from">From</span> {% endif -%}
+  <span class="ds-price__current">{{ view.current }}</span>
+  {%- if view.onSale %}<span class="ds-visually-hidden">, on sale</span> <s class="ds-price__compare"><span class="ds-visually-hidden">Was </span>{{ view.compareAt }}</s>{% endif -%}
+</p>
+{%- endif -%}
+{%- endmacro -%}

@@ -1,0 +1,27 @@
+.ds-artist-intro {
+  display: grid;
+  gap: var(--ds-space-stack-lg);
+  align-items: center;
+}
+
+@media (width >= 53.75rem) {
+  .ds-artist-intro {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    gap: var(--ds-space-stack-xl);
+  }
+}
+
+.ds-artist-intro__photo .ds-artwork-image {
+  background: transparent;
+}
+
+.ds-artist-intro__text {
+  display: grid;
+  justify-items: start;
+  gap: var(--ds-space-stack-md);
+  max-inline-size: var(--ds-layout-prose);
+}
+
+.ds-artist-intro__heading {
+  font-size: var(--ds-type-heading-lg-size);
+}

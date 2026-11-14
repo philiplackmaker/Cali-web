@@ -1,0 +1,38 @@
+---
+permalink: /about/
+title: About
+eleventyComputed:
+  description: "{{ pages.about.description }}"
+---
+{%- from "patterns/section/section.njk" import section -%}
+{%- from "patterns/page-intro/page-intro.njk" import pageIntro -%}
+{%- from "patterns/artist-intro/artist-intro.njk" import artistIntro -%}
+{%- from "patterns/prose/prose.njk" import prose -%}
+{%- from "patterns/photo-grid/photo-grid.njk" import photoGrid -%}
+{%- from "patterns/instagram-band/instagram-band.njk" import instagramBand -%}
+{% call section({ variant: "tight" }) %}
+  {{ pageIntro({ eyebrow: "About", title: pages.about.title, lede: pages.about.lede }) }}
+{% endcall %}
+
+{% call section({ labelledby: "studio-life" }) %}
+  {{ artistIntro({
+    id: "studio-life",
+    priority: true,
+    image: shop.photos.aboutPortrait.image,
+    video: shop.photos.aboutPortrait.video,
+    heading: pages.about.studioHeading,
+    textHtml: pages.about.studioText | md
+  }) }}
+{% endcall %}
+
+{% call section({ variant: "narrow" }) %}
+  {% call prose() %}{{ pages.about.body | md | safe }}{% endcall %}
+{% endcall %}
+
+{% call section({ labelledby: "studio" }) %}
+  {{ photoGrid({ id: "studio", heading: "The studio", photos: shop.photos.studio }) }}
+{% endcall %}
+
+{% call section({ labelledby: "instagram" }) %}
+  {{ instagramBand({ id: "instagram", heading: "Follow along", posts: instagram.posts }) }}
+{% endcall %}

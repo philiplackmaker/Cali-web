@@ -1,0 +1,23 @@
+---
+permalink: /contact/
+title: Commissions and contact
+eleventyComputed:
+  description: "{{ pages.contact.description }}"
+---
+{%- from "patterns/section/section.njk" import section -%}
+{%- from "patterns/page-intro/page-intro.njk" import pageIntro -%}
+{%- from "patterns/prose/prose.njk" import prose -%}
+{%- from "patterns/enquiry-form/enquiry-form.njk" import enquiryForm -%}
+{% call section({ variant: "narrow tight" }) %}
+  {{ pageIntro({ eyebrow: "Commissions and contact", title: pages.contact.title, lede: pages.contact.lede }) }}
+  {% call prose() %}
+    <p>Prefer email? Write to <a href="mailto:{{ site.email }}">{{ site.email }}</a>, or message me on Instagram at <a href="{{ site.instagram }}" target="_blank" rel="noopener">{{ site.instagramHandle }}<span class="ds-visually-hidden"> (opens in a new tab)</span></a>.</p>
+    <h2 id="commissions">Commissions</h2>
+    {{ pages.contact.commissions | md | safe }}
+  {% endcall %}
+{% endcall %}
+
+{% call section({ variant: "narrow", labelledby: "enquiry-heading" }) %}
+  {% call prose() %}<h2 id="enquiry-heading">Send me a message</h2>{% endcall %}
+  {{ enquiryForm({ products: shop.products }) }}
+{% endcall %}

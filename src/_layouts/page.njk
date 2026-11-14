@@ -1,0 +1,11 @@
+---
+layout: base.njk
+---
+{#- Public pages: header, main, footer. Pages fill <main> with patterns only. -#}
+{%- from "components/header/header.njk" import siteHeader -%}
+{%- from "components/footer/footer.njk" import siteFooter -%}
+{{ siteHeader({ currentUrl: page.url }) }}
+<main id="main" class="ds-main">
+{{ content | safe }}
+</main>
+{{ siteFooter({ signup: footerSignup !== false }) }}

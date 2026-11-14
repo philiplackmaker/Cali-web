@@ -1,0 +1,17 @@
+---
+permalink: /cart/
+title: Your basket
+noindex: true
+noDrawer: true
+eleventyExcludeFromSitemap: true
+---
+{%- from "patterns/section/section.njk" import section -%}
+{%- from "patterns/empty-cart/empty-cart.njk" import emptyCart -%}
+{%- from "patterns/error-banner/error-banner.njk" import errorBanner -%}
+{%- from "components/cart-drawer/cart-drawer.njk" import cartDrawer -%}
+{% call section({ variant: "narrow tight" }) %}
+  {{ errorBanner() }}
+  {%- set emptyHtml %}{{ emptyCart({ originals: shop.hasOriginals }) }}{% endset %}
+  {{ cartDrawer({ inline: true, empty: emptyHtml }) }}
+  <noscript>{{ errorBanner({ message: "The basket needs JavaScript switched on. You can still email me to buy a painting: " ~ site.email }) }}</noscript>
+{% endcall %}

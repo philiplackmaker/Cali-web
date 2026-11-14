@@ -1,0 +1,65 @@
+---
+title: Cart drawer
+order: 13
+description: The basket, in a modal dialog with line edits, subtotal and checkout.
+---
+{% from "docs.njk" import example, usage %}
+{% from "components/add-to-cart/add-to-cart.njk" import addToCart %}
+<header class="docs-header">
+  <p class="docs-eyebrow">Component · &lt;cart-drawer&gt;</p>
+  <h1>Cart drawer</h1>
+  <p class="docs-lede">The basket slides in from the right. It's a native modal <code>&lt;dialog&gt;</code>, so focus stays inside, Esc closes it and the page behind can't be reached. The base layout includes it once on every page.</p>
+</header>
+
+<section class="docs-section" aria-labelledby="use">
+  <h2 id="use">Use it</h2>
+  {% set code %}{% raw %}{# Already in _layouts/base.njk #}
+{% from "components/cart-drawer/cart-drawer.njk" import cartDrawer %}
+{{ cartDrawer() }}
+
+{# Anything with data-cart-open opens it (and still links to /cart/ without JS) #}
+<a href="/cart/" data-cart-open>Basket</a>{% endraw %}{% endset %}
+  {{ usage(code) }}
+</section>
+
+<section class="docs-section" aria-labelledby="live">
+  <h2 id="live">Try it</h2>
+  <ol class="docs-list">
+    <li>Add a couple of things below, then change quantities and remove a line in the drawer.</li>
+    <li>For the “someone else bought it” case, add Blue Jug, then press “Someone else buys Blue Jug”. The page reloads the way a next visit would, and the basket takes the painting out and says why.</li>
+    <li>Turn on “Shop unreachable” and try changing a quantity.</li>
+  </ol>
+  <div class="docs-toolbar">
+    <button class="ds-button ds-button--primary" type="button" data-cart-open>Open basket</button>
+    <button class="ds-button ds-button--secondary" type="button" data-demo-sell="{{ mock.byHandle['blue-jug'].variants.nodes[0].id }}">Someone else buys Blue Jug</button>
+    <button class="ds-button ds-button--secondary" type="button" data-demo-offline aria-pressed="false">Shop unreachable</button>
+    <button class="ds-button ds-button--secondary" type="button" data-demo-reset>Empty basket and reset</button>
+  </div>
+  {% set ex %}<div class="docs-grid">
+  <div class="docs-stack"><p><strong>Small Tulip, print</strong></p>{{ addToCart(mock.byHandle["small-tulip-print"]) }}</div>
+  <div class="docs-stack"><p><strong>Pink Check, print (A4)</strong></p>{{ addToCart(mock.byHandle["pink-check-print"]) }}</div>
+  <div class="docs-stack"><p><strong>Blue Jug, original</strong></p>{{ addToCart(mock.byHandle["blue-jug"]) }}</div>
+</div>{% endset %}
+  {{ example("Things to add", ex, { noCode: true }) }}
+</section>
+
+<section class="docs-section" aria-labelledby="states">
+  <h2 id="states">States</h2>
+  <ul class="docs-list">
+    <li><strong>Empty:</strong> “Your basket is empty.” with a link to the shop.</li>
+    <li><strong>Lines:</strong> image, title, variant, line total. Prints get a quantity. Originals say “One of a kind”.</li>
+    <li><strong>Updating:</strong> the lines fade a little and <code>aria-busy</code> is set.</li>
+    <li><strong>Sold or short of stock:</strong> a notice stays at the top until the next change, e.g. “Sorry, “Blue Jug” has just sold, so I've taken it out of your basket.”</li>
+    <li><strong>Shop unreachable:</strong> a red notice: “I can't reach the shop just now. Please try again in a minute.”</li>
+    <li><strong>Checkout:</strong> a form that posts the basket and delivery choice to <code>/api/checkout</code>, which sends the buyer to Stripe. In the docs it goes to checkout.example.</li>
+  </ul>
+</section>
+
+<section class="docs-section" aria-labelledby="a11y">
+  <h2 id="a11y">Accessibility</h2>
+  <ul class="docs-list">
+    <li>Every change (“Added …”, “Basket updated.”, “Removed …”) is announced in an <code>aria-live="polite"</code> region outside the dialog, so it's heard even when the drawer is closed.</li>
+    <li>Quantity changes wait 350ms so a quick run of + presses becomes one update.</li>
+    <li>The slide-in turns off with reduced motion.</li>
+  </ul>
+</section>

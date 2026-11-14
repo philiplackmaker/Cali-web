@@ -1,0 +1,36 @@
+---
+title: Header and nav
+order: 15
+description: Logo, main navigation with a no-JS mobile menu, and the basket link.
+---
+{% from "docs.njk" import example, usage %}
+{% from "components/header/header.njk" import siteHeader %}
+<header class="docs-header">
+  <p class="docs-eyebrow">Component · Partial + &lt;cart-count&gt;</p>
+  <h1>Header and nav</h1>
+  <p class="docs-lede">The flower mark and name, four links and the basket. On narrow screens the links fold into a <code>&lt;details&gt;</code> menu, which opens and closes without JS.</p>
+</header>
+
+<section class="docs-section" aria-labelledby="use">
+  <h2 id="use">Use it</h2>
+  {% set code %}{% raw %}{% from "components/header/header.njk" import siteHeader %}
+{{ siteHeader({ currentUrl: page.url }) }}{% endraw %}{% endset %}
+  {{ usage(code) }}
+  <p>The links live in <code>NAV</code> at the top of <code>header.njk</code>. <code>currentUrl</code> marks the current section with <code>aria-current="page"</code>.</p>
+</section>
+
+<section class="docs-section" aria-labelledby="live">
+  <h2 id="live">Live</h2>
+  <p>Narrow your window to see the menu. The basket count shows once something is in the mock basket.</p>
+  {% set ex %}{{ siteHeader({ currentUrl: "/shop/" }) }}{% endset %}
+  {{ example("On the Shop section", ex, { wide: true }) }}
+</section>
+
+<section class="docs-section" aria-labelledby="a11y">
+  <h2 id="a11y">Accessibility</h2>
+  <ul class="docs-list">
+    <li>The nav is a labelled landmark (“Main”), and the skip link before it jumps to <code>#main</code>.</li>
+    <li>The basket link's name includes the count: “Basket, 2 items”.</li>
+    <li>Without JS the basket link goes to <code>/cart/</code>. With JS it opens the drawer.</li>
+  </ul>
+</section>

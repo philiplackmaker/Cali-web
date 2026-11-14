@@ -1,0 +1,20 @@
+---
+permalink: /sitemap.xml
+layout: false
+eleventyExcludeFromCollections: true
+---
+{#- Paginated pages (shop collections and products) appear once in collections.all, so they're listed from the shop data instead. -#}
+<?xml version="1.0" encoding="utf-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+{%- for item in collections.all %}
+{%- if not item.data.pagination and not item.data.noindex and not item.data.eleventyExcludeFromSitemap and item.url and not item.url.startsWith('/design-system/') and not item.url.startsWith('/assets/') %}
+  <url><loc>{{ site.url }}{{ item.url }}</loc></url>
+{%- endif %}
+{%- endfor %}
+{%- for c in shop.collections %}
+  <url><loc>{{ site.url }}{{ c.url }}</loc></url>
+{%- endfor %}
+{%- for p in shop.products %}
+  <url><loc>{{ site.url }}/shop/{{ p.handle }}/</loc></url>
+{%- endfor %}
+</urlset>

@@ -1,0 +1,27 @@
+---
+title: Empty basket
+order: 11
+description: "What the basket says when there’s nothing in it."
+---
+{% from "docs.njk" import example, usage %}
+{% from "patterns/section/section.njk" import section %}
+{% from "patterns/empty-cart/empty-cart.njk" import emptyCart %}
+<header class="docs-header">
+  <p class="docs-eyebrow">Pattern</p>
+  <h1>Empty basket</h1>
+  <p class="docs-lede">What the basket says when there’s nothing in it.</p>
+</header>
+
+<section class="docs-section" aria-labelledby="use">
+  <h2 id="use">Use it</h2>
+  {% set code %}{% raw %}{% from "patterns/empty-cart/empty-cart.njk" import emptyCart %}
+{{ emptyCart() }}{% endraw %}{% endset %}
+  {{ usage(code) }}
+  <p><strong>Used on:</strong> The cart drawer (passed in by the base layout) and /cart/</p>
+</section>
+
+<section class="docs-section" aria-labelledby="example">
+  <h2 id="example">Example</h2>
+  {% set ex %}<div class="docs-stack">{{ emptyCart() }}</div>{% endset %}
+  {{ example("Empty basket", ex, { wide: true, noCode: true }) }}
+</section>

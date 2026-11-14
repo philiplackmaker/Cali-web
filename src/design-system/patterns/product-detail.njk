@@ -1,0 +1,28 @@
+---
+title: Product detail
+order: 9
+description: "Gallery beside the wall label: price, buying, details and delivery."
+---
+{% from "docs.njk" import example, usage %}
+{% from "patterns/section/section.njk" import section %}
+{% from "patterns/product-detail/product-detail.njk" import productDetail %}
+<header class="docs-header">
+  <p class="docs-eyebrow">Pattern</p>
+  <h1>Product detail</h1>
+  <p class="docs-lede">Gallery beside the wall label: price, buying, details and delivery.</p>
+</header>
+
+<section class="docs-section" aria-labelledby="use">
+  <h2 id="use">Use it</h2>
+  {% set code %}{% raw %}{% from "patterns/product-detail/product-detail.njk" import productDetail %}
+{{ productDetail(product) }}{% endraw %}{% endset %}
+  {{ usage(code) }}
+  <p><strong>Used on:</strong> /shop/{handle}/</p>
+  <p>Handles originals, prints (variant picker and quantity), sold work (sold notice), and price on request. On wide screens the painting stays in view while you scroll the details.</p>
+</section>
+
+<section class="docs-section" aria-labelledby="example">
+  <h2 id="example">Example</h2>
+  {% set ex %}{{ productDetail(mock.byHandle["sun-hat-with-tulip"]) }}{% endset %}
+  {{ example("Product detail", ex, { wide: true, noCode: true }) }}
+</section>

@@ -1,0 +1,50 @@
+---
+title: Price
+order: 5
+description: Prices, sale prices and "from" prices, formatted with Intl.NumberFormat.
+---
+{% from "docs.njk" import example, usage, props %}
+{% from "components/price/price.njk" import price %}
+<header class="docs-header">
+  <p class="docs-eyebrow">Component · Partial</p>
+  <h1>Price</h1>
+  <p class="docs-lede">Quiet and exact. Sales are just a struck-through old price, with no colour. Formats prices in pounds, with no pence on whole amounts (£450, but £45.50). The browser uses the same code in <code>src/scripts/lib/money.js</code> to update the price when someone picks a print size.</p>
+</header>
+
+<section class="docs-section" aria-labelledby="use">
+  <h2 id="use">Use it</h2>
+  {% set code %}{% raw %}{% from "components/price/price.njk" import price %}
+{{ price(variant) }}                     {# { price, compareAtPrice } #}
+{{ price(product, { size: "lg" }) }}     {# { priceRange, compareAtPriceRange }: shows "From" when prices differ #}{% endraw %}{% endset %}
+  {{ usage(code) }}
+  {{ props([
+    ["input", "Variant | Product", "Straight from the catalogue."],
+    ["size", "\"lg\"", "Bigger, in Lora, for the product page."],
+    ["onRequest", "boolean", "Shows “Price on request” instead. Pass product | isPriceOnRequest."]
+  ]) }}
+</section>
+
+<section class="docs-section" aria-labelledby="variants">
+  <h2 id="variants">Variants</h2>
+  <div class="docs-examples">
+    {% set ex %}{{ price(mock.byHandle["sun-hat-with-tulip"]) }}{% endset %}
+    {{ example("Single price (an original)", ex) }}
+    {% set ex %}{{ price(mock.byHandle["sun-hat-with-tulip-print"]) }}{% endset %}
+    {{ example("From (a print with several sizes)", ex) }}
+    {% set ex %}{{ price(mock.byHandle["pink-check-print"].variants.nodes[0]) }}{% endset %}
+    {{ example("On sale", ex) }}
+    {% set ex %}{{ price(mock.byHandle["sun-hat-with-tulip"], { size: "lg" }) }}{% endset %}
+    {{ example("Large", ex) }}
+    {% set ex %}{{ price(mock.byHandle["large-interior-redland"], { onRequest: true }) }}{% endset %}
+    {{ example("Price on request (“on request” in the sheet)", ex) }}
+    {% set ex %}{{ price({ price: { amount: "45.5", currencyCode: "GBP" } }) }}{% endset %}
+    {{ example("With pence", ex) }}
+  </div>
+</section>
+
+<section class="docs-section" aria-labelledby="a11y">
+  <h2 id="a11y">Accessibility</h2>
+  <ul class="docs-list">
+    <li>Sale prices read as “£35, on sale, Was £45”. The struck-through price isn't left to visual styling alone.</li>
+  </ul>
+</section>

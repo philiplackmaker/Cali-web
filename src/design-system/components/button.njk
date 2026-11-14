@@ -1,0 +1,75 @@
+---
+title: Button
+order: 1
+description: Primary, secondary and quiet buttons with loading and disabled states.
+---
+{% from "docs.njk" import example, usage, props %}
+{% from "components/button/button.njk" import button %}
+<header class="docs-header">
+  <p class="docs-eyebrow">Component · Partial</p>
+  <h1>Button</h1>
+  <p class="docs-lede">For doing something: adding to the basket, subscribing, checking out. If it goes somewhere instead, give it an <code>href</code> and it renders as a link that looks like a button.</p>
+</header>
+
+<section class="docs-section" aria-labelledby="use">
+  <h2 id="use">Use it</h2>
+  {% set code %}{% raw %}{% from "components/button/button.njk" import button %}
+{{ button({ label: "Add to basket", type: "submit", full: true }) }}
+{{ button({ label: "Browse the shop", href: "/shop/", variant: "secondary" }) }}{% endraw %}{% endset %}
+  {{ usage(code) }}
+  {{ props([
+    ["label", "string", "The words on the button. Say what happens: “Add to basket”, not “Submit”."],
+    ["variant", "\"primary\" | \"secondary\" | \"quiet\"", "Defaults to primary. Use one primary per area."],
+    ["href", "string", "Renders an <a> instead of a <button>."],
+    ["type", "\"button\" | \"submit\"", "Defaults to button."],
+    ["icon / iconEnd", "icon name", "An icon before or after the label."],
+    ["full", "boolean", "Fills its container's width."],
+    ["disabled", "boolean", "Can't be used. Prefer explaining why nearby."],
+    ["loading", "boolean", "Shows a spinner and sets aria-busy. Use loadingLabel to change the words."],
+    ["attrs", "object", "Extra attributes, e.g. { \"data-cart-open\": \"\" }."]
+  ]) }}
+</section>
+
+<section class="docs-section" aria-labelledby="variants">
+  <h2 id="variants">Variants and states</h2>
+  <div class="docs-examples">
+    {% set ex %}{{ button({ label: "Add to basket" }) }}
+{{ button({ label: "Browse the shop", variant: "secondary" }) }}
+{{ button({ label: "Sign up again", variant: "quiet" }) }}{% endset %}
+    {{ example("Primary, secondary, quiet", ex) }}
+
+    {% set ex %}{{ button({ label: "Checkout", iconEnd: "arrow-right" }) }}
+{{ button({ label: "Basket", icon: "bag", variant: "secondary" }) }}{% endset %}
+    {{ example("With icons", ex) }}
+
+    {% set ex %}{{ button({ label: "Add to basket", loading: true, loadingLabel: "Adding…" }) }}
+{{ button({ label: "Sold out", disabled: true }) }}
+{{ button({ label: "Unavailable", variant: "secondary", disabled: true }) }}{% endset %}
+    {{ example("Loading and disabled", ex) }}
+
+    {% set ex %}<div class="docs-stack">{{ button({ label: "Add to basket", full: true }) }}</div>{% endset %}
+    {{ example("Full width", ex) }}
+
+    {% set ex %}{{ button({ label: "Subscribe" }) }} {{ button({ label: "Read more", variant: "secondary" }) }}{% endset %}
+    {{ example("On the pink band", ex, { band: true }) }}
+  </div>
+</section>
+
+<section class="docs-section" aria-labelledby="guidelines">
+  <h2 id="guidelines">Guidelines</h2>
+  <ul class="docs-list">
+    <li>One primary button per area. Next to the paintings the UI should stay quiet.</li>
+    <li>Write labels in Cali's voice, short and plain: “Add to basket”, “Subscribe”, “Checkout”.</li>
+    <li>Use <strong>quiet</strong> for small actions that sit inside other content, like “Remove” or “Sign up again”.</li>
+  </ul>
+</section>
+
+<section class="docs-section" aria-labelledby="a11y">
+  <h2 id="a11y">Accessibility</h2>
+  <ul class="docs-list">
+    <li>At least 44 × 44px, the minimum touch target.</li>
+    <li>The focus ring uses <code>--ds-color-focus-ring</code> and has 3:1 contrast on every surface.</li>
+    <li>While loading, the button gets <code>aria-busy="true"</code> and <code>aria-disabled="true"</code> but stays focusable, so the keyboard position isn't lost.</li>
+    <li>The press nudge and colour fades turn off with reduced motion.</li>
+  </ul>
+</section>

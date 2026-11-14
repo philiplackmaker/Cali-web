@@ -1,0 +1,86 @@
+.ds-product {
+  display: grid;
+  gap: var(--ds-space-stack-lg);
+  max-inline-size: var(--ds-layout-page);
+  margin-inline: auto;
+  padding: var(--ds-space-stack-md) var(--ds-space-gutter) var(--ds-space-section);
+}
+
+@media (width >= 53.75rem) {
+  .ds-product {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    column-gap: var(--ds-space-stack-xl);
+    align-items: start;
+  }
+
+  .ds-product__back {
+    grid-column: 1 / -1;
+  }
+
+  /* The painting stays in view while you read and choose. */
+  .ds-product__gallery {
+    position: sticky;
+    inset-block-start: var(--ds-space-stack-md);
+  }
+}
+
+.ds-product__gallery .ds-artwork-image {
+  display: grid;
+  justify-items: center;
+  background: transparent;
+}
+
+.ds-product__gallery .ds-artwork-image__img {
+  inline-size: auto;
+  max-inline-size: 100%;
+  max-block-size: var(--ds-layout-hero-max);
+  box-shadow: var(--ds-elevation-card);
+}
+
+.ds-product__info {
+  display: grid;
+  gap: var(--ds-space-stack-md);
+  max-inline-size: var(--ds-layout-content);
+}
+
+.ds-product__title {
+  font-size: var(--ds-type-heading-xl-size);
+}
+
+.ds-product__summary {
+  margin-block-start: calc(-1 * var(--ds-space-stack-xs));
+  color: var(--ds-color-text-muted);
+}
+
+.ds-product__description {
+  display: grid;
+  gap: var(--ds-space-stack-sm);
+  max-inline-size: var(--ds-layout-prose);
+}
+
+.ds-product__shipping {
+  color: var(--ds-color-text-muted);
+  font-size: var(--ds-type-small-size);
+}
+
+.ds-product .ds-error-banner {
+  margin: 0;
+}
+
+.ds-product__buy {
+  display: grid;
+  gap: var(--ds-space-stack-md);
+}
+
+/* A short studio clip under the description (product.clip, from the admin). */
+.ds-product__clip {
+  display: grid;
+  gap: var(--ds-space-stack-xs);
+  max-inline-size: var(--ds-layout-column-md);
+  margin: 0;
+}
+
+.ds-product__clip-caption {
+  color: var(--ds-color-text-muted);
+  font-size: var(--ds-type-small-size);
+}

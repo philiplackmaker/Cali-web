@@ -1,0 +1,28 @@
+---
+title: Enquiry form
+order: 15
+description: "Commissions, viewings and questions about a painting."
+---
+{% from "docs.njk" import example, usage %}
+{% from "patterns/section/section.njk" import section %}
+{% from "patterns/enquiry-form/enquiry-form.njk" import enquiryForm %}
+<header class="docs-header">
+  <p class="docs-eyebrow">Pattern</p>
+  <h1>Enquiry form</h1>
+  <p class="docs-lede">Commissions, viewings and questions about a painting.</p>
+</header>
+
+<section class="docs-section" aria-labelledby="use">
+  <h2 id="use">Use it</h2>
+  {% set code %}{% raw %}{% from "patterns/enquiry-form/enquiry-form.njk" import enquiryForm %}
+{{ enquiryForm({ products: shop.products }) }}{% endraw %}{% endset %}
+  {{ usage(code) }}
+  <p><strong>Used on:</strong> /contact/</p>
+  <p>Sent with Netlify Forms (form name <code>enquiry</code>, with a honeypot against spam) to <code>/contact/thanks/</code>. <code>?about=&lt;handle&gt;</code> or <code>?viewing=&lt;handle&gt;</code> fills in the topic and painting. JS checks the required fields with messages in Cali’s voice. Without JS, the browser does it.</p>
+</section>
+
+<section class="docs-section" aria-labelledby="example">
+  <h2 id="example">Example</h2>
+  {% set ex %}<div class="docs-stack">{{ enquiryForm({ products: shop.products }) }}</div>{% endset %}
+  {{ example("Enquiry form", ex, { wide: true, noCode: true }) }}
+</section>

@@ -1,0 +1,51 @@
+---
+title: Email signup
+order: 8
+description: The Studio Letter signup, with error, loading and success states.
+---
+{% from "docs.njk" import example, usage, props %}
+{% from "components/email-signup/email-signup.njk" import emailSignup %}
+<header class="docs-header">
+  <p class="docs-eyebrow">Component · Partial + &lt;email-signup&gt;</p>
+  <h1>Email signup</h1>
+  <p class="docs-lede">The Studio Letter. It posts to the same Google Apps Script as the current site, which writes each email into the signups sheet. Without JS the form posts straight there. With JS it validates, sends in the background, and says “You're on the list.” in place.</p>
+</header>
+
+<section class="docs-section" aria-labelledby="use">
+  <h2 id="use">Use it</h2>
+  {% set code %}{% raw %}{% from "components/email-signup/email-signup.njk" import emailSignup %}
+{{ emailSignup({ id: "home-signup", headingLevel: 2 }) }}
+{{ emailSignup({ id: "footer-signup", compact: true, onBand: true }) }}{% endraw %}{% endset %}
+  {{ usage(code) }}
+  {{ props([
+    ["id", "string", "Unique per page. Prefixes the input and message ids."],
+    ["heading / headingLevel", "string / 2–4", "Defaults to “Sign up for new work” as an h2."],
+    ["compact", "boolean", "Smaller heading, for the footer."],
+    ["onBand", "boolean", "Set when it sits on the pink band: errors switch to maroon so they keep 4.5:1 contrast."],
+    ["state", "\"error\" | \"loading\" | \"success\"", "Docs only: renders a state without JS."]
+  ]) }}
+</section>
+
+<section class="docs-section" aria-labelledby="states">
+  <h2 id="states">States</h2>
+  <p>The first example is live: try submitting it empty, or with a bad address. <strong>A valid address really will be added to the signups sheet.</strong></p>
+  <div class="docs-examples">
+    {% set ex %}<div class="docs-stack">{{ emailSignup({ id: "ex-live", headingLevel: 3 }) }}</div>{% endset %}
+    {{ example("Default (live)", ex) }}
+    {% set ex %}<div class="docs-stack">{{ emailSignup({ id: "ex-band", headingLevel: 3, onBand: true, state: "error", error: "That doesn’t look like a valid email address." }) }}</div>{% endset %}
+    {{ example("Error, on the pink band", ex, { band: true }) }}
+    {% set ex %}<div class="docs-stack">{{ emailSignup({ id: "ex-loading", headingLevel: 3, compact: true, state: "loading" }) }}</div>{% endset %}
+    {{ example("Loading, compact", ex) }}
+    {% set ex %}<div class="docs-stack">{{ emailSignup({ id: "ex-success", headingLevel: 3, state: "success" }) }}</div>{% endset %}
+    {{ example("Success", ex) }}
+  </div>
+</section>
+
+<section class="docs-section" aria-labelledby="a11y">
+  <h2 id="a11y">Accessibility</h2>
+  <ul class="docs-list">
+    <li>The email label is visually hidden but always there. The form is deliberately not a named landmark, so pages with two signups (a band and the footer) don’t end up with duplicate landmarks.</li>
+    <li>Errors are tied to the input with <code>aria-describedby</code> and set <code>aria-invalid</code>. Focus goes back to the input.</li>
+    <li>The success message is in a <code>role="status"</code> region, so it's read out.</li>
+  </ul>
+</section>

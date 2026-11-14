@@ -1,0 +1,28 @@
+---
+title: Sold notice
+order: 10
+description: "On a sold original’s page, which stays live."
+---
+{% from "docs.njk" import example, usage %}
+{% from "patterns/section/section.njk" import section %}
+{% from "patterns/sold-notice/sold-notice.njk" import soldNotice %}
+<header class="docs-header">
+  <p class="docs-eyebrow">Pattern</p>
+  <h1>Sold notice</h1>
+  <p class="docs-lede">On a sold original’s page, which stays live.</p>
+</header>
+
+<section class="docs-section" aria-labelledby="use">
+  <h2 id="use">Use it</h2>
+  {% set code %}{% raw %}{% from "patterns/sold-notice/sold-notice.njk" import soldNotice %}
+{{ soldNotice(product) }}{% endraw %}{% endset %}
+  {{ usage(code) }}
+  <p><strong>Used on:</strong> Product pages for sold originals</p>
+  <p>Sold pages are never removed, because people find them from Instagram and search. They point to commissions and to what’s available now.</p>
+</section>
+
+<section class="docs-section" aria-labelledby="example">
+  <h2 id="example">Example</h2>
+  {% set ex %}<div class="docs-stack">{{ soldNotice(mock.byHandle["afternoon-montpelier"]) }}</div>{% endset %}
+  {{ example("Sold notice", ex, { wide: true, noCode: true }) }}
+</section>
