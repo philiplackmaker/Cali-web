@@ -344,7 +344,7 @@ collections:
     editor: { preview: false }
     files:
       - name: delivery
-        label: Delivery
+        label: Delivery and originals
         file: content/settings.json
         fields:
           - label: Delivery prices
@@ -366,4 +366,10 @@ collections:
                   hint: 'e.g. Royal Mail tracked, 2 to 5 working days',
                 }
           - { label: Delivery line on print pages, name: printsDelivery, widget: text }
+          - label: What comes with every original
+            name: originalPromises
+            widget: list
+            allow_add: true
+            hint: 'Listed in the details of every original, e.g. "Signed by me". Only include what is true for every original.'
+            field: { label: Promise, name: promise, widget: string }
           - { label: Delivery line on original pages, name: originalsDelivery, widget: text }

@@ -59,7 +59,9 @@ for (const file of pages) {
     if (/data-catalogue="fixture"/.test(html)) {
       fail(rel, 'built from the test products, not content/ (unset SHOP_FIXTURE)');
     }
-    if (/TODO copy|Placeholder|placeholder copy/i.test(html.replace(/placeholder="[^"]*"/g, '')))
+    // Look at the page text only: not form hints (placeholder="…") or the inlined CSS (::placeholder).
+    const text = html.replace(/<style[\s\S]*?<\/style>/g, '').replace(/placeholder="[^"]*"/g, '');
+    if (/TODO copy|Placeholder|placeholder copy/i.test(text))
       fail(rel, 'still has placeholder copy (search the template for TODO)');
   }
 

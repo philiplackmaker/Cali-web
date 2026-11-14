@@ -26,13 +26,9 @@ export default {
       ? (process.env.CLOUDFLARE_ANALYTICS_TOKEN ?? null)
       : null,
 
-  // What comes with every original. Shown in Product details.
-  // TODO copy: Cali to confirm each promise before launch.
-  originalPromises: [
-    'Signed by me',
-    'Certificate of authenticity',
-    'Insured, tracked delivery, packed by me',
-  ],
+  // What comes with every original, shown in Product details. Edited in the admin
+  // (Settings → Delivery and originals); Cali to confirm each before launch.
+  originalPromises: settings.originalPromises ?? [],
 
   // Ways to spread the cost, shown in the Collector note. Leave off until they're real:
   // instalments needs a payment method that offers them at Stripe Checkout (e.g. Klarna,

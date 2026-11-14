@@ -14,5 +14,10 @@
     }
   ],
   "printsDelivery": "Prints are made to order and ship within 7 working days, rolled in a sturdy tube. Placeholder: confirm times.",
-  "originalsDelivery": "Originals ship from Bristol within 5 working days, insured and tracked. Placeholder: confirm times and costs."
+  "originalsDelivery": "Originals ship from Bristol within 5 working days, insured and tracked. Placeholder: confirm times and costs.",
+  "originalPromises": [
+    "Signed by me",
+    "Certificate of authenticity",
+    "Insured, tracked delivery, packed by me"
+  ]
 }
