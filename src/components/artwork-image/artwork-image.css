@@ -10,6 +10,9 @@
 }
 
 .ds-artwork-image--framed {
+  /* The frame is a size container, so the painting can fit itself inside it ("contain")
+     from its own proportions (--ds-art-ratio, set in the template), before it has loaded. */
+  container-type: size;
   display: grid;
   place-items: center;
   aspect-ratio: var(--ds-product-card-image-ratio);
@@ -18,10 +21,7 @@
 }
 
 .ds-artwork-image--framed .ds-artwork-image__img {
-  inline-size: auto;
-  max-inline-size: 100%;
-  max-block-size: 100%;
+  inline-size: min(100cqi, 100cqb * var(--ds-art-ratio, 1));
   block-size: auto;
-  object-fit: contain;
   box-shadow: var(--ds-elevation-card);
 }

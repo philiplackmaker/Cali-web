@@ -42,7 +42,13 @@ function withFallbackPhotos(photos, products) {
 }
 
 export async function loadShop({ outputDir = '_site' } = {}) {
-  const { source, products, photos } = await loadProducts({ outputDir });
+  const loaded = await loadProducts({ outputDir });
+  const { source, photos } = loaded;
+  // For sale first, sold at the end (they stay as a portfolio). Each group keeps its order.
+  const products = [
+    ...loaded.products.filter((p) => p.availableForSale),
+    ...loaded.products.filter((p) => !p.availableForSale),
+  ];
   const originals = products.filter((p) => p.tags.includes('original'));
   const prints = products.filter((p) => p.tags.includes('print'));
   const collections = [

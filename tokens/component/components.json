@@ -17,7 +17,8 @@
     "image": {
       "ratio": {
         "$type": "number",
-        "$value": "{aspect.artwork}"
+        "$value": "{ratio.square}",
+        "$description": "Square frames on the shop and home cards, so the grid lines up; the whole painting shows inside"
       },
       "padding": {
         "$type": "dimension",

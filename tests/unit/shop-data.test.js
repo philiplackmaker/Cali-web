@@ -30,6 +30,20 @@ test('the build reads Cali’s products from content/ (what /admin/ edits)', asy
   assert.equal(shop.photos.studio.length, 3);
 });
 
+test('sold pieces come after everything for sale', async () => {
+  process.env.SHOP_FIXTURE = 'mock';
+  const shop = await loadShop();
+  delete process.env.SHOP_FIXTURE;
+  for (const c of shop.collections) {
+    const firstSold = c.products.findIndex((p) => !p.availableForSale);
+    if (firstSold >= 0)
+      assert.ok(
+        c.products.slice(firstSold).every((p) => !p.availableForSale),
+        c.handle,
+      );
+  }
+});
+
 test('SHOP_FIXTURE=mock uses the test products, with originals and sold work', async () => {
   process.env.SHOP_FIXTURE = 'mock';
   const shop = await loadShop();
