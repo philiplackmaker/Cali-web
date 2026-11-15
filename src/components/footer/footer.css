@@ -62,6 +62,13 @@
   padding-block-start: var(--ds-space-stack-md);
   border-block-start: var(--ds-line-hairline) solid var(--ds-color-border-subtle);
   font-size: var(--ds-type-small-size);
+  flex-wrap: wrap;
+}
+
+/* The design system link sits at the far end of the small print. */
+.ds-footer__system {
+  margin-inline-start: auto;
+  color: inherit;
 }
 
 .ds-footer__mark {
