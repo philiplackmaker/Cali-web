@@ -1,0 +1,27 @@
+{
+  "added": "2026-11-15T06:59",
+  "ukOnly": true,
+  "priceOnRequest": false,
+  "published": true,
+  "sold": false,
+  "title": "Philip is the best",
+  "images": [
+    {
+      "image": "/content/uploads/3182366c-e048-4e0d-8904-edb781713162_1_105_c.jpeg",
+      "alt": "mario"
+    },
+    {
+      "image": "/content/uploads/3182366c-e048-4e0d-8904-edb781713162_1_105_c.jpeg",
+      "alt": "n"
+    }
+  ],
+  "type": "Print",
+  "options": [
+    {
+      "sold": false,
+      "price": 0.5,
+      "size": "20cm"
+    }
+  ],
+  "postage": 0
+}
