@@ -30,7 +30,7 @@ export default async (request) => {
         headers: { Authorization: `Bearer ${key}` },
       });
       checks.stripe = res.ok
-        ? `ok, ${key.startsWith('sk_live_') ? 'live' : 'test'} mode`
+        ? `ok, ${key.includes('_live_') ? 'live' : 'test'} mode`
         : `Stripe said ${res.status}`;
     } catch (error) {
       checks.stripe = `can't reach Stripe: ${error.message}`;
