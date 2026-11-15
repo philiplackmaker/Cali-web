@@ -3,7 +3,7 @@
 // cart store; every change is announced in an aria-live region.
 import { getCartStore } from '../../scripts/commerce.js';
 import { formatMoney } from '../../scripts/lib/money.js';
-import { postageFor, ukOnly } from '../../scripts/lib/delivery.js';
+import { postageFor, ukOnly, isCollection } from '../../scripts/lib/delivery.js';
 import { imageUrl, srcset, widthsFor } from '../../scripts/lib/image.js';
 import '../quantity-input/quantity-input.js';
 
@@ -154,14 +154,14 @@ class CartDrawer extends HTMLElement {
     for (const label of this.querySelectorAll('[data-delivery-option]')) {
       const input = label.querySelector('input');
       const option = { id: input.value, amount: Number(input.dataset.amount) };
-      const blocked = onlyUk && option.id !== 'uk';
+      const blocked = onlyUk && option.id !== 'uk' && !isCollection(option);
       label.hidden = blocked;
       input.disabled = blocked;
       if (blocked && input.checked) this.querySelector('input[value="uk"]').checked = true;
-      label.querySelector('[data-delivery-price]').textContent = formatMoney({
-        amount: postageFor(option, products),
-        currencyCode: 'GBP',
-      });
+      const postage = postageFor(option, products);
+      label.querySelector('[data-delivery-price]').textContent = postage
+        ? formatMoney({ amount: postage, currencyCode: 'GBP' })
+        : 'Free';
     }
   }
 

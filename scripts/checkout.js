@@ -3,7 +3,7 @@
 // stock come from the site's own built catalogue, so nobody can change a price in the page.
 // Talks to Stripe's REST API with fetch: no SDK needed.
 import { imageUrl, widthsFor } from '../src/scripts/lib/image.js';
-import { availableOptions, postageFor } from '../src/scripts/lib/delivery.js';
+import { availableOptions, postageFor, isCollection } from '../src/scripts/lib/delivery.js';
 
 const STRIPE_API = 'https://api.stripe.com/v1';
 const MAX_QUANTITY = 20;
@@ -98,17 +98,26 @@ export function sessionParams({ resolved, delivery, origin }) {
         },
       };
     }),
-    shipping_address_collection: { allowed_countries: countries },
+    // Collection needs no address; a phone number helps Cali arrange a time.
+    ...(countries
+      ? { shipping_address_collection: { allowed_countries: countries } }
+      : { phone_number_collection: { enabled: true } }),
     shipping_options: [
       {
         shipping_rate_data: {
           type: 'fixed_amount',
-          display_name: `${delivery.label} delivery`,
+          display_name: isCollection(delivery) ? delivery.label : `${delivery.label} delivery`,
           fixed_amount: { amount: Math.round(delivery.amount * 100), currency: 'gbp' },
         },
       },
     ],
-    metadata: { delivery: delivery.id },
+    // originals tells the webhook (netlify/functions/stripe-webhook.mjs) to rebuild once paid.
+    metadata: {
+      delivery: delivery.id,
+      ...(originals.length
+        ? { originals: originals.map((l) => l.merchandise.product.handle).join(',') }
+        : {}),
+    },
     // Lets the next buyer's checkout see that an original has sold (see soldOriginals).
     ...(originals.length
       ? {
@@ -157,13 +166,19 @@ export async function soldOriginals(resolved, { key, fetch: fetchImpl }) {
     .map((l) => l.merchandise.product.handle);
   const sold = [];
   for (const handle of handles) {
+    const query = { query: `status:'succeeded' AND metadata['original_${handle}']:'yes'` };
     try {
+      // With the refund details when the key may read charges, so a refunded piece can sell again.
       const result = await stripe('/payment_intents/search', {
         key,
         fetch: fetchImpl,
-        query: { query: `status:'succeeded' AND metadata['original_${handle}']:'yes'`, limit: 1 },
-      });
-      if (result.data?.length) sold.push(handle);
+        query: { ...query, 'expand[]': 'data.latest_charge' },
+      }).catch((error) =>
+        /^Stripe 403/.test(error.message)
+          ? stripe('/payment_intents/search', { key, fetch: fetchImpl, query })
+          : Promise.reject(error),
+      );
+      if (result.data?.some((pi) => pi.latest_charge?.refunded !== true)) sold.push(handle);
     } catch (error) {
       console.warn(`[checkout] Couldn't check whether ${handle} has sold: ${error.message}`);
     }

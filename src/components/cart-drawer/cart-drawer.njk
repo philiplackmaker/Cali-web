@@ -42,11 +42,11 @@
             <dd data-cart-subtotal></dd>
           </dl>
           <fieldset class="ds-cart-drawer__delivery">
-            <legend class="ds-cart-drawer__delivery-legend">Delivery to</legend>
+            <legend class="ds-cart-drawer__delivery-legend">Delivery</legend>
             {%- for d in site.delivery %}
             <label class="ds-cart-drawer__delivery-option" data-delivery-option>
               <input type="radio" name="delivery" value="{{ d.id }}" data-amount="{{ d.amount }}"{% if loop.first %} checked{% endif %}>
-              <span class="ds-cart-drawer__delivery-label">{{ d.label }}, <span data-delivery-price>{{ { amount: d.amount, currencyCode: "GBP" } | money }}</span></span>
+              <span class="ds-cart-drawer__delivery-label">{{ d.label }}, <span data-delivery-price>{{ "Free" if d.amount == 0 else ({ amount: d.amount, currencyCode: "GBP" } | money) }}</span></span>
               <span class="ds-cart-drawer__note">{{ d.description }}</span>
             </label>
             {%- endfor %}

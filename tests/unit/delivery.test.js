@@ -24,3 +24,9 @@ test('anything UK only means UK delivery only', () => {
   assert.deepEqual(availableOptions([UK, WORLD], [print]), [UK, WORLD]);
   assert.deepEqual(availableOptions([UK, WORLD], [print, horse]), [UK]);
 });
+
+test('Collect in Bristol is free and open to everything, UK-only originals included', () => {
+  const COLLECT = { id: 'collect', amount: 0 };
+  assert.equal(postageFor(COLLECT, [horse, print]), 0);
+  assert.deepEqual(availableOptions([UK, WORLD, COLLECT], [horse]), [UK, COLLECT]);
+});

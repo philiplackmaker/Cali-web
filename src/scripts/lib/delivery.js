@@ -5,6 +5,7 @@
 //   - Prints use the delivery option's price (Settings → Delivery: UK or rest of the world).
 //   - Everything goes in one parcel, so the basket pays the single HIGHEST postage.
 //   - A basket with anything UK-only can only be delivered to the UK.
+//   - Collect in Bristol (id "collect") is free and works for everything.
 
 /** The shipping info a basket line's product carries: { postage: number|null, ukOnly: bool }. */
 const shippingOf = (line) => line?.product?.shipping ?? line?.merchandise?.product?.shipping ?? {};
@@ -14,9 +15,12 @@ export function ukOnly(products) {
   return products.some((p) => Boolean(shippingOf({ product: p }).ukOnly));
 }
 
+/** True for the free Collect in Bristol option: no postage, no address. */
+export const isCollection = (option) => option?.id === 'collect';
+
 /** The delivery options this basket can use (drops "rest of the world" if anything is UK only). */
 export function availableOptions(options, products) {
-  return ukOnly(products) ? options.filter((o) => o.id === 'uk') : options;
+  return ukOnly(products) ? options.filter((o) => o.id === 'uk' || isCollection(o)) : options;
 }
 
 /**
@@ -24,6 +28,7 @@ export function availableOptions(options, products) {
  * postage, and the option's price for any item without one.
  */
 export function postageFor(option, products) {
+  if (isCollection(option)) return 0;
   const amounts = products.map((p) => {
     const own = shippingOf({ product: p }).postage;
     return typeof own === 'number' && own >= 0 ? own : option.amount;

@@ -23,12 +23,13 @@ test('every page file has the text its template needs', () => {
   }
 });
 
-test('delivery settings: UK and the rest of the world, with prices', () => {
+test('delivery settings: UK, the rest of the world and collection, with prices', () => {
   assert.deepEqual(
-    site.delivery.map((d) => [d.id, typeof d.amount, d.countries === 'world' || d.countries[0]]),
+    site.delivery.map((d) => [d.id, typeof d.amount, d.countries === 'world' || d.countries?.[0]]),
     [
       ['uk', 'number', 'GB'],
       ['world', 'number', true],
+      ['collect', 'number', undefined],
     ],
   );
   assert.ok(site.printsDelivery && site.originalsDelivery);

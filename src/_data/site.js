@@ -2,7 +2,8 @@
 import settings from '../../content/settings.json' with { type: 'json' };
 
 // Where each delivery option goes. Stripe only accepts addresses in these countries.
-const COUNTRIES = { uk: ['GB'], world: 'world' };
+// Collect in Bristol needs no address, so Stripe doesn't ask for one.
+const COUNTRIES = { uk: ['GB'], world: 'world', collect: null };
 
 export default {
   name: 'Calico Melton',
@@ -45,7 +46,7 @@ export default {
     label: d.label,
     amount: Number(d.price),
     description: d.description,
-    countries: COUNTRIES[d.id] ?? ['GB'],
+    countries: d.id in COUNTRIES ? COUNTRIES[d.id] : ['GB'],
   })),
   // Returns, for Google's product data (Shopping and rich results need a returns policy).
   // Confirmed by Cali (14 November 2026). Keep it matching Shipping and FAQ → Returns.

@@ -11,6 +11,12 @@
       "label": "Rest of the world",
       "price": 12,
       "description": "Tracked international, 5 to 15 working days"
+    },
+    {
+      "id": "collect",
+      "label": "Collect in Bristol",
+      "price": 0,
+      "description": "I’ll email you after your order to arrange a time"
     }
   ],
   "printsDelivery": "Prints are made to order and ship within 10 working days, rolled in a sturdy tube or shipped flat. ",

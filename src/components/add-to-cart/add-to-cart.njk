@@ -44,11 +44,11 @@
       <div class="ds-add-to-cart__nojs">
         <p>Buy straight away at Stripe’s secure checkout:</p>
         <p>
-          <label for="nojs-delivery-{{ product.handle }}">Delivery to</label>
+          <label for="nojs-delivery-{{ product.handle }}">Delivery</label>
           <select id="nojs-delivery-{{ product.handle }}" name="delivery">
             {%- set ship = product.shipping or {} -%}
-            {%- for d in site.delivery %}{% if not ship.ukOnly or d.id == "uk" %}
-            <option value="{{ d.id }}">{{ d.label }}, {{ { amount: (ship.postage if ship.postage is number else d.amount), currencyCode: "GBP" } | money }}</option>
+            {%- for d in site.delivery %}{% if not ship.ukOnly or d.id == "uk" or d.id == "collect" %}
+            <option value="{{ d.id }}">{{ d.label }}, {{ "Free" if d.id == "collect" else ({ amount: (ship.postage if ship.postage is number else d.amount), currencyCode: "GBP" } | money) }}</option>
             {%- endif %}{% endfor %}
           </select>
         </p>

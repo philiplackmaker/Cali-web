@@ -14,7 +14,7 @@ eleventyComputed:
     <p>Delivery is chosen in your basket:</p>
     <ul>
       {%- for d in site.delivery %}
-      <li>{{ d.label }}: {{ { amount: d.amount, currencyCode: "GBP" } | money }}. {{ d.description }}.</li>
+      <li>{{ d.label }}: {{ "free" if d.amount == 0 else ({ amount: d.amount, currencyCode: "GBP" } | money) }}. {{ d.description }}.</li>
       {%- endfor %}
     </ul>
     {{ pages.info.shipping | md | safe }}

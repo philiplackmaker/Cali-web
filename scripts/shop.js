@@ -7,6 +7,7 @@
 // Payments go through Stripe Checkout (netlify/functions/checkout.mjs) in every case.
 import mock from '../src/_data/mock.js';
 import { loadContent } from './content.js';
+import { paidOriginals, markSold } from './stripe-sales.js';
 
 const PLACEHOLDER = { url: '/assets/images/mock/detail-{width}.webp', width: 520, height: 520 };
 
@@ -16,7 +17,24 @@ async function loadProducts({ outputDir }) {
   }
   const { products, photos } = await loadContent({ outputDir });
   console.log(`[shop] ${products.length} products from content/ (edited at /admin/).`);
-  return { source: 'content', products, photos };
+  return { source: 'content', products: await withStripeSales(products), photos };
+}
+
+/** Originals paid for through the shop show as sold, whether or not Sold was ticked. */
+async function withStripeSales(products) {
+  const key = process.env.STRIPE_SECRET_KEY;
+  if (!key) return products;
+  try {
+    const handles = await paidOriginals({ key });
+    const marked = markSold(products, handles);
+    const newlySold = marked.filter((p, i) => p !== products[i]).map((p) => p.title);
+    if (newlySold.length) console.log(`[shop] Sold through the shop: ${newlySold.join(', ')}.`);
+    return marked;
+  } catch (error) {
+    // Checkout still refuses a second sale; the page just shows the admin's Sold switch.
+    console.warn(`[shop] Couldn't ask Stripe what has sold: ${error.message}`);
+    return products;
+  }
 }
 
 /** Fills any photo the sheet's Photos tab doesn't set, from the paintings themselves. */

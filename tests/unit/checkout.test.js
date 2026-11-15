@@ -220,3 +220,21 @@ test('postage: the highest in the basket, and UK only with an original', async (
     (e) => e instanceof CheckoutError && /UK only/.test(e.message),
   );
 });
+
+test('collection: no postage, no address, a phone number instead', async () => {
+  const COLLECT = { id: 'collect', label: 'Collect in Bristol', amount: 0, countries: null };
+  const { fetch, calls } = fakeStripe();
+  await createCheckout({
+    form: new URLSearchParams('id=pink-check/original&quantity=1&delivery=collect'),
+    catalog,
+    deliveryOptions: [...DELIVERY, COLLECT],
+    origin: 'https://calicomelton.com',
+    key: 'sk_test_123',
+    fetch,
+  });
+  const body = decodeURIComponent(calls.at(-1).init.body);
+  assert.match(body, /fixed_amount\]\[amount\]=0/);
+  assert.match(body, /display_name\]=Collect\+in\+Bristol&/);
+  assert.match(body, /phone_number_collection\[enabled\]=true/);
+  assert.doesNotMatch(body, /shipping_address_collection/);
+});
