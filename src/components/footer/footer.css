@@ -65,9 +65,8 @@
   flex-wrap: wrap;
 }
 
-/* The design system link sits at the far end of the small print. */
+/* The design system link follows the small print, after a dot. */
 .ds-footer__system {
-  margin-inline-start: auto;
   color: inherit;
 }
 
