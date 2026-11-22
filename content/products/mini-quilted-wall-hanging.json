@@ -1,25 +1,25 @@
 {
-  "title": "Mini Quilted Wall Hanging",
-  "type": "Original",
+  "added": "2026-11-14T15:52",
+  "ukOnly": true,
+  "priceOnRequest": false,
   "published": true,
   "sold": false,
-  "added": "2026-11-14T15:52",
-  "description": "Original quilted art, inspired by my paintings. Perfect for a nursery, or as a year-round decoration.",
   "medium": "Linen and cotton, quilted",
-  "options": [
-    {
-      "size": "27 × 31 cm",
-      "price": 61,
-      "sold": false
-    }
-  ],
-  "priceOnRequest": false,
-  "postage": 4,
-  "ukOnly": true,
+  "title": "Mini Quilted Wall Hanging",
   "images": [
     {
       "image": "/content/uploads/mini-quilted-wall-hanging.jpg",
       "alt": "Mini Quilted Wall Hanging by Calico Melton: a black quilted hanging with a white dove and pink stars, on a wooden rod with checked ties."
     }
-  ]
+  ],
+  "type": "Original",
+  "description": "Original quilted art, inspired by my paintings. Perfect for a nursery, or as a year-round decoration.",
+  "options": [
+    {
+      "size": "27 × 31 cm",
+      "price": 37,
+      "sold": false
+    }
+  ],
+  "postage": 4
 }
