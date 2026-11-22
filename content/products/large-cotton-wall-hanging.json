@@ -1,25 +1,25 @@
 {
-  "title": "Large Cotton Wall Hanging",
-  "type": "Original",
+  "added": "2026-11-14T15:51",
+  "ukOnly": true,
+  "priceOnRequest": false,
   "published": true,
   "sold": false,
-  "added": "2026-11-14T15:51",
-  "description": "A large cotton and linen wall hanging with a hand-cut appliqué illustration based on my artwork. A soft, textural piece for a nursery, or an addition to any room.",
   "medium": "Cotton and linen, hand-cut appliqué",
-  "options": [
-    {
-      "size": "69 × 43 cm",
-      "price": 85,
-      "sold": false
-    }
-  ],
-  "priceOnRequest": false,
-  "postage": 8,
-  "ukOnly": true,
+  "title": "Large Cotton Wall Hanging",
   "images": [
     {
       "image": "/content/uploads/large-cotton-wall-hanging.jpg",
       "alt": "Large Cotton Wall Hanging by Calico Melton: a pink and blue fabric hanging with an appliqué brown vase, a white horse and dark green tulips, on a wooden pole."
     }
-  ]
+  ],
+  "type": "Original",
+  "description": "A large cotton and linen wall hanging with a hand-cut appliqué illustration based on my artwork. A soft, textural piece for a nursery, or an addition to any room.",
+  "options": [
+    {
+      "size": "69 × 43 cm",
+      "price": 50,
+      "sold": false
+    }
+  ],
+  "postage": 8
 }
